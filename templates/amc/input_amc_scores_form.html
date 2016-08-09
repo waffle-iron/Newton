@@ -7,13 +7,11 @@
 {% block content %}
     <div class="row">
 <h1>Input {{ teacher }} AMC Tests</h1>
-{% for student in student_list %}
-{{ student }}
-    <p>Current AMC Test: {{ student|current_amc_test|amc_number_to_text }}</p>
-    <form action="" method="POST">
-        {{ form.as_p }}
+        {% for form in formset %}
+            {{ form.as_table }}
+        {% endfor %}
+    <hr>
 
-{% endfor %}
             {% csrf_token %}
         <input type="submit" class="button" value="Save">
     </form>

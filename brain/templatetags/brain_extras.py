@@ -37,6 +37,9 @@ def amc_number_to_text(value):
     output = AMCTest.objects.get(test_number= value)
     return output
 
+@register.filter(name='amc')
+
+
 
 @register.inclusion_tag('brain/classes_nav.html')
 def nav_teachers_list():
