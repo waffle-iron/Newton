@@ -24,7 +24,7 @@ urlpatterns =[
     url(r'^(?i)admin/', include(admin.site.urls)),
     #url(r'^(?i)brain/', include('brain.urls'),),
     #url(r'^$', views.index, name='index'),
-
+    url(r'^(?i)amc/', include('amc.urls')),
     url(r'^(?i)classes/', include('brain.urls'),),
     url(r'^', include('brain.urls'),),
 
