@@ -35,7 +35,7 @@ def class_list(request, year="2016", grade="2nd", teacher="Trost"):
 def student_detail(request, studentid,): # Look at a single student's record
     # url: /student/83
     amc_tests = AMCTestResult.objects.all().filter(student_id=studentid)[:5]
-    #current_amc_test = CurrentAMCTest.objects.all().get_or_create(student__student_id=studentid)
+
     student = get_object_or_404(StudentRoster, student_id= studentid)
     return render(request, 'brain/student_detail.html', {'student': student, 'amc_tests': amc_tests,})
 
@@ -44,8 +44,7 @@ def index(request):
     return render(request, 'brain/index.html', )
 
 
-def test(request):
-    return HttpResponse("This is the sample page for 'test'! Good job!")
+
 
 
 '''
