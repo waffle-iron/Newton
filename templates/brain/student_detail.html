@@ -1,0 +1,45 @@
+{% extends "brain/layout.html" %}
+
+{% block title %}{{ student }} Details{% endblock title %}
+
+{% block content %}
+
+<h1>{{ student }}</h1>
+{{ student.current_class }}
+<br><br>
+{% if amc_tests.count > 0 %}
+<h4>Last {{ amc_tests.count }} American Math Challenge{{ amc_tests.count|pluralize }}</h4>
+<table>
+<tr>
+<th width="50">Score</th>
+<th width="50">Questions</th>
+<th width="50">Pass?</th>
+<th width="100">Test</th>
+<th width="100">Name</th>
+<th width="100">Date</th>
+</tr>
+
+
+
+{% for test in amc_tests %}
+{% with date=test.date_taken %}
+    <tr>
+    <td>{{  test.score }}</td>
+    <td>{{  test.test.total_questions }}</td>
+    <td>{% if test.passing_score %}
+    <b><span style="color: #19a60e">Yes</span></b>
+{% endif %}
+{% if not test.passing_score %}
+    <b><span style="color: #ae0000">No</span></b>
+{% endif %}
+    </td>
+    <td>{{  test.test.topic }}</td>
+    <td>{{  test.test.name }}</td>
+    <td>{{date}}</td>
+  </tr>
+    {% endwith %}
+{% endfor %}
+{% endif %}
+</table>
+{% endblock content %}
+

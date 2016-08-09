@@ -1,0 +1,23 @@
+{% extends "brain/layout.html" %}
+
+{% block title %}{{ grade }} Grade Student List{% endblock title %}
+
+{% block content %}
+<h1>{{ grade }} Grade Student List</h1>
+
+ {{ student_list.count }} students
+<table style="width:80%;">
+<tr>
+<th width="200">Student</th>
+<th width="150">Teacher</th>
+</tr>
+{% for student in student_list %}
+    <tr>
+    <td><a href="{% url 'brain:studentdetail' student.student_id %}">{{ student.first_name }} {{  student.last_name  }}</a></td>
+    <td><a href="{% url 'brain:classlist' year grade student.current_class.teacher.last_name %}">{{ student.current_class.teacher.last_name }}</a></td>
+  </tr>
+{% endfor %}
+</table>
+
+{% endblock content %}
+

@@ -1,0 +1,127 @@
+<!doctype html>
+{% load static from staticfiles %}
+{% load brain_extras %}
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %} | Newton</title>
+        <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+        <link rel="stylesheet" href="{% static 'css/newton.css' %}">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:700" rel="stylesheet">
+        {% block css %}{% endblock %}
+        <script src="{% static 'js/vendor/modernizr.js' %}"></script>
+        <meta class="foundation-mq">
+    </head>
+    <body>
+        <nav class="top-bar" role="navigation">
+            <section class="top-bar-left">
+                <ul class="dropdown menu" data-dropdown-menu role="menubar">
+                    <li class="menu-text"><a href="{% url 'brain:index' %}">Newton</a></li>
+                    <li class="has-submenu">
+                        <a href="{% url 'brain:schoolroster' '2016' %}">Classes</a>
+                        <ul class="submenu menu vertical" data-submenu role="menu">
+                            {% nav_teachers_list %}
+                            <li><a href="{% url 'brain:schoolroster' '2016' %}">See all &rarr;</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="has-submenu">
+                        <a href="{% url 'brain:schoolroster' '2016' %}">AMC</a>
+                        <ul class="submenu menu vertical" data-submenu role="menu">
+                            {% nav_teachers_list %}
+                            <li><a href="{% url 'brain:schoolroster' '2016' %}">See all &rarr;</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="{% url 'brain:schoolroster' '2016' %}">NWEA</a>
+                        <ul class="submenu menu vertical" data-submenu role="menu">
+                            {% nav_teachers_list %}
+                            <li><a href="{% url 'brain:schoolroster' '2016' %}">See all &rarr;</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="{% url 'brain:schoolroster' '2016' %}">CBA</a>
+                        <ul class="submenu menu vertical" data-submenu role="menu">
+                            {% nav_teachers_list %}
+                            <li><a href="{% url 'brain:schoolroster' '2016' %}">See all &rarr;</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="{% url 'brain:schoolroster' '2016' %}">ENI</a>
+                        <ul class="submenu menu vertical" data-submenu role="menu">
+                            {% nav_teachers_list %}
+                            <li><a href="{% url 'brain:schoolroster' '2016' %}">See all &rarr;</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="{% url 'brain:schoolroster' '2016' %}">IXL</a>
+                        <ul class="submenu menu vertical" data-submenu role="menu">
+                            {% nav_teachers_list %}
+                            <li><a href="{% url 'brain:schoolroster' '2016' %}">See all &rarr;</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/admin">Admin</a>
+                    </li>
+                </ul>
+            </section>
+            <section class="top-bar-right">
+                <ul class="menu">
+                    <li><input type="search"></li>
+                    <li><button type="button" class="button">Search</button></li>
+                </ul>
+            </section>
+        </nav>
+        {% if messages %}
+            <div class="row columns">
+                <div class="small-6 small-centered columns">
+                    {% for message in messages %}
+                        <div data-alert class="alert-box {{ message.tags }} radius">
+                            {{ message }}
+                            <a href="#" class="close">&times;</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+        <div class="large-12 columns">
+        {% block breadcrumbs %}{% endblock %}
+        {% block content %}{% endblock %}
+        </div>
+        </div>
+
+
+            <footer class="footer">
+  <div class="row">
+    <div class="small-12 columns">
+      <p class="slogan">Newton</p>
+      <p class="links">
+        <a href="#">Home</a>
+        <a href="#">Classes</a>
+        <a href="#">AMC</a>
+        <a href="#">NWEA</a>
+        <a href="#">CBA</a>
+        <a href="#">ENI</a>
+        <a href="#">IXL</a>
+        <a href="#">Admin</a>
+      </p>
+
+                <p class="quote">"If I have seen further than others, it is by standing upon the shoulders of giants."</p>
+                <cite>Isaac Newton</cite>
+
+      <p class="copyright">Copyright  ©2016</p>
+    </div>
+  </div>
+</footer>
+
+        <script src="{% static 'js/vendor/jquery.js' %}"></script>
+        <script src="{% static 'js/vendor/what-input.min.js' %}"></script>
+        <script src="{% static 'js/foundation.js' %}"></script>
+        {% block javascript %}{% endblock %}
+        <script>
+    $(document).foundation();
+  </script>
+    </body>
+</html>

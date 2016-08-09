@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+h1, h2, h3, h4, h5, h6 {font-family: 'Roboto', sans-serif;}
+
+h1 {
+  font-size: 3.0rem;
+color: #183a54
+}
+
+h2 {font-size:2.5rem;}
+
+h3{font-size: 2.0rem;}
+
+h4{font-size: 1.5rem;}
+
+th {
+    background-color: #2199e8;
+    color: white;
+  text-align: left;
+}
+tr:hover {background-color: #e6e6e6
+}
+
+.footer {
+  background-color: #d8dadf;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+
+}
+  .footer p.slogan {
+    font-family: 'Roboto', sans-serif;
+    color: #545557;
+    font-size: 2rem;
+    margin: 0 0 1rem; }
+  .footer p.copyright {
+    color: #464749;
+    font-size: 0.875rem;
+    margin: 0; }
+    .footer p.quote {
+    color: #47494b;
+    font-size: 0.875rem;
+    margin: 0; }
+  .footer .links a {
+    list-style: none;
+    font-weight: bold;
+    color: #353535;
+    padding: 1rem 0 1rem;
+    margin: 0; }
+    .footer .links a::after {
+      content: "•";
+      padding: 0 0.4rem 0 0.8rem; }
+    .footer .links a:last-child::after {
+      content: "";
+      padding: 0 0.4rem 0 0.8rem; }
+

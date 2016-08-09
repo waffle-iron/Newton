@@ -1,0 +1,29 @@
+{% extends "brain/layout.html" %}
+
+{% block title %}{{ teacher }} Student List{% endblock title %}
+
+
+{% block content %}
+<h1>{{ teacher }} Student List</h1>
+
+{% if student_list.count > 0 %}
+    {{ student_list.count }} students
+<table>
+<tr>
+<th width="200">Student</th>
+<th width="150">Teacher</th>
+</tr>
+
+{% for student in student_list %}
+    <tr>
+    <td><a href="{% url 'brain:studentdetail' student.student_id %}">{{ student.first_name }} {{  student.last_name  }}</a></td>
+    <td>{{ student.current_class.teacher.last_name }}</td>
+  </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% endblock content %}
+
+
+
