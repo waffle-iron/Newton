@@ -1,5 +1,5 @@
 {% extends "brain/layout.html" %}
-
+{% load brain_extras %}
 {% block title %}{{ student }} Details{% endblock title %}
 
 {% block content %}
@@ -8,7 +8,9 @@
 {{ student.current_class }}
 <br><br>
 {% if amc_tests.count > 0 %}
-<h4>Last {{ amc_tests.count }} American Math Challenge{{ amc_tests.count|pluralize }}</h4>
+        <h4>Current AMC Test: {{ student|current_amc_test|amc_number_to_text }}</h4>
+
+<h5>Last {{ amc_tests.count }} American Math Challenge{{ amc_tests.count|pluralize }}</h5>
 <table>
 <tr>
 <th width="50">Score</th>
@@ -39,7 +41,8 @@
   </tr>
     {% endwith %}
 {% endfor %}
-{% endif %}
 </table>
+
+{% endif %}
 {% endblock content %}
 

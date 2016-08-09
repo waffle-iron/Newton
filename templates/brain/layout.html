@@ -14,6 +14,7 @@
         <meta class="foundation-mq">
     </head>
     <body>
+    {% if user.is_authenticated %}
         <nav class="top-bar" role="navigation">
             <section class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu role="menubar">
@@ -111,10 +112,14 @@
                 <p class="quote">"If I have seen further than others, it is by standing upon the shoulders of giants."</p>
                 <cite>Isaac Newton</cite>
 
-      <p class="copyright">Copyright  ©2016</p>
+      <p class="copyright">Copyright  © 2016</p>
     </div>
   </div>
 </footer>
+        {% else %}
+        <h1 style="text-align: center; ">Hi, I'm Newton!</h1>
+    <h1 style="text-align: center; ">Please <a href="/admin">login</a>, and we'll get started!</h1>
+    {% endif %}
 
         <script src="{% static 'js/vendor/jquery.js' %}"></script>
         <script src="{% static 'js/vendor/what-input.min.js' %}"></script>
