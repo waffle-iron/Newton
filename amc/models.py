@@ -22,22 +22,9 @@ class AMCTest(models.Model):
         verbose_name_plural = "AMC Tests"
 
 
-class AMCTestDay(models.Model):
-    current_class = models.ForeignKey(CurrentClass, blank=True, null=True,)
-    date_taken = models.DateField(default=datetime.datetime.now, verbose_name='Date Taken')
-
-
-    def __str__(self):
-        return '%s' % (self.date_taken,)
-    class Meta:
-        verbose_name = "AMC Test Day"
-        verbose_name_plural = "AMC Test Days"
-
-
 class AMCTestResult(models.Model):
     student = models.ForeignKey(StudentRoster, blank=False, null=False)
     test = models.ForeignKey(AMCTest)
-    date_taken = models.ForeignKey(AMCTestDay, blank=False, null=False,)
     score = models.IntegerField(blank=False, null=False)
 
     def passing_score(self):
@@ -47,13 +34,13 @@ class AMCTestResult(models.Model):
             return False
         else:
             return "Error"
-    #pass_or_fail = models.BooleanField(default=passing_score())
+
 
     def __str__(self):
         return '%s -- %s Pass: %s' % (self.student, self.test, self.passing_score(), )
     class Meta:
         verbose_name = "AMC Test Score"
         verbose_name_plural = "AMC Test Scores"
-        ordering = ['-date_taken', 'student']
+        #ordering = ['-date_taken', 'student']
 
 

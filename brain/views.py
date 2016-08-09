@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 
 from .models import StudentRoster
 from amc.models import AMCTestResult
-from status.models import CurrentAMCTest
+
 
 # TODO: Teacher List (Sort: Teacher, Incl. Most Recent Grade taught)
 # TODO: Grade Roster (Sort: LastName, Incl.: First, Last, Teacher, Grade, Gender, Age)
