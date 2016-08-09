@@ -1,15 +1,41 @@
 from django import template
 
 from brain.models import StudentRoster, CurrentClass, Teacher
+from amc.models import AMCTestResult, AMCTest
 
 
 register = template.Library()
 
 
-@register.simple_tag
-def current_amc_test():
-    #Gets the current AMC test for a student#
-    pass
+# TODO: Next IXL Skills to Master
+# TODO: Current NWEA Approximation
+# TODO: Student Status with ENI Skills
+# TODO: Student Status with IXL Skills
+# TODO: Student Status with NWEA Skills
+# TODO: Student Status with CBA Skills
+
+
+@register.filter(name='current_amc_test')
+def current_amc_test(value):
+    """Gets the current AMC test for a student"""
+    if AMCTestResult.objects.all().filter(student_id=value).count() > 0:
+        last_test_taken = AMCTestResult.objects.all().filter(student_id=value).order_by('-date_taken')[0]
+        if last_test_taken.passing_score():
+            amc_test = last_test_taken.test.test_number + 1
+        elif not last_test_taken.passing_score():
+            amc_test = last_test_taken.test.test_number
+        else:
+            amc_test = "Error"
+
+        return amc_test
+    else:
+        return 1
+
+
+@register.filter(name='amc_number_to_text')
+def amc_number_to_text(value):
+    output = AMCTest.objects.get(test_number= value)
+    return output
 
 
 @register.inclusion_tag('brain/classes_nav.html')
