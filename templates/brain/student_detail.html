@@ -2,11 +2,12 @@
 {% load brain_extras %}
 {% block title %}{{ student }} Details{% endblock title %}
 
+{% block heading %}<h1>{{ student }}</h1>
+{{ student.current_class }}
+{% endblock heading %}
+
 {% block content %}
 
-<h1>{{ student }}</h1>
-{{ student.current_class }}
-<br><br>
 {% if amc_tests.count > 0 %}
         <h4>Current AMC Test: {{ student|current_amc_test|amc_number_to_text }}</h4>
 

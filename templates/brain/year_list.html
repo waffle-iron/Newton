@@ -2,9 +2,12 @@
 
 {% block title %}{{ year }} Student List{% endblock title %}
 
-{% block content %}
-<h1>{{ year }} Student List</h1>
 
+{% block heading %}
+<h1>{{ year }} Student List</h1>
+{% endblock heading %}
+
+{% block content %}
  {{ student_list.count }} students
 <table style="width:80%; border: 1px solid black;">
 <tr>
