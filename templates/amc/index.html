@@ -1,0 +1,26 @@
+{% extends "brain/layout.html" %}
+{% load brain_extras %}
+
+{% block title %}
+    {% if teacher %}
+    {{ teacher }}'s AMC Tests
+    {% elif grade %}
+  {{ grade }} Grade AMC Tests
+    {% elif year %}
+    {{ year }} School-Wide AMC Tests
+    {% endif %}
+{% endblock title %}
+
+{% block heading %}
+    <h1>American Math Challenge</h1>
+{% endblock heading %}
+
+{% block content %}
+    <div class="row">
+    <h4>Select a class to view.</h4>
+{% for teacher in teacher_list %}
+    <p><a href="#" class="large button">{{ teacher.teacher }}</a></p>
+{% endfor %}
+    </div>
+
+{% endblock content %}
