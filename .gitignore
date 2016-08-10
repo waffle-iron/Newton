@@ -10,3 +10,9 @@ newton/__pycache__/.___init__.cpython-34.pyc
 newton/__pycache__/._settings.cpython-34.pyc
 newton/__pycache__/._urls.cpython-34.pyc
 newton/__pycache__/._wsgi.cpython-34.pyc
+
+.idea/workspace.xml
+
+*.pyc
+
+*.pyc
