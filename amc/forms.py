@@ -7,7 +7,7 @@ class InputAMCScores(forms.ModelForm):
     class Meta:
         model = models.AMCTestResult
         fields = [
-            'student', 'test', 'date_taken', 'score',
+            'student', 'test', 'date_tested', 'score',
         ]
 
 

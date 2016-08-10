@@ -18,8 +18,8 @@ register = template.Library()
 @register.filter(name='current_amc_test')
 def current_amc_test(value):
     """Gets the current AMC test for a student"""
-    if AMCTestResult.objects.all().filter(student_id=value).count() > 0:
-        last_test_taken = AMCTestResult.objects.all().filter(student_id=value).order_by('-date_taken')[0]
+    if AMCTestResult.objects.all().filter(student_id=value):
+        last_test_taken = AMCTestResult.objects.all().filter(student_id=value).order_by('-date_tested')[0]
         if last_test_taken.passing_score():
             amc_test = last_test_taken.test.test_number + 1
         elif not last_test_taken.passing_score():

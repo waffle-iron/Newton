@@ -9,8 +9,9 @@ class AMCTestAdmin(admin.ModelAdmin):
 
 
 class AMCTestResultAdmin(admin.ModelAdmin):
-    list_display = ('student', 'test', 'score', 'date_taken')
-    list_editable = ['score', 'test', 'date_taken']
+    list_display = ('student', 'test', 'score', 'date_tested')
+    list_editable = ['score', 'test', 'date_tested']
+    pass
 
 admin.site.register(AMCTestResult, AMCTestResultAdmin)
 admin.site.register(AMCTest, AMCTestAdmin)

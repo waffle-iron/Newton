@@ -12,6 +12,10 @@ from brain.templatetags import brain_extras
 
 # Create your views here.
 
+# TODO: Writing form to db
+# TODO: Handling absent/blank student scores
+
+
 @login_required
 def input_amc_scores(request, year="2016", grade="2nd", teacher="Trost"):
     student_list = StudentRoster.objects.filter(current_class__grade=grade) \
@@ -27,12 +31,17 @@ def input_amc_scores(request, year="2016", grade="2nd", teacher="Trost"):
     form = forms.InputAMCScores()
 
     if request.method == 'POST':
+        print('POST')
         form = forms.InputAMCScores(request.POST)
         if form.is_valid():
+            print('form is valid')
             test = form.save(commit=False)
             test.student_list = student_list
             test.save()
             messages.add_message(request, messages.SUCCESS, "American Math Challenges Recorded! Great going!")
+        else:
+            print('form is invalid')
+            print(form.errors)
         return render(request, 'amc/input_amc_scores_form.html', {'form': form})
 
     context = {
