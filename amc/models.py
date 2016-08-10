@@ -42,6 +42,6 @@ class AMCTestResult(models.Model):
     class Meta:
         verbose_name = "AMC Test Score"
         verbose_name_plural = "AMC Test Scores"
-        #ordering = ['-date_taken', 'student']
+        ordering = ['-date_taken', 'student']
 
 

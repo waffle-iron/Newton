@@ -1,19 +1,54 @@
 {% extends "brain/layout.html" %}
 {% load brain_extras %}
 
-{% block title %}Input AMC Tests{% endblock title %}
-
+{% block title %}Input {{ teacher }} AMC Tests{% endblock title %}
+{% block heading %}
+            <h1>Input {{ teacher }} AMC Tests</h1>
+{% endblock heading %}
 
 {% block content %}
     <div class="row">
-<h1>Input {{ teacher }} AMC Tests</h1>
-        {% for form in formset %}
-            {{ form.as_table }}
-        {% endfor %}
-    <hr>
+    <form>
+      <div class="small-11 small-centered columns">
 
-            {% csrf_token %}
-        <input type="submit" class="button" value="Save">
-    </form>
+    <table>
+<tr>
+<th width="50">Student</th>
+<th width="50">Test</th>
+<th width = "20">Date Taken</th>
+<th width="10">Score</th>
+</tr>
+
+
+        {% for form in formset %}
+<tr>
+            <td>
+                {{ form.student.errors }}
+                {{ form.student }}
+            </td>
+
+            <td>
+                {{ form.test.errors }}
+                {{ form.test }}
+            </td>
+    <td>
+        {{ form.date_taken.errors }}
+        {{ form.date_taken }}
+    </td>
+            <td>
+                {{ form.score.errors }}
+                {{ form.score }}
+            </td>
+            </tr>
+
+        {% endfor %}
+    </table>
     </div>
+        <hr>
+        {% csrf_token %}
+        <input type="submit" class="button" value="Save">
+
+        </form>
+    </div>
+
 {% endblock content %}

@@ -27,13 +27,13 @@ def input_amc_scores(request, year="2016", grade="2nd", teacher="Trost"):
     form = forms.InputAMCScores()
 
     if request.method == 'POST':
-        form= forms.InputAMCScores(request.POST)
+        form = forms.InputAMCScores(request.POST)
         if form.is_valid():
             test = form.save(commit=False)
             test.student_list = student_list
             test.save()
             messages.add_message(request, messages.SUCCESS, "American Math Challenges Recorded! Great going!")
-        return render(request, 'amc/input_amc_scores_form.html', {'form': form,})
+        return render(request, 'amc/input_amc_scores_form.html', {'form': form})
 
     context = {
         'form': form,
@@ -42,6 +42,14 @@ def input_amc_scores(request, year="2016", grade="2nd", teacher="Trost"):
         'student_list': student_list,
     }
     return render(request, 'amc/input_amc_scores_form.html', context=context)
+
+
+
+
+
+
+
+
 
 
 def amc_index(request):

@@ -9,8 +9,11 @@
 {% block content %}
 
 {% if amc_tests.count > 0 %}
-        <h4>Current AMC Test: {{ student|current_amc_test|amc_number_to_text }}</h4>
-
+{% with student|current_amc_test as curtest %}
+        <h4>Current AMC Test: {{ student|current_amc_test|amc_number_to_text }} </h4>
+<h5>Times taken current test: {{student|amc_number_of_test_attempts:curtest}}</h5>
+<h5>Basic Facts Grade Equivalent: {{student|current_amc_test|amc_grade_equivalent}}</h5>
+{% endwith %}
 <h5>Last {{ amc_tests.count }} American Math Challenge{{ amc_tests.count|pluralize }}</h5>
 <table>
 <tr>

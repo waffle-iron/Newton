@@ -37,8 +37,21 @@ def amc_number_to_text(value):
     output = AMCTest.objects.get(test_number= value)
     return output
 
-@register.filter(name='amc')
+@register.filter(name='amc_number_of_test_attempts')
+def amc_number_of_test_attempts(value, test):
+    student = value
+    if AMCTestResult.objects.all().filter(student_id=student).filter(test=test):
+        count = AMCTestResult.objects.all().filter(student_id=student).filter(test=test).count()
+        return count
+    else:
+        return 0
 
+
+@register.filter(name='amc_grade_equivalent')
+def amc_grade_equivalent(value):
+    """Turns a current AMC test number into the grade equivalent."""
+    output = AMCTest.objects.get(test_number=value)
+    return output.grade_equivalent
 
 
 @register.inclusion_tag('brain/classes_nav.html')
