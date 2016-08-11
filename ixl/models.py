@@ -25,6 +25,7 @@ class IXLSkill(models.Model):
         ordering = ['skill_id']
 
 
+
 class IXLSkillScores(models.Model): # Intersection of IXLSkill and Student Roster
     student_id = models.ForeignKey(StudentRoster, on_delete=models.CASCADE,)
     ixl_skill_id = models.ForeignKey(IXLSkill, on_delete=models.CASCADE,verbose_name='IXL Skill ID',)

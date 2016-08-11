@@ -13,7 +13,9 @@ register = template.Library()
 # TODO: Student Status with NWEA Skills
 # TODO: Student Status with CBA Skills
 
-
+#=========================================================================================================
+#                                           AMC
+#=========================================================================================================
 @register.filter(name='current_amc_test')
 def current_amc_test(value):
     """Gets the current AMC test for a student"""
@@ -75,6 +77,12 @@ def amc_teacher_badges_earned(value):
             if passed:
                 x += 1
     return x
+
+
+
+#=========================================================================================================
+#                                           NAVIGATION
+#=========================================================================================================
 
 
 @register.inclusion_tag('brain/classes_nav.html')
