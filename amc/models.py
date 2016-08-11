@@ -43,5 +43,6 @@ class AMCTestResult(models.Model):
         verbose_name = "AMC Test Score"
         verbose_name_plural = "AMC Test Scores"
         ordering = ['-date_tested', 'student']
+        unique_together = ("student", "test", "date_tested")
 
 

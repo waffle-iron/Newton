@@ -50,24 +50,19 @@ def input_amc_scores(request, year="2016", grade="2nd", teacher="Trost"):
         formset.forms[i].fields['student'].initial = student_list[i]
         formset.forms[i].fields['test'].initial = brain_extras.current_amc_test(student_list[i])
 
-    form = forms.InputAMCScores()
-
     if request.method == 'POST':
         print('POST')
-        form = forms.InputAMCScores(request.POST)
-        if form.is_valid():
-            print('form is valid')
-            test = form.save(commit=False)
-            test.student_list = student_list
-            test.save()
+        formset = TestListFormSet(request.POST)
+        if formset.is_valid():
+            print('formset is valid')
+            for form in formset:
+                form.save()
             messages.add_message(request, messages.SUCCESS, "American Math Challenges Recorded!")
         else:
-            print('form is invalid')
-            print(form.errors)
-        return render(request, 'amc/input_amc_scores_form.html', {'form': form})
+            print('formset is invalid')
+            print(formset.errors)
 
     context = {
-        'form': form,
         'formset': formset,
         'teacher': teacher,
         'student_list': student_list,

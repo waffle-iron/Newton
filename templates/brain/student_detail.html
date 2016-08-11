@@ -28,7 +28,7 @@
 
 
 {% for test in amc_tests %}
-{% with date=test.date_taken %}
+{% with date=test.date_tested %}
     <tr>
     <td>{{  test.score }}</td>
     <td>{{  test.test.total_questions }}</td>

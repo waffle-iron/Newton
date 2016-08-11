@@ -9,6 +9,8 @@
 {% block content %}
     <div class="row">
         <form method="post">
+            {{ formset.management_form }}
+
             <div class="small-11 small-centered columns">
 
                 <table>
@@ -23,6 +25,7 @@
                     {% for form in formset %}
                         <tr>
                             <td>
+                                <a style="color: darkred">{{ form.non_field_errors }}</a>
                                 {{ form.student.errors }}
                                 {{ form.student }}
                             </td>
