@@ -3,7 +3,6 @@ from django import template
 from brain.models import StudentRoster, CurrentClass, Teacher
 from amc.models import AMCTestResult, AMCTest
 
-
 register = template.Library()
 
 
@@ -34,8 +33,9 @@ def current_amc_test(value):
 
 @register.filter(name='amc_number_to_text')
 def amc_number_to_text(value):
-    output = AMCTest.objects.get(test_number= value)
+    output = AMCTest.objects.get(test_number=value)
     return output
+
 
 @register.filter(name='amc_number_of_test_attempts')
 def amc_number_of_test_attempts(value, test):
@@ -54,9 +54,39 @@ def amc_grade_equivalent(value):
     return output.grade_equivalent
 
 
+@register.filter(name='amc_badges_earned')
+def amc_badges_earned(value):
+    test_list = AMCTestResult.objects.all().filter(student=value)
+    x = 0
+    for test in test_list:
+        passed = test.passing_score()
+        if passed:
+            x += 1
+    return x
+
+
+@register.filter(name='amc_teacher_badges_earned')
+def amc_teacher_badges_earned(value):
+    x = 0
+    for student in value:
+        test_list = AMCTestResult.objects.all().filter(student=student)
+        for test in test_list:
+            passed = test.passing_score()
+            if passed:
+                x += 1
+    return x
+
+
 @register.inclusion_tag('brain/classes_nav.html')
 def nav_teachers_list():
     teachers = Teacher.objects.all()
     return {'teachers': teachers}
 
-#@register.inclusion_tag('brain/students')
+
+@register.inclusion_tag('amc/classes_nav.html')
+def nav_amc_teachers_list():
+    teachers = Teacher.objects.all()
+    return {'teachers': teachers}
+
+
+    # @register.inclusion_tag('brain/students')

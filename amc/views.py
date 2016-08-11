@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from . import forms
 from brain.models import StudentRoster, CurrentClass
 from brain.templatetags import brain_extras
+from amc.models import AMCTestResult
 
 def school_roster(request, year="2016"):
     # url: /brain/2016
@@ -27,8 +28,10 @@ def class_list(request, year="2016", grade="2nd", teacher="Trost"):
     # url: /brain/2016/2nd/trost
     student_list = StudentRoster.objects.filter(current_class__grade=grade)\
         .filter(current_class__year=year).filter(current_class__teacher__last_name=teacher)
-    return render(request, 'brain/class_list.html', {'student_list': student_list, 'year': year, 'grade': grade,
-                                                     'teacher': teacher,})
+    amc_tests = AMCTestResult.objects.all()
+
+    return render(request, 'amc/class_list.html', {'student_list': student_list, 'year': year, 'grade': grade,
+                                                     'teacher': teacher, 'amc_tests':amc_tests})
 
 
 

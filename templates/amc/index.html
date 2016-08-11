@@ -19,7 +19,8 @@
     <div class="row">
     <h4>Select a class to view.</h4>
 {% for teacher in teacher_list %}
-    <p><a href="#" class="large button">{{ teacher.teacher }}</a></p>
+    <p><a class="large button" href="{% url 'amc:classlist' year teacher.grade teacher.teacher.last_name %}">{{ teacher.teacher }}</a>
+   </p>
 {% endfor %}
     </div>
 

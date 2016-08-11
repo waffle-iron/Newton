@@ -28,10 +28,10 @@
                     </li>
 
                     <li class="has-submenu">
-                        <a href="{% url 'brain:schoolroster' '2016' %}">AMC</a>
+                        <a href="{% url 'amc:schoolroster' '2016' %}">AMC</a>
                         <ul class="submenu menu vertical" data-submenu role="menu">
-                            {% nav_teachers_list %}
-                            <li><a href="{% url 'brain:schoolroster' '2016' %}">See all &rarr;</a></li>
+                            {% nav_amc_teachers_list %}
+                            <li><a href="{% url 'amc:schoolroster' '2016' %}">See all &rarr;</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu">
