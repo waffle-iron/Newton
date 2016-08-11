@@ -1,4 +1,4 @@
-
+.idea
 newton/settings.py
 *.pyc
 .DS_Store
@@ -15,10 +15,37 @@ newton/__pycache__/._wsgi.cpython-34.pyc
 
 *.pyc
 
-*.pyc
-
-*.pyc
-
-*.pyc
-
 cba/apps.pyc
+=======
+*.py[cod]
+
+# C extensions
+*.so
+
+# Packages
+
+dist
+build
+
+parts
+var
+sdist
+
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+coverage.*
+.tox
+nosetests.xml
+
+*.sql*
+
+.idea
+.idea/*
+>>>>>>> origin/master
