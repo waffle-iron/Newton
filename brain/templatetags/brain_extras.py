@@ -2,6 +2,7 @@ from django import template
 
 from brain.models import StudentRoster, CurrentClass, Teacher
 from amc.models import AMCTestResult, AMCTest
+from ixl.models import IXLSkill
 
 register = template.Library()
 
@@ -81,6 +82,27 @@ def amc_teacher_badges_earned(value):
 
 
 #=========================================================================================================
+#                                              IXL
+#=========================================================================================================
+
+
+@register.filter(name='get_ixl_url')
+def get_ixl_url(value):
+    skill_id = value.upper()
+    skill = IXLSkill.objects.all().get(skill_id=skill_id)
+    description_string = skill.skill_description.replace('-', '').replace("'", '').replace(",", "").replace('/', '') \
+        .replace('?', '').replace('.', '').replace(':', '').replace('$1', 'one dollar').replace("$5", "five dollars")
+    description_string = description_string.replace('   ', ' ').replace('  ', ' ')
+    description_string = description_string.replace(' ', '-')
+    url = str("https://www.ixl.com/math/level-" + skill.skill_id[0] + '/' + description_string).lower()
+    return url
+
+
+
+
+
+
+#=========================================================================================================
 #                                           NAVIGATION
 #=========================================================================================================
 
@@ -95,6 +117,10 @@ def nav_teachers_list():
 def nav_amc_teachers_list():
     teachers = Teacher.objects.all()
     return {'teachers': teachers}
+
+@register.inclusion_tag('ixl/ixl_nav.html')
+def nav_ixl_list():
+    return
 
 
     # @register.inclusion_tag('brain/students')
