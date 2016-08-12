@@ -1,3 +1,6 @@
+import datetime
+
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -10,6 +13,7 @@ from . import forms
 from brain.models import StudentRoster, CurrentClass
 from brain.templatetags import brain_extras
 from amc.models import AMCTestResult
+
 
 def school_roster(request, year="2016"):
     # url: /brain/2016
@@ -43,35 +47,59 @@ def class_list(request, year="2016", grade="2nd", teacher="Trost"):
 
 @login_required
 def input_amc_scores(request, year="2016", grade="2nd", teacher="Trost"):
-    student_list = StudentRoster.objects.filter(current_class__grade=grade) \
-        .filter(current_class__year=year).filter(current_class__teacher__last_name=teacher)
-
-    form_count = student_list.count()
-    TestListFormSet = formset_factory(forms.InputAMCScores, extra=form_count)
-    formset = TestListFormSet()
-    for i in range(form_count):
-        formset.forms[i].fields['student'].initial = student_list[i]
-        formset.forms[i].fields['test'].initial = brain_extras.current_amc_test(student_list[i])
-
     if request.method == 'POST':
-        print('POST')
+        TestListFormSet = formset_factory(forms.InputAMCScores, extra=0)
         formset = TestListFormSet(request.POST)
-        if formset.is_valid():
-            print('formset is valid')
-            for form in formset:
+        has_errors = False
+        for form in formset:
+            # Seems like it should be possible to have the form know the instance it was created from, and update
+            # that rather than go through this manual process
+            if form.is_valid():
                 form.save()
-            messages.add_message(request, messages.SUCCESS, "American Math Challenges Recorded!")
-        else:
-            print('formset is invalid')
-            print(formset.errors)
+            else:
+                existing_results = AMCTestResult.objects.filter(student=form.instance.student,
+                                                                date_tested=form.instance.date_tested)
+                if form.instance.score and existing_results.count():
+                    instance = existing_results.first()
+                    instance.score = form.instance.score
+                    instance.save()
+                else:
+                    has_errors = True
+                    print(form.errors)
+        messages.add_message(request, messages.SUCCESS, "American Math Challenges Recorded!")
+        if not has_errors:
+            url = reverse('amc:classlist', kwargs={'year': year, 'grade': grade, 'teacher': teacher})
+            return HttpResponseRedirect(url)
+    else:
+        student_list = StudentRoster.objects.filter(current_class__grade=grade) \
+            .filter(current_class__year=year).filter(current_class__teacher__last_name=teacher)
+
+        form_count = student_list.count()
+        TestListFormSet = formset_factory(forms.InputAMCScores, extra=form_count)
+        formset = TestListFormSet()
+        # Would be nice to create forms from the instances rather than manually set initial, but that did not seem
+        # to work correctly
+        for i in range(form_count):
+            today = datetime.date.today()
+            existing_results = AMCTestResult.objects.filter(student=student_list[i], date_tested=today)
+            initial_test = brain_extras.current_amc_test(student_list[i])
+            if existing_results.count():
+                instance = existing_results.first()
+                formset.forms[i].instance = instance
+                initial_student = instance.student
+                initial_score = instance.score
+            else:
+                initial_student = student_list[i]
+                initial_score = None
+            formset.forms[i].fields['student'].initial = initial_student
+            formset.forms[i].fields['test'].initial = initial_test
+            formset.forms[i].fields['score'].initial = initial_score
 
     context = {
         'formset': formset,
         'teacher': teacher,
-        'student_list': student_list,
     }
     return render(request, 'amc/input_amc_scores_form.html', context=context)
-
 
 
 def amc_index(request):

@@ -26,7 +26,7 @@ class AMCTestResult(models.Model):
     student = models.ForeignKey(StudentRoster, blank=False, null=False)
     test = models.ForeignKey(AMCTest)
     score = models.IntegerField(blank=False, null=False)
-    date_tested = models.DateField(default=datetime.datetime.now, verbose_name='Date Tested')
+    date_tested = models.DateField(default=datetime.date.today, verbose_name='Date Tested')
 
     def passing_score(self):
         if self.score >= self.test.minimum_passing_grade:

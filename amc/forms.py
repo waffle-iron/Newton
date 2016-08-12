@@ -9,7 +9,3 @@ class InputAMCScores(forms.ModelForm):
         fields = [
             'student', 'test', 'date_tested', 'score',
         ]
-
-
-
-
