@@ -4,10 +4,13 @@
 {% block title %}Input {{ teacher }} AMC Tests{% endblock title %}
 {% block heading %}
     <h1>Input {{ teacher }} AMC Tests</h1>
+        <a href="{% url 'amc:classlist' year grade teacher %}">< Back to {{ teacher}}</a>
+
 {% endblock heading %}
 
 {% block content %}
     <div class="row">
+
         <form method="post">
             {{ formset.management_form }}
 
