@@ -2,12 +2,127 @@ from django.db import models
 
 from brain.models import StudentRoster
 
-# Create your models here.
+# 70+ RIT Bands
+# 600 Skills
+# NWEAScore ( 7 fields for 7 domains)
 
-# TODO: Add official test results here. Scores on the 7 domains, date(fall/winter/spring),
+# domain1_rit = NWEAScore.domain1
+# domain1_exercises = NWEASkills.objects.all().filter(domain=1,).filter(rit_band=domain1_rit)
+
+
+# NWEA Subdomains
+# NWEARITBand (Has: Subdomain(FK), RIT #)
+# NWEASkill (Has: rit_band, skill, ixl_equivalent, cba)
+# NWEAScore (Has: 1 number for each of the 7 subdomains)
+
+
+
+class RITBand(models.Model):
+    ALGEBRA = 1
+    NUMBER = 2
+    MEASUREMENT = 3
+    GEOMETRY = 4
+
+    DOMAIN_CHOICES = (
+        (ALGEBRA, 'Operations and Algebraic Thinking'),
+        (NUMBER, 'Number and Operations'),
+        (MEASUREMENT, 'Measurement and Data'),
+        (GEOMETRY, 'Geometry'),
+    )
+
+    PROBLEM = 1
+    OPERATION = 2
+    PLACEVALUE = 3
+    NUMBER_SUB = 4
+    MEASUREMENT_SUB = 5
+    DATA = 6
+    SHAPES = 7
+
+    SUBDOMAIN_CHOICES = (
+        (PROBLEM, 'Represent and Solve Problems'),
+        (OPERATION, 'Properties of Operations'),
+        (PLACEVALUE, 'Understand Place Value, Counting, and Cardinality'),
+        (NUMBER_SUB, 'Number and Operations: Base Ten and Fractions'),
+        (MEASUREMENT_SUB, 'Solve Problems Involving Measurement'),
+        (DATA, 'Represent and Interpret Data'),
+        (SHAPES, 'Reason with Shapes and Their Attributes'),
+    )
+    RIT_CHOICES = (
+        (111, '111'),
+        (121, '121'),
+        (131, '131'),
+        (141, '141'),
+        (151, '151'),
+        (161, '161'),
+        (171, '171'),
+        (181, '181'),
+        (191, '191'),
+        (201, '201'),
+        (211, '211'),
+        (221, '221'),
+        (231, '231'),
+        (241, '241'),
+    )
+
+    domain = models.CharField(choices=DOMAIN_CHOICES,max_length=255 )
+    subdomain = models.CharField(choices=SUBDOMAIN_CHOICES, max_length=255)
+    rit_band = models.PositiveIntegerField(choices=RIT_CHOICES, default=151 )
+
+
+class NWEASkill(models.Model):
+    rit_band = models.ForeignKey(RITBand, on_delete=models.CASCADE)
+    skill = models.CharField(max_length=255, )
+    ixl_match = models.CharField(max_length=7, blank=True)
+
+
+class NWEAScore(models.Model):
+    FK = 'Kindergarten, Fall'
+    WK = 'Kindergarten, Winter'
+    SK = 'Kindergarten, Spring'
+    F1 = '1st Grade, Fall'
+    W1 = '1st Grade, Winter'
+    S1 = '1st Grade, Spring'
+    F2 = '2nd Grade, Fall'
+    W2 = '2nd Grade, Winter'
+    S2 = '2nd Grade, Spring'
+    F3 = '3rd Grade, Fall'
+    W3 = '3rd Grade, Winter'
+    S3 = '3rd Grade, Spring'
+    F4 = '4th Grade, Fall'
+    W4 = '4th Grade, Winter'
+    S4 = '4th Grade, Spring'
+
+    DATE_CHOICES = (
+        (FK, 'Kindergarten, Fall'),
+        (WK, 'Kindergarten, Winter'),
+        (SK, 'Kindergarten, Spring'),
+        (F1, '1st Grade, Fall'),
+        (W1, '1st Grade, Winter'),
+        (S1, '1st Grade, Spring'),
+        (F2, '2nd Grade, Fall'),
+        (W2, '2nd Grade, Winter'),
+        (S2, '2nd Grade, Spring'),
+        (F3, '3rd Grade, Fall'),
+        (W3, '3rd Grade, Winter'),
+        (S3, '3rd Grade, Spring'),
+        (F4, '4th Grade, Fall'),
+        (W4, '4th Grade, Winter'),
+        (S4, '4th Grade, Spring'),
+    )
+
+    student = models.ForeignKey(StudentRoster, on_delete=models.CASCADE)
+    test_period = models.CharField(choices=DATE_CHOICES, default=F2, max_length=255)
+    subdomain1 = models.IntegerField(verbose_name="SubDomain 1")
+    subdomain2 = models.IntegerField(verbose_name="SubDomain 2")
+    subdomain3 = models.IntegerField(verbose_name="SubDomain 3")
+    subdomain4 = models.IntegerField(verbose_name="SubDomain 4")
+    subdomain5 = models.IntegerField(verbose_name="SubDomain 5")
+    subdomain6 = models.IntegerField(verbose_name="SubDomain 6")
+    subdomain7 = models.IntegerField(verbose_name="SubDomain 7")
+
 
 '''
-class NWEADomain(models.Model):
+class Domain(models.Model):
     ALGEBRA = 1
     NUMBER = 2
     MEASUREMENT = 3

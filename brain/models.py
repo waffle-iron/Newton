@@ -14,8 +14,8 @@ class Teacher(models.Model):
     )
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50, choices=TITLE_CHOICES, default=MS)
-    first_name =models.CharField(max_length=50, blank=False, null=False)
-    last_name = models.CharField(max_length=50, blank=False, null=False)
+    first_name =models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
 
 
     def __str__(self):
@@ -70,8 +70,9 @@ class StudentRoster(models.Model):
     last_name = models.CharField(max_length=30)
     current_class = models.ForeignKey(CurrentClass, on_delete=models.CASCADE, default=1)
     date_of_birth = models.DateField(blank=True,)
-    gender = models.CharField(max_length=50, choices=GENDER_CHOICES, blank=False, default=MALE,)
+    gender = models.CharField(max_length=50, choices=GENDER_CHOICES, default=MALE,)
     email = models.EmailField(blank=True, verbose_name='Parent Email')
+    # detail = models.
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
