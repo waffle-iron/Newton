@@ -98,6 +98,8 @@ def input_amc_scores(request, year="2016", grade="2nd", teacher="Trost"):
     context = {
         'formset': formset,
         'teacher': teacher,
+        'grade':grade,
+        'year':year,
     }
     return render(request, 'amc/input_amc_scores_form.html', context=context)
 
