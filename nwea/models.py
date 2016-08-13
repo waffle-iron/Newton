@@ -68,11 +68,28 @@ class RITBand(models.Model):
     subdomain = models.CharField(choices=SUBDOMAIN_CHOICES, max_length=255)
     rit_band = models.PositiveIntegerField(choices=RIT_CHOICES, default=151 )
 
+    def __str__(self):
+        return '{} {} {}'.format(self.domain, self.subdomain, self.rit_band)
+
+    class Meta:
+        verbose_name = 'RIT Band'
+        verbose_name_plural = 'RIT Bands'
+
 
 class NWEASkill(models.Model):
     rit_band = models.ForeignKey(RITBand, on_delete=models.CASCADE)
     skill = models.CharField(max_length=255, )
     ixl_match = models.CharField(max_length=7, blank=True)
+
+    def __str__(self):
+        output = '{} {} {}'.format(self.rit_band.domain, self.rit_band.subdomain, self.skill)
+        if self.ixl_match:
+            output = output + ', IXL Match: ' + self.ixl_match
+        return output
+
+    class Meta:
+        verbose_name = 'NWEA Skill'
+        verbose_name_plural = 'NWEA Skills'
 
 
 class NWEAScore(models.Model):
@@ -119,6 +136,15 @@ class NWEAScore(models.Model):
     subdomain5 = models.IntegerField(verbose_name="SubDomain 5")
     subdomain6 = models.IntegerField(verbose_name="SubDomain 6")
     subdomain7 = models.IntegerField(verbose_name="SubDomain 7")
+
+    def __str__(self):
+        print_date = str(self.test_period)
+        scores = ("{}, {}, {}, {}, {}, {}, {}".format(self.domain1, self.domain2, self.domain3, self.domain4, self.domain5, self.domain6, self.domain7))
+        return '{} {} {} {}'.format(self.student.first_name, self.student.last_name, print_date, scores )
+
+    class Meta:
+        verbose_name = 'NWEA Score'
+        verbose_name_plural = 'NWEA Scores'
 
 
 '''
