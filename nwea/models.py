@@ -6,7 +6,7 @@ from brain.models import StudentRoster
 
 # TODO: Add official test results here. Scores on the 7 domains, date(fall/winter/spring),
 
-
+'''
 class NWEADomain(models.Model):
     ALGEBRA = 1
     NUMBER = 2
@@ -96,4 +96,4 @@ class NWEATestResults(models.Model):
     #student = models.ForeignKey(StudentRoster, on_delete=models.CASCADE, blank=False, null=False,)
     # Need 7 boxes with each of the subdomains
     #sub1 = models.ForeignKey(NWEASubDomain)
-    pass
+    pass'''
