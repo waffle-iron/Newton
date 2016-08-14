@@ -74,6 +74,8 @@ class RITBand(models.Model):
     class Meta:
         verbose_name = 'RIT Band'
         verbose_name_plural = 'RIT Bands'
+        ordering = ['domain', 'subdomain', 'rit_band']
+
 
 
 class NWEASkill(models.Model):
@@ -82,7 +84,7 @@ class NWEASkill(models.Model):
     ixl_match = models.CharField(max_length=7, blank=True)
 
     def __str__(self):
-        output = '{} {} {}'.format(self.rit_band.domain, self.rit_band.subdomain, self.skill)
+        output = 'Dom: {} Sub: {} RIT: {} Skill: {}'.format(self.rit_band.domain, self.rit_band.subdomain, self.rit_band.rit_band, self.skill)
         if self.ixl_match:
             output = output + ', IXL Match: ' + self.ixl_match
         return output
@@ -90,6 +92,7 @@ class NWEASkill(models.Model):
     class Meta:
         verbose_name = 'NWEA Skill'
         verbose_name_plural = 'NWEA Skills'
+        ordering = ['rit_band', 'skill']
 
 
 class NWEAScore(models.Model):
@@ -145,6 +148,7 @@ class NWEAScore(models.Model):
     class Meta:
         verbose_name = 'NWEA Score'
         verbose_name_plural = 'NWEA Scores'
+
 
 
 '''
