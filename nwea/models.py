@@ -128,7 +128,7 @@ class NWEAScore(models.Model):
     )
 
     student = models.ForeignKey(StudentRoster, on_delete=models.CASCADE)
-    test_period = models.CharField(choices=DATE_CHOICES, default=F2, max_length=255)
+    #test_period = models.CharField(choices=DATE_CHOICES, default=F2, max_length=255)
     subdomain1 = models.IntegerField(verbose_name="SubDomain 1")
     subdomain2 = models.IntegerField(verbose_name="SubDomain 2")
     subdomain3 = models.IntegerField(verbose_name="SubDomain 3")
@@ -138,7 +138,7 @@ class NWEAScore(models.Model):
     subdomain7 = models.IntegerField(verbose_name="SubDomain 7")
 
     def __str__(self):
-        print_date = str(self.test_period)
+        print_date = "Hello"#str(self.test_period)
         scores = ("{}, {}, {}, {}, {}, {}, {}".format(self.domain1, self.domain2, self.domain3, self.domain4, self.domain5, self.domain6, self.domain7))
         return '{} {} {} {}'.format(self.student.first_name, self.student.last_name, print_date, scores )
 
