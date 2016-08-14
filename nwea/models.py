@@ -69,7 +69,7 @@ class RITBand(models.Model):
     rit_band = models.PositiveIntegerField(choices=RIT_CHOICES, default=151 )
 
     def __str__(self):
-        return '{} {} {}'.format(self.domain, self.subdomain, self.rit_band)
+        return 'Domain: {}, SubDomain: {}, Band: {}'.format(self.domain, self.subdomain, self.rit_band)
 
     class Meta:
         verbose_name = 'RIT Band'
@@ -139,7 +139,7 @@ class NWEAScore(models.Model):
 
     def __str__(self):
         print_date = "Hello"#str(self.test_period)
-        scores = ("{}, {}, {}, {}, {}, {}, {}".format(self.domain1, self.domain2, self.domain3, self.domain4, self.domain5, self.domain6, self.domain7))
+        scores = ("{}, {}, {}, {}, {}, {}, {}".format(self.subdomain1, self.subdomain2, self.subdomain3, self.subdomain4, self.subdomain5, self.subdomain6, self.subdomain7))
         return '{} {} {} {}'.format(self.student.first_name, self.student.last_name, print_date, scores )
 
     class Meta:

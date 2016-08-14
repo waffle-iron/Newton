@@ -110,7 +110,7 @@ def get_ixl_url(value):
 def recommended_skills_list(value):
     student = value
     student = StudentRoster.objects.all().get(last_name="Boyd")
-    #recent_nwea_scores = NWEAScore.objects.all().filter(student=student).order_by(NWEAScore.test_period).first()
+    recent_nwea_scores = NWEAScore.objects.all().filter(student=student)#.order_by(NWEAScore.test_period).first()
 
 
 

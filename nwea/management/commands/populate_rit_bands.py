@@ -2,7 +2,7 @@
 
 from django.core.management.base import BaseCommand, CommandError
 
-from nwea.models import NWEARITBand, NWEASubDomain, NWEADomain
+from nwea.models import NWEAScore, NWEASkill, RITBand
 
 class Command(BaseCommand):
     help = 'Creates database entries for all permutations of (NWEADomain, NWEASubDomain, NWEARITBand)'
@@ -12,14 +12,13 @@ class Command(BaseCommand):
         pass
 
 
-
 # For each of the 7 subdomains that are created already,
     # Make the 14 RIT band options available and save them
 
 
     def handle(self, *args, **options):
 
-        all_sub = NWEASubDomain.objects.all()
+        all_sub = RITBand.domain
         for x in range(1, 8):
             current_subdomain = all_sub.get(sub_domain=x)
             #print(current_subdomain)
