@@ -3,10 +3,27 @@
 {% block title %}{{ student }} Details{% endblock title %}
 
 {% block heading %}<h1>{{ student }}</h1>
-{{ student.current_class }}
+<a href="{% url 'brain:classlist' student.current_class.year student.current_class.grade student.current_class.teacher.last_name %}">{{ student.current_class }}</a>
+
 {% endblock heading %}
 
 {% block content %}
+    <h3>Recommended Challenges</h3>
+    <table>
+    <tr>
+    <th>Skill ID</th>
+    <th>Skill Name</th>
+    </tr>
+    {% nwea_recommended_skills_list student "" as skills_list %}
+
+    {% for id, name in skills_list %}
+        <tr>
+    <td>{{ id }}</td>
+    <td>{{ name }}</td>
+    </tr>
+    {% endfor %}
+        </table>
+    <hr>
 <h3>IXL</h3>
 IXL Exercises attempted: {{ ixl_scores.count }}
     <hr>
@@ -18,6 +35,8 @@ IXL Exercises attempted: {{ ixl_scores.count }}
 <h5>Times taken current test: {{student|amc_number_of_test_attempts:curtest}}</h5>
 <h5>Basic Facts Grade Equivalent: {{student|current_amc_test|amc_grade_equivalent}}</h5>
 {% endwith %}
+
+
 <h5>Last {{ amc_tests.count }} American Math Challenge{{ amc_tests.count|pluralize }}</h5>
 <table>
 <tr>

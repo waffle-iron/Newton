@@ -18,7 +18,20 @@ from ixl.models import IXLSkillScores
 def recommended_skills_list(student): # Main Function
     try:
         #student = StudentRoster.objects.get() # Temporary example for development.
-        subdomain_scores = get_nwea_scores(student) # Gives a list of 7 numbers, one for each of the domains.
+        if NWEAScore.objects.filter(student=student).count() > 0:  # If student has NWEA Test Scores
+            recent_nwea_scores = NWEAScore.objects.all().get(
+                student=student)  # .order_by(NWEAScore.test_period).first()
+            sub1 = recent_nwea_scores.subdomain1
+            sub2 = recent_nwea_scores.subdomain2
+            sub3 = recent_nwea_scores.subdomain3
+            sub4 = recent_nwea_scores.subdomain4
+            sub5 = recent_nwea_scores.subdomain5
+            sub6 = recent_nwea_scores.subdomain6
+            sub7 = recent_nwea_scores.subdomain7
+            subdomain_scores = [sub1, sub2, sub3, sub4, sub5, sub6, sub7]
+
+        else:  # Otherwise, assume student is at RIT 141 and build from there with IXL.
+            subdomain_scores = [141, 141, 141, 141, 141, 141, 141]
     except:
         raise ValueError
 
