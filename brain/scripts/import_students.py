@@ -1,7 +1,9 @@
 # scripts/import_students.py
 
 # Full path and name to your csv file
-csv_filepathname="/Users/alexandertrost/PycharmProjects/newton/brain/scripts/grade2students2016.csv"
+# csv_filepathname="/Users/alexandertrost/PycharmProjects/newton/brain/scripts/grade2students2016.csv"
+csv_filepathname="./grade2students2016.csv"
+
 
 # Full path to your django project directory
 your_djangoproject_home="/Users/alexandertrost/PycharmProjects/newton/"
@@ -31,7 +33,7 @@ def run():
             student.gender = row[3]
             current_class = CurrentClass.objects.all().get(teacher__last_name=row[4])
             student.current_class = current_class
-            student.save()
+            #student.save()
             print(student)
             print(student.current_class)
 
