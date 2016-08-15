@@ -162,7 +162,8 @@ def get_nwea_scores(student):
 # Max 1+ per subdomain?
 # Bubble up CBA things here too?
 # Print out everything, group by subdomain
-#
+
+
 # Check progress later - I taught in groups these skills  - how have students progressed on them recently?
 # Query most recent test results, look for pass->fail transitions
 # Dump entire class for one skill

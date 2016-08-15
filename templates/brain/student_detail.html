@@ -8,14 +8,25 @@
 {% endblock heading %}
 
 {% block content %}
-    <h3>Recommended Challenges</h3>
+    <ul class="tabs" data-tabs id="example-tabs">
+  <li class="tabs-title is-active"><a style="font-size: 1em; font-weight: 700" href="#panel1" aria-selected="true">Recommended</a></li>
+  <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#panel2">NWEA</a></li>
+  <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#panel3">AMC</a></li>
+  <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#panel4">CBA</a></li>
+  <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#panel5">IXL</a></li>
+  <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#panel6">ENI</a></li>
+</ul>
+
+<div class="tabs-content" data-tabs-content="example-tabs">
+  <div class="tabs-panel is-active" id="panel1">
+
+    <h3>Recommended Skills</h3>
     <table>
     <tr>
     <th>Skill ID</th>
     <th>Skill Name</th>
     </tr>
     {% nwea_recommended_skills_list student "" as skills_list %}
-
     {% for id, name in skills_list %}
         <tr>
     <td>{{ id }}</td>
@@ -23,11 +34,50 @@
     </tr>
     {% endfor %}
         </table>
-    <hr>
-<h3>IXL</h3>
-IXL Exercises attempted: {{ ixl_scores.count }}
-    <hr>
-<h3>AMC</h3>
+
+
+  </div>
+  <div class="tabs-panel" id="panel2">
+      <h2>NWEA</h2>
+  <h3>Test Scores</h3>
+  <table>
+      <tr><th></th>
+          <th width="12%" style="font-size: .8em">Represent and Solve Problems</th>
+          <th width="12%" style="font-size: .8em">Properties of Operations</th>
+          <th width="12%" style="font-size: .8em">Understand Place Value, Counting, and Cardinality</th>
+          <th width="12%" style="font-size: .8em">Number and Operations: Base Ten and Fractions</th>
+          <th width="12%" style="font-size: .8em">Solve Problems Involving Measurement</th>
+          <th width="12%" style="font-size: .8em">Represent and Interpret Data</th>
+          <th width="12%" style="font-size: .8em">Reason with Shapes and Their Attributes</th>
+      </tr>
+      <tr>
+      <td><strong>ACTUAL</strong></td>
+          {% for score in actual_nwea_scores %}
+          <td>{{ score }}</td>
+          {% endfor %}
+      </tr>
+        <tr>
+      <td><strong>ESTIMATE</strong></td>
+          {% for score in estimated_nwea_scores %}
+          <td>{{ score }}</td>
+          {% endfor %}
+      </tr>
+  <tr>
+      <td><strong>PROGRESS TO NEXT RIT</strong></td>
+          {% for x in subdomain_percentage_complete %}
+              <td>
+                  <div class="success progress" role="progressbar" tabindex="0" aria-valuenow="{{ x }}" aria-valuemin="0" aria-valuetext="{{ x }} percent" aria-valuemax="100">
+  <div class="progress-meter" style="width: {{x}}%">
+    <p class="progress-meter-text">{{x}}%</p>
+              </td>
+          {% endfor %}
+      </tr>
+  </table>
+
+
+  </div>
+  <div class="tabs-panel" id="panel3">
+      <h2>American Math Challenge</h2>
 
 {% if amc_tests.count > 0 %}
 {% with student|current_amc_test as curtest %}
@@ -67,7 +117,34 @@ IXL Exercises attempted: {{ ixl_scores.count }}
     {% endwith %}
 {% endfor %}
 </table>
-
+{% else %}
+    Student has no AMC tests recorded.
 {% endif %}
+
+
+  </div>
+  <div class="tabs-panel" id="panel4">
+      <h2>CBA</h2>
+    Sorry, but I don't know anything about the CBA yet!
+
+
+  </div>
+  <div class="tabs-panel" id="panel5">
+<h2>IXL</h2>
+IXL Exercises attempted: {{ ixl_scores.count }}
+
+
+  </div>
+  <div class="tabs-panel" id="panel6">
+      <h2>ENI</h2>
+    Sorry, but I don't know anything about the ENI yet!
+  </div>
+</div>
+
+
+
+    <hr>
+    <hr>
+
 {% endblock content %}
 

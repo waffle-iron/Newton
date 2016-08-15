@@ -10,7 +10,6 @@ register = template.Library()
 
 # TODO: Student Status with ENI Skills
 # TODO: Student Status with IXL Skills
-# TODO: Student Status with NWEA Skills
 # TODO: Student Status with CBA Skills
 
 #=========================================================================================================
@@ -103,9 +102,12 @@ def get_ixl_url(value):
 #                                              NWEA
 #=========================================================================================================
 
+# TODO: Sort list by lowest RIT Band
+
 
 @register.simple_tag(name='nwea_recommended_skills_list')
 def nwea_recommended_skills_list(student, arg):
+
     '''Gets back list of next skills for student. value is a student object'''
     try:
         #student = StudentRoster.objects.get() # Temporary example for development.
@@ -179,11 +181,18 @@ def nwea_recommended_skills_list(student, arg):
     else:
         return None
 
-
+@register.simple_tag(name='class_recommendation_list')
+def class_recommendation_list(student_list):
+    skill_list=[]
+    for student in student_list:
+        skill_list.append(nwea_recommended_skills_list(student, "recommended_skill_list"))
+    return skill_list
 
 
 def percentage(part, whole):
-    return 100 * float(part) / float(whole)
+    answer = 100 * float(part) / float(whole)
+    answer = int(round(answer))
+    return answer
 
 #=========================================================================================================
 #                                           NAVIGATION
@@ -204,6 +213,3 @@ def nav_amc_teachers_list():
 @register.inclusion_tag('ixl/ixl_nav.html')
 def nav_ixl_list():
     return
-
-
-    # @register.inclusion_tag('brain/students')

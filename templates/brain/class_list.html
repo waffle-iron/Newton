@@ -1,4 +1,5 @@
 {% extends "brain/layout.html" %}
+{% load brain_extras %}
 
 {% block title %}{{ teacher }} Student List{% endblock title %}
 
@@ -6,6 +7,7 @@
 <h1>{{ teacher }} Student List</h1>
 {% endblock heading %}
 {% block content %}
+
 {% if student_list.count > 0 %}
     {{ student_list.count }} students
 <table>
