@@ -6,7 +6,7 @@ csv_filepathname="./grade2students2016.csv"
 
 
 # Full path to your django project directory
-your_djangoproject_home="/Users/alexandertrost/PycharmProjects/newton/"
+your_djangoproject_home="/home/alex/newton/"
 import django
 import datetime
 import sys,os
@@ -33,9 +33,9 @@ def run():
             student.gender = row[3]
             current_class = CurrentClass.objects.all().get(teacher__last_name=row[4])
             student.current_class = current_class
-            #student.save()
-            print(student)
-            print(student.current_class)
+            student.save()
+            #print(student)
+            #print(student.current_class)
 
 run()
 #YYY-MM-DD

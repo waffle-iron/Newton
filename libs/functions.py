@@ -1,6 +1,3 @@
-
-from brain.models import StudentRoster, CurrentClass, Teacher
-from amc.models import AMCTestResult, AMCTest
 from ixl.models import IXLSkill, IXLSkillScores
 from nwea.models import NWEASkill, NWEAScore, RITBand
 
@@ -79,3 +76,9 @@ def nwea_recommended_skills_list(student, arg):
         return actual_nwea_scores, estimated_nwea_scores, recommended_skill_list, subdomain_percentage_complete
     else:
         return None
+
+
+def percentage(part, whole):
+    answer = 100 * float(part) / float(whole)
+    answer = int(round(answer))
+    return answer

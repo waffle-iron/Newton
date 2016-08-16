@@ -120,10 +120,7 @@ def class_recommendation_list(student_list):
     return skill_list
 
 
-def percentage(part, whole):
-    answer = 100 * float(part) / float(whole)
-    answer = int(round(answer))
-    return answer
+
 
 #=========================================================================================================
 #                                           NAVIGATION
