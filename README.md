@@ -8,5 +8,3 @@ Often, what's being taught can be either too easy or too hard for a student, so 
 
 I am a second grade teacher, not a programmer. I learned Python and Django over the summer so that I could make this exact app. For that reason, it's an amateur program.
 If you see anything in the code that can be tightened or improved, please improve on it! You'd be helping teachers teach just a bit better, and it'd be greatly appreciated.
-
-
