@@ -79,6 +79,17 @@ def amc_teacher_badges_earned(value):
                 x += 1
     return x
 
+@register.filter(name='amc_average_grade_equivalent')
+def amc_average_grade_equivalent(value):
+    """Turns a current AMC test number into the grade equivalent."""
+    y = 0 # Total for average
+    x = 0 # Counter for average
+    for student in value:
+        x +=1
+        y = y + current_amc_test(student)
+    avg = round(y/x)
+    output = AMCTest.objects.get(test_number=avg) # Gets the test that matches that number
+    return output.grade_equivalent
 
 
 #=========================================================================================================
@@ -114,10 +125,11 @@ def nwea_recommended_skills_list(student, arg):
 
 @register.simple_tag(name='class_recommendation_list')
 def class_recommendation_list(student_list):
-    skill_list=[]
-    for student in student_list:
-        skill_list.append(nwea_skills(student, "recommended_skill_list"))
-    return skill_list
+    # skill_list=[]     # Need a better way to do this
+    # for student in student_list:
+    #     skill_list.append(nwea_skills(student, "recommended_skill_list"))
+    # return skill_list
+    pass
 
 
 

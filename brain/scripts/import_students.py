@@ -37,5 +37,4 @@ def run():
             #print(student)
             #print(student.current_class)
 
-run()
-#YYY-MM-DD
+#run()

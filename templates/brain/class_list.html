@@ -1,31 +1,64 @@
 {% extends "brain/layout.html" %}
 {% load brain_extras %}
-
-{% block title %}{{ teacher }} Student List{% endblock title %}
-
+{% block title %}{{ teacher }}'s Class{% endblock title %}
 {% block heading %}
-<h1>{{ teacher }} Student List</h1>
+    <h1 style="margin-bottom: -0.5rem">{{ teacher_object.title }} {{ teacher }}'s Class</h1>
+    <h4 style="margin-top:-1.2rem; margin-bottom: 0rem">
+        <small>{{ grade|upper }} GRADE, {{ year }}</small>
+    </h4>
 {% endblock heading %}
 {% block content %}
+    <div class="row">
+        <div class="large-4 columns">
+                    <div class="callout">
+            {% if student_list.count > 0 %}
+                <h5>Student Roster</h5>
+                <table>
+                    <tr>
+                        <th width="100">{{ student_list.count }} Students</th>
+                    </tr>
+                    {% for student in student_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'brain:studentdetail' student.student_id %}">{{ student.first_name }} {{ student.last_name }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+                    </div>
+        </div>
+        <div class="large-4 columns">
 
-{% if student_list.count > 0 %}
-    {{ student_list.count }} students
-<table>
-<tr>
-<th width="200">Student</th>
-<th width="150">Teacher</th>
-</tr>
+            <div class="callout">
+                <h5>American Math Challenge</h5>
+                <p>Class Badges Earned: <span style="font-size: 1em"
+                                              class="success badge">{{ student_list|amc_teacher_badges_earned }}</span>
+                </p>
+                <p>Average Grade Equivalent: {{ student_list|amc_average_grade_equivalent }}</p>
+                <a href="{% url 'amc:classlist' year grade teacher %}" class="expanded button">Class AMC Details</a>
+                <a href="{% url 'amc:inputamcscores' year grade teacher %}" class="expanded button">Input AMC Scores</a>
 
-{% for student in student_list %}
-    <tr>
-    <td><a href="{% url 'brain:studentdetail' student.student_id %}">{{ student.first_name }} {{  student.last_name  }}</a></td>
-    <td>{{ student.current_class.teacher.last_name }}</td>
-  </tr>
-{% endfor %}
-</table>
-{% endif %}
+            </div>
 
+        </div>
+        <div class="large-4 columns">
+            <div class="callout">
+                <h5>Guided Groups</h5>
+                {% for skill, count in recommendation_list %}
+                    <ul>
+                    <li><strong>{{ count }} Students</strong>
+                    <ul>
+                        {% for x in skill %}
+                            <li>{{ x }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                </ul>
+                                                {% endfor %}
+
+            </div>
+        </div>
+    </div>
 {% endblock content %}
-
-
-

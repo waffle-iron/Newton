@@ -25,12 +25,14 @@
     <tr>
     <th>Skill ID</th>
     <th>Skill Name</th>
+        <th>RIT Band</th>
     </tr>
     {% nwea_recommended_skills_list student "" as skills_list %}
-    {% for id, name in skills_list %}
+    {% for id, name, rit in skills_list %}
         <tr>
     <td>{{ id }}</td>
     <td>{{ name }}</td>
+        <td>{{ rit }}</td>
     </tr>
     {% endfor %}
         </table>
@@ -69,6 +71,8 @@
                   <div class="success progress" role="progressbar" tabindex="0" aria-valuenow="{{ x }}" aria-valuemin="0" aria-valuetext="{{ x }} percent" aria-valuemax="100">
   <div class="progress-meter" style="width: {{x}}%">
     <p class="progress-meter-text" style="color: #333333">{{x}}%</p>
+      </div>
+                      </div>
               </td>
           {% endfor %}
       </tr>
@@ -140,10 +144,6 @@ IXL Exercises attempted: {{ ixl_scores.count }}
     Sorry, but I don't know anything about the ENI yet!
   </div>
 </div>
-
-
-
-    <hr>
     <hr>
 
 {% endblock content %}
