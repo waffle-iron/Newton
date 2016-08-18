@@ -11,7 +11,6 @@ import django
 import datetime
 import sys,os
 sys.path.append(your_djangoproject_home)
-#os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "newton.settings")
 
 django.setup()
@@ -25,16 +24,17 @@ dataReader = csv.reader(open(csv_filepathname), delimiter=',', quotechar='"')
 def run():
     for row in dataReader:
         if row[0] != 'Last Name': # Ignore the header row, import everything else
-            student = StudentRoster()
-            student.last_name = row[0]
-            student.first_name = row[1]
-            DOB = datetime.datetime.strptime(row[2], "%m/%d/%y").strftime('%Y-%m-%d')
-            student.date_of_birth = DOB
-            student.gender = row[3]
+            last_name = row[0]
+            first_name = row[1]
+            date_of_birth = datetime.datetime.strptime(row[2], "%m/%d/%y").strftime('%Y-%m-%d')
+            gender = row[3]
             current_class = CurrentClass.objects.all().get(teacher__last_name=row[4])
-            student.current_class = current_class
-            student.save()
-            #print(student)
-            #print(student.current_class)
+            obj, created = StudentRoster.objects.get_or_create(
+                last_name= last_name,
+                first_name = first_name,
+                date_of_birth = date_of_birth,
+                gender = gender,
+                current_class=current_class,
+            )
 
 #run()

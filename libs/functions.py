@@ -72,6 +72,7 @@ def class_skills_list(student_list, arg):
     class_skill_list = count.most_common()
     return class_skill_list
 
+
 def nwea_recommended_skills_list(student, arg):
 
     '''Gets back list of next skills for student. value is a student object

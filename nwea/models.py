@@ -1,19 +1,8 @@
+from datetime import date
 from django.db import models
 
 from brain.models import StudentRoster
 
-# 70+ RIT Bands
-# 600 Skills
-# NWEAScore ( 7 fields for 7 domains)
-
-# domain1_rit = NWEAScore.domain1
-# domain1_exercises = NWEASkills.objects.all().filter(domain=1,).filter(rit_band=domain1_rit)
-
-
-# NWEA Subdomains
-# NWEARITBand (Has: Subdomain(FK), RIT #)
-# NWEASkill (Has: rit_band, skill, ixl_equivalent, cba)
-# NWEAScore (Has: 1 number for each of the 7 subdomains)
 
 
 
@@ -96,42 +85,10 @@ class NWEASkill(models.Model):
 
 
 class NWEAScore(models.Model):
-    FK = 'Kindergarten, Fall'
-    WK = 'Kindergarten, Winter'
-    SK = 'Kindergarten, Spring'
-    F1 = '1st Grade, Fall'
-    W1 = '1st Grade, Winter'
-    S1 = '1st Grade, Spring'
-    F2 = '2nd Grade, Fall'
-    W2 = '2nd Grade, Winter'
-    S2 = '2nd Grade, Spring'
-    F3 = '3rd Grade, Fall'
-    W3 = '3rd Grade, Winter'
-    S3 = '3rd Grade, Spring'
-    F4 = '4th Grade, Fall'
-    W4 = '4th Grade, Winter'
-    S4 = '4th Grade, Spring'
 
-    DATE_CHOICES = (
-        (FK, 'Kindergarten, Fall'),
-        (WK, 'Kindergarten, Winter'),
-        (SK, 'Kindergarten, Spring'),
-        (F1, '1st Grade, Fall'),
-        (W1, '1st Grade, Winter'),
-        (S1, '1st Grade, Spring'),
-        (F2, '2nd Grade, Fall'),
-        (W2, '2nd Grade, Winter'),
-        (S2, '2nd Grade, Spring'),
-        (F3, '3rd Grade, Fall'),
-        (W3, '3rd Grade, Winter'),
-        (S3, '3rd Grade, Spring'),
-        (F4, '4th Grade, Fall'),
-        (W4, '4th Grade, Winter'),
-        (S4, '4th Grade, Spring'),
-    )
 
     student = models.ForeignKey(StudentRoster, on_delete=models.CASCADE)
-    #test_period = models.CharField(choices=DATE_CHOICES, default=F2, max_length=255)
+    test_date = models.DateField(default=date.today, verbose_name='Test Date')
     subdomain1 = models.IntegerField(verbose_name="SubDomain 1")
     subdomain2 = models.IntegerField(verbose_name="SubDomain 2")
     subdomain3 = models.IntegerField(verbose_name="SubDomain 3")
