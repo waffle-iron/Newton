@@ -34,7 +34,11 @@ class AMCTestResult(models.Model):
         elif self.score < self.test.minimum_passing_grade:
             return False
         else:
-            return "Error"
+            raise ValueError
+
+    passing_score.boolean = True
+    passing_score.short_description = 'Pass?'
+
 
     def __str__(self):
         return '%s -- %s Pass: %s' % (self.student, self.test, self.passing_score(), )

@@ -42,8 +42,6 @@ def class_list(request, year="2016", grade="2nd", teacher="Trost"):
 
 
 
-# TODO: Writing form to db
-# TODO: Handling absent/blank student scores
 
 @login_required
 def input_amc_scores(request, year="2016", grade="2nd", teacher="Trost"):

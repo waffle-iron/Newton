@@ -17,13 +17,12 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-
-        all_sub = RITBand.domain
+        all_sub = RITBand
         for x in range(1, 8):
-            current_subdomain = all_sub.get(sub_domain=x)
-            #print(current_subdomain)
-            for rit_choice, _ in NWEARITBand.RIT_CHOICES:
-                new_rit_band = NWEARITBand(sub_domain=current_subdomain, rit_band=rit_choice)
+            current_subdomain = all_sub.subdomain.
+            print(current_subdomain)
+            for rit_choice, _ in RITBand.RIT_CHOICES:
+                new_rit_band = RITBand(sub_domain=current_subdomain, rit_band=rit_choice)
                 #print("The new rit band is: %s" % new_rit_band)
                 new_rit_band.save()
 

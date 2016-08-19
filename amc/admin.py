@@ -9,7 +9,7 @@ class AMCTestAdmin(admin.ModelAdmin):
 
 
 class AMCTestResultAdmin(admin.ModelAdmin):
-    list_display = ('student', 'test', 'score', 'date_tested')
+    list_display = ('student', 'test', 'score', 'date_tested', 'passing_score')
     list_editable = ['score', 'test', 'date_tested']
     pass
 

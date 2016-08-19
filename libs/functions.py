@@ -9,14 +9,14 @@ from nwea.models import NWEASkill, NWEAScore, RITBand
 
 # Find highest NWEA subdomain level that you know a student has passed (either from NWEA results or IXL),
 # Have NWEA RIT Level scores for each student
-# Can compute if they’ve passed a RIT Band from IXL
+# Can compute if they've passed a RIT Band from IXL
 # Start with NWEA Rit band as a floor in each subdomain
 # Then check IXL for the next level - have they passed? If so go to next level
 #
-# In the teacher report - what NWEA subdomain level they’re working, and do you think they’ve passed the previous level because of NWEA test (w/date) or IXL.
+# In the teacher report - what NWEA subdomain level they're working, and do you think they've passed the previous level because of NWEA test (w/date) or IXL.
 #
 # Result of this calculation =
-# Student → Set of NWEA RIT bands they should be working on (in each subdomain)
+# Student -> Set of NWEA RIT bands they should be working on (in each subdomain)
 # Sort by RIT band number, return top 10
 #
 # Add another column for CBA with the mapping of NWEA and IXL. If the CBA column is yes (or an upcoming date) Move to top of list of ten.
@@ -26,9 +26,9 @@ from nwea.models import NWEASkill, NWEAScore, RITBand
 # CBA Test objects, IXL Tests can map to a CBA test
 #
 # Randomness - if more than 10 are perfect matches, random among the extra; random on the printed out page
-# Struggling check - if they’ve failed multiple weeks in a row - “if they’ve failed 2 times in the last 2 weeks, or 3 times in the last 3 weeks”
-# Skip the test on the kid’s page
-# Flag it on the teacher’s page
+# Struggling check - if they've failed multiple weeks in a row - "if they've failed 2 times in the last 2 weeks, or 3 times in the last 3 weeks"
+# Skip the test on the kid's page
+# Flag it on the teacher's page
 #
 #
 # Teacher page - X kids need skill Y
@@ -105,14 +105,15 @@ def nwea_recommended_skills_list(student, arg):
     recommended_skill_list = [] # Create blank list of recommended skills for this student
     estimated_nwea_scores = []
     subdomain_percentage_complete =[]
-    for x in range(0,7): # Iterate through the 7 subdomains, 1 at a time.
+    for x in range(0, 7):  # Iterate through the 7 subdomains, 1 at a time.
         loop = True
         additional_rit_score = 0
         while loop:
-            count_of_passed_skills_in_band = 0 # Reset passed Skill counter
-            current_rit_band = subdomain_scores[x]+ additional_rit_score
-            skills_from_current_rit_band = NWEASkill.objects.filter(rit_band__subdomain=(x+1), rit_band__rit_band=current_rit_band)
-            number_of_skills_from_current_rit_band = NWEASkill.objects.filter(rit_band__subdomain=(x+1), rit_band__rit_band=current_rit_band).count()
+            count_of_passed_skills_in_band = 0  # Reset passed Skill counter
+            current_rit_band = subdomain_scores[x] + additional_rit_score
+            skills_from_current_rit_band = NWEASkill.objects.filter(rit_band__subdomain=(x+1),
+                                                                    rit_band__rit_band=current_rit_band)
+            number_of_skills_from_current_rit_band = skills_from_current_rit_band.count()
             for skill in skills_from_current_rit_band:
                 if skill.ixl_match:  # if skill has the field ixl_match filled out, then look and see if that match has been passed
                     try:  # Try to get the student's score for this IXL Skill
@@ -125,15 +126,16 @@ def nwea_recommended_skills_list(student, arg):
                         count_of_passed_skills_in_band += 1
                     else:
                         recommended_skill_list.append((skill.ixl_match, skill.skill, current_rit_band))
-            if count_of_passed_skills_in_band == number_of_skills_from_current_rit_band:
+            insufficient_skills_passed = count_of_passed_skills_in_band < number_of_skills_from_current_rit_band
+            if number_of_skills_from_current_rit_band == 0 or insufficient_skills_passed:
+                break
+            elif count_of_passed_skills_in_band == number_of_skills_from_current_rit_band:
                 additional_rit_score += 10
                 continue
-            elif count_of_passed_skills_in_band < number_of_skills_from_current_rit_band:
-                break
         estimated_nwea_scores.append(current_rit_band)
-        try: # Catches if there are no NWEA Skills in the DB.
+        try:  # Catches if there are no NWEA Skills in the DB.
             complete_percentage = percentage(count_of_passed_skills_in_band, number_of_skills_from_current_rit_band)
-        except:
+        except ZeroDivisionError:
             complete_percentage = 0
         subdomain_percentage_complete.append(str(complete_percentage))
     recommended_skill_list.sort(key=lambda tup: tup[2])
