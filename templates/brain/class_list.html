@@ -15,7 +15,7 @@
                 <h5>Student Roster</h5>
                 <table>
                     <tr>
-                        <th width="100">{{ student_list.count }} Students</th>
+                        <th width="100">{{ student_list.count }} Students: {{ student_list|boys_and_girls }}</th>
                     </tr>
                     {% for student in student_list %}
                         <tr>

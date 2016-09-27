@@ -28,6 +28,15 @@ class Teacher(models.Model):
 
 
 class CurrentClass(models.Model):
+    FOURTEEN = 14
+    FIFTEEN = 15
+    SIXTEEN = 16
+    SEVENTEEN = 17
+    EIGHTEEN = 18
+    NINETEEN = 19
+    TWENTY = 20
+    TWENTYONE = 21
+
     KINDER = 'K'
     FIRST = '1st'
     SECOND = '2nd'
@@ -43,9 +52,19 @@ class CurrentClass(models.Model):
         (THIRD, '3rd Grade'), (FOURTH, '4th Grade'), (FIFTH, '5th Grade'),
         (SIXTH, '6th Grade'), (SEVENTH, '7th Grade'), (EIGHTH, '8th Grade'),
     )
+    YEAR_CHOICES = (
+        (FOURTEEN, '14-15'),
+        (FIFTEEN, '15-16'),
+        (SIXTEEN, '16-17'),
+        (SEVENTEEN, '17-18'),
+        (EIGHTEEN, '18-19'),
+        (NINETEEN, '19-20'),
+        (TWENTY, '20-21'),
+        (TWENTYONE, '21-22'),
+    )
 
     id = models.AutoField(primary_key=True)
-    year = models.IntegerField()
+    year = models.CharField(max_length=100, choices=YEAR_CHOICES)
     grade = models.CharField(max_length=50, choices=GRADE_CHOICES, default=SECOND)
     teacher = models.ForeignKey(Teacher, on_delete=models.PROTECT)
 

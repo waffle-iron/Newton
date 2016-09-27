@@ -13,19 +13,11 @@ django.setup()
 from nwea.models import NWEASkill, NWEAScore, RITBand
 
 
-def run():
-    for row in dataReader:
-        if row[0] != 'Category': # Ignore the header row, import everything else
-            skill = IXLSkill()
-            skill.category = row[0]
-            skill.skill_id = row[1]
-            skill.skill_description = row[2]
-            #skill.save()
 
 
 
 def make_rit_bands():
-    SUBDOMAINS = [(1,1),(1,2),(2,3),(2,4),(3,5),(3,6),(4,7)]
+    SUBDOMAINS = [(1, 1), (1, 2), (2, 3), (2, 4), (2, 5), (3, 6), (3, 7), (4, 8)]
     RIT_CHOICES = (
         (111, '111'),
         (121, '121'),
@@ -52,26 +44,13 @@ def make_rit_bands():
             new_rit_band.save()
 
 #all_sub = RITBand.DOMAIN_CHOICES
-def make_rit():
-    for x in range(1, 8):
-        current_subdomain = all_sub.get(sub_domain=x)
-        #print(current_subdomain)
-        for rit_choice, _ in NWEARITBand.RIT_CHOICES:
-            new_rit_band = NWEARITBand(sub_domain=current_subdomain, rit_band=rit_choice)
-            #print("The new rit band is: %s" % new_rit_band)
-            #new_rit_band.save()
-
-make_rit_bands()
-
-
-
-
-
-'''all_sub = RITBand.domain
-        for x in range(1, 8):
-            current_subdomain = all_sub.get(sub_domain=x)
-            #print(current_subdomain)
-            for rit_choice, _ in NWEARITBand.RIT_CHOICES:
-                new_rit_band = NWEARITBand(sub_domain=current_subdomain, rit_band=rit_choice)
-                #print("The new rit band is: %s" % new_rit_band)
-                new_rit_band.save()'''
+# def make_rit():
+#     for x in range(1, 8):
+#         current_subdomain = all_sub.get(sub_domain=x)
+#         #print(current_subdomain)
+#         for rit_choice, _ in NWEARITBand.RIT_CHOICES:
+#             new_rit_band = NWEARITBand(sub_domain=current_subdomain, rit_band=rit_choice)
+#             #print("The new rit band is: %s" % new_rit_band)
+#             #new_rit_band.save()
+#
+# make_rit_bands()

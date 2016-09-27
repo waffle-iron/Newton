@@ -5,6 +5,8 @@ from . import views
 app_name = 'brain'
 
 urlpatterns = [
+    #url(r'^(?i)doctest/?$', views.generate_ixl_pdf, name='doctest'),
+    #url(r'^(?i)printpdf/?$', views.print_pdf, name='printpdf'),
     # /2016/    school roster
     url(r'^(?i)(?P<year>20[0-9]{2})/?$', views.school_roster, name='schoolroster'),
     # /2016/2nd/   Grade List
@@ -15,4 +17,5 @@ urlpatterns = [
     url(r'^(?i)student/(?P<studentid>[0-9]+)/?$', views.student_detail, name='studentdetail'),
 
     url(r'^$', views.index, name='index'),
+
 ]

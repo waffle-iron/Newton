@@ -2,6 +2,8 @@
 
 h1, h2, h3, h4, h5, h6 {font-family: 'Roboto', sans-serif;}
 
+.menu-text {font-size: 1.3rem;}
+
 h1 {
   font-size: 3.0rem;
 color: #183a54

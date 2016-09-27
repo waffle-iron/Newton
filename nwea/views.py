@@ -27,7 +27,8 @@ def input_nwea_scores(request, year="2016", grade="2nd", teacher="Trost"):
                 form.save()
             else:
                 existing_results = NWEAScore.objects.filter(student=form.instance.student,
-                                                            test_date=form.instance.test_date)
+                                                            year=form.instance.year,
+                                                            season=form.instance.season,)
                 if form.instance.subdomain1 and existing_results.count():
                     instance = existing_results.first()
                     instance.subdomain1 = form.instance.subdomain1
@@ -49,29 +50,33 @@ def input_nwea_scores(request, year="2016", grade="2nd", teacher="Trost"):
         # Would be nice to create forms from the instances rather than manually set initial, but that did not seem
         # to work correctly
         for i in range(form_count):
-            today = datetime.date.today()
-            existing_results = NWEAScore.objects.filter(student=student_list[i], test_date=today)
-            if existing_results.count():
-                instance = existing_results.first()
-                formset.forms[i].instance = instance
-                initial_student = instance.student
-                initial_subdomain1 = instance.subdomain1
-                initial_subdomain2 = instance.subdomain2
-                initial_subdomain3 = instance.subdomain3
-                initial_subdomain4 = instance.subdomain4
-                initial_subdomain5 = instance.subdomain5
-                initial_subdomain6 = instance.subdomain6
-                initial_subdomain7 = instance.subdomain7
+            #today = datetime.date.today()
+            #existing_results = NWEAScore.objects.filter(student=student_list[i], test_date=today)
+            # if existing_results.count():
+            #     instance = existing_results.first()
+            #     formset.forms[i].instance = instance
+            #     initial_student = instance.student
+            #     initial_subdomain1 = instance.subdomain1
+            #     initial_subdomain2 = instance.subdomain2
+            #     initial_subdomain3 = instance.subdomain3
+            #     initial_subdomain4 = instance.subdomain4
+            #     initial_subdomain5 = instance.subdomain5
+            #     initial_subdomain6 = instance.subdomain6
+            #     initial_subdomain7 = instance.subdomain7
+            #     initial_subdomain8 = instance.subdomain8
+            #
+            #
+            # else:
+            initial_student = student_list[i]
+            initial_subdomain1 = None
+            initial_subdomain2 = None
+            initial_subdomain3 = None
+            initial_subdomain4 = None
+            initial_subdomain5 = None
+            initial_subdomain6 = None
+            initial_subdomain7 = None
+            initial_subdomain8 = None
 
-            else:
-                initial_student = student_list[i]
-                initial_subdomain1 = None
-                initial_subdomain2 = None
-                initial_subdomain3 = None
-                initial_subdomain4 = None
-                initial_subdomain5 = None
-                initial_subdomain6 = None
-                initial_subdomain7 = None
 
             formset.forms[i].fields['student'].initial = initial_student
             formset.forms[i].fields['subdomain1'].initial = initial_subdomain1
@@ -81,6 +86,8 @@ def input_nwea_scores(request, year="2016", grade="2nd", teacher="Trost"):
             formset.forms[i].fields['subdomain5'].initial = initial_subdomain5
             formset.forms[i].fields['subdomain6'].initial = initial_subdomain6
             formset.forms[i].fields['subdomain7'].initial = initial_subdomain7
+            formset.forms[i].fields['subdomain7'].initial = initial_subdomain8
+
 
     context = {
         'formset': formset,

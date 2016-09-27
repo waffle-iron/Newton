@@ -4,7 +4,7 @@
 csv_filepathname="./ixl-gradebook-example.csv"
 
 # Full path to your django project directory
-your_djangoproject_home="/Users/alexandertrost/PycharmProjects/newton/"
+your_djangoproject_home="/home/alex/newton/"
 import django
 import sys,os
 sys.path.append(your_djangoproject_home)

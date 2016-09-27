@@ -14,6 +14,26 @@ register = template.Library()
 # TODO: Student Status with IXL Skills
 # TODO: Student Status with CBA Skills
 
+
+#=========================================================================================================
+#                                           GENERAL
+#=========================================================================================================
+@register.filter(name='boys_and_girls')
+def current_amc_test(value):
+    """Gets the current AMC test for a student"""
+    boys, girls = 0,0
+    for student in value:
+        if student.gender == "M":
+            boys +=1
+        elif student.gender == "F":
+            girls +=1
+
+    boys_and_girls = "{} Boys and {} Girls".format(boys, girls)
+    return boys_and_girls
+
+
+
+
 #=========================================================================================================
 #                                           AMC
 #=========================================================================================================

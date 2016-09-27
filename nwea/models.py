@@ -17,21 +17,23 @@ class RITBand(models.Model):
         (GEOMETRY, 'Geometry'),)
 
     PROBLEM = 1
-    OPERATION = 2
+    PATTERN = 2
     PLACEVALUE = 3
-    NUMBER_SUB = 4
-    MEASUREMENT_SUB = 5
-    DATA = 6
-    SHAPES = 7
+    BASE_TEN = 4
+    FRACTIONS = 5
+    MEASUREMENT_SUB = 6
+    DATA = 7
+    SHAPES = 8
 
     SUBDOMAIN_CHOICES = (
         (PROBLEM, 'Represent and Solve Problems'),
-        (OPERATION, 'Properties of Operations'),
+        (PATTERN, 'Analyze Patterns and Relationships'),
         (PLACEVALUE, 'Understand Place Value, Counting, and Cardinality'),
-        (NUMBER_SUB, 'Number and Operations: Base Ten and Fractions'),
-        (MEASUREMENT_SUB, 'Solve Problems Involving Measurement'),
+        (BASE_TEN,'Number and Operations in Base Ten'),
+        (FRACTIONS, 'Number and Operations - Fractions'),
+        (MEASUREMENT_SUB, 'Geometric Measurement and Problem Solving'),
         (DATA, 'Represent and Interpret Data'),
-        (SHAPES, 'Reason with Shapes and Their Attributes'),
+        (SHAPES, 'Reason with Shapes Attributes, & Coordinate Plane'),
     )
     RIT_CHOICES = (
         (111, '111'),
@@ -84,8 +86,42 @@ class NWEASkill(models.Model):
 
 
 class NWEAScore(models.Model):
+    FALL = 1
+    WINTER = 2
+    SPRING = 3
+
+    FOURTEEN = 14
+    FIFTEEN = 15
+    SIXTEEN = 16
+    SEVENTEEN = 17
+    EIGHTEEN = 18
+    NINETEEN = 19
+    TWENTY = 20
+    TWENTYONE = 21
+
+
+
+    SESSION_CHOICES = (
+        (FALL, 'Fall'),
+        (WINTER, 'Winter'),
+        (SPRING, 'Spring'),
+    )
+
+    YEAR_CHOICES = (
+        (FOURTEEN, '14-15'),
+        (FIFTEEN, '15-16'),
+        (SIXTEEN, '16-17'),
+        (SEVENTEEN, '17-18'),
+        (EIGHTEEN, '18-19'),
+        (NINETEEN, '19-20'),
+        (TWENTY, '20-21'),
+        (TWENTYONE, '21-22'),
+    )
+
+
     student = models.ForeignKey(StudentRoster, on_delete=models.CASCADE)
-    test_date = models.DateField(default=date.today, verbose_name='Test Date')
+    year = models.CharField(max_length=50, choices=YEAR_CHOICES, default=SIXTEEN)
+    season = models.CharField(max_length=50, choices=SESSION_CHOICES, default=FALL)
     subdomain1 = models.IntegerField(verbose_name="SubDomain 1")
     subdomain2 = models.IntegerField(verbose_name="SubDomain 2")
     subdomain3 = models.IntegerField(verbose_name="SubDomain 3")
@@ -93,13 +129,15 @@ class NWEAScore(models.Model):
     subdomain5 = models.IntegerField(verbose_name="SubDomain 5")
     subdomain6 = models.IntegerField(verbose_name="SubDomain 6")
     subdomain7 = models.IntegerField(verbose_name="SubDomain 7")
+    subdomain8 = models.IntegerField(verbose_name="SubDomain 8", default=141)
+
 
     def __str__(self):
-        scores = ("{}, {}, {}, {}, {}, {}, {}".format(self.subdomain1, self.subdomain2, self.subdomain3, self.subdomain4, self.subdomain5, self.subdomain6, self.subdomain7))
-        return '{} {}: {} - {}'.format(self.student.first_name, self.student.last_name, self.test_date, scores )
+        scores = ("{}, {}, {}, {}, {}, {}, {}, {}".format(self.subdomain1, self.subdomain2, self.subdomain3, self.subdomain4, self.subdomain5, self.subdomain6, self.subdomain7, self.subdomain8))
+        return '{} {}: {} {} - {}'.format(self.student.first_name, self.student.last_name, self.season, self.year, scores)
 
     class Meta:
         verbose_name = 'NWEA Score'
         verbose_name_plural = 'NWEA Scores'
-        unique_together = ("student", "test_date")
+        unique_together = ("student", "year", "season")
 
