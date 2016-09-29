@@ -43,3 +43,19 @@ class IXLSkillScores(models.Model): # Intersection of IXLSkill and Student Roste
         verbose_name = 'IXL Score'
         verbose_name_plural = 'IXL Scores'
         unique_together = ("student_id", "ixl_skill_id")
+
+
+class RecommendationSheet(models.Model): # The saved recommendation sheet to check for completion
+    student_id = models.ForeignKey(StudentRoster, on_delete=models.CASCADE,)
+    date = models.DateField(default=datetime.date.today, verbose_name='Date Created')
+    exercise1 = models.ForeignKey(IXLSkill)
+    exercise2 = models.ForeignKey(IXLSkill,)
+    exercise3 = models.ForeignKey(IXLSkill,)
+    exercise4 = models.ForeignKey(IXLSkill,)
+    exercise5 = models.ForeignKey(IXLSkill,)
+    exercise6 = models.ForeignKey(IXLSkill,)
+    exercise7 = models.ForeignKey(IXLSkill,)
+    exercise8 = models.ForeignKey(IXLSkill,)
+    exercise9 = models.ForeignKey(IXLSkill,)
+    exercise10 = models.ForeignKey(IXLSkill)
+    complete = models.BooleanField(default=False)

@@ -54,7 +54,7 @@ class RITBand(models.Model):
 
     domain = models.CharField(choices=DOMAIN_CHOICES,max_length=255 )
     subdomain = models.CharField(choices=SUBDOMAIN_CHOICES, max_length=255)
-    rit_band = models.PositiveIntegerField(choices=RIT_CHOICES, default=151 )
+    rit_band = models.PositiveIntegerField(choices=RIT_CHOICES, default=151)
 
     def __str__(self):
         return 'Domain: {}, SubDomain: {}, Band: {}'.format(self.domain, self.subdomain, self.rit_band)
@@ -67,7 +67,7 @@ class RITBand(models.Model):
 
 class NWEASkill(models.Model):
     rit_band = models.ForeignKey(RITBand, on_delete=models.CASCADE)
-    skill = models.CharField(max_length=255, )
+    skill = models.CharField(max_length=255)
     ixl_match = models.CharField(max_length=7, blank=True)
 
     def __str__(self):
@@ -90,16 +90,14 @@ class NWEAScore(models.Model):
     WINTER = 2
     SPRING = 3
 
-    FOURTEEN = 14
-    FIFTEEN = 15
-    SIXTEEN = 16
-    SEVENTEEN = 17
-    EIGHTEEN = 18
-    NINETEEN = 19
-    TWENTY = 20
-    TWENTYONE = 21
-
-
+    FOURTEEN = '14-15'
+    FIFTEEN = '15-16'
+    SIXTEEN = '16-17'
+    SEVENTEEN = '17-18'
+    EIGHTEEN = '18-19'
+    NINETEEN = '19-20'
+    TWENTY = '20-21'
+    TWENTYONE = '21-22'
 
     SESSION_CHOICES = (
         (FALL, 'Fall'),
@@ -129,7 +127,7 @@ class NWEAScore(models.Model):
     subdomain5 = models.IntegerField(verbose_name="SubDomain 5")
     subdomain6 = models.IntegerField(verbose_name="SubDomain 6")
     subdomain7 = models.IntegerField(verbose_name="SubDomain 7")
-    subdomain8 = models.IntegerField(verbose_name="SubDomain 8", default=141)
+    subdomain8 = models.IntegerField(verbose_name="SubDomain 8")
 
 
     def __str__(self):

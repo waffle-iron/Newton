@@ -107,7 +107,10 @@ def amc_average_grade_equivalent(value):
     for student in value:
         x +=1
         y = y + current_amc_test(student)
-    avg = round(y/x)
+    try:
+        avg = round(y/x)
+    except ZeroDivisionError:
+        avg = 1
     output = AMCTest.objects.get(test_number=avg) # Gets the test that matches that number
     return output.grade_equivalent
 

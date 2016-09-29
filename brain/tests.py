@@ -12,7 +12,7 @@ class StudentRosterModelTests(TestCase):
 
     def setUp(self):
         self.teacher = Teacher.objects.create(title = 'MR', first_name ="Eugene", last_name="Testeacher")
-        self.current_class = CurrentClass.objects.create(year = 2016, grade = "SECOND", teacher= self.teacher )
+        self.current_class = CurrentClass.objects.create(year = 16-17, grade = "SECOND", teacher= self.teacher )
         self.student = StudentRoster.objects.create(first_name="Steve", last_name="Tester", date_of_birth="2008-3-3",
                                                     current_class= self.current_class
                                                     )
@@ -33,7 +33,7 @@ class StudentRosterViewsTests(TestCase):
 
     def setUp(self):
         self.teacher = Teacher.objects.create(title = 'MR', first_name ="Eugene", last_name="Testeacher")
-        self.current_class = CurrentClass.objects.create(year = 2016, grade = "SECOND", teacher= self.teacher )
+        self.current_class = CurrentClass.objects.create(year = 16-17, grade = "SECOND", teacher= self.teacher )
         self.student = StudentRoster.objects.create(first_name="Steve", last_name="Tester", date_of_birth="2008-3-3",
                                                     current_class= self.current_class
                                                     )

@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import TextInput
 from django.core import validators
 from . import models
 
@@ -19,3 +20,5 @@ class InputNWEAScores(forms.ModelForm):
             "subdomain7",
             "subdomain8",
         ]
+        widgets = {'subdomain1': TextInput(), "subdomain2":TextInput(), "subdomain3":TextInput(),"subdomain4":TextInput(),
+                   "subdomain5": TextInput(),"subdomain6":TextInput(),"subdomain7":TextInput(),"subdomain8":TextInput(),}

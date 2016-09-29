@@ -36,39 +36,27 @@ def create_ixl_pdf(request):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 # TODO: Teacher List (Sort: Teacher, Incl. Most Recent Grade taught)
 # TODO: Grade Roster (Sort: LastName, Incl.: First, Last, Teacher, Grade, Gender, Age)
 # TODO: Class List (Sort: Lastname, Incl.: Teacher, Grade: First, Last, Gender, Age)
 # TODO: Individual Student Detail (Sort: Custom, Incl.: Teacher, Grade, Gender, Age, All Test Details, Next Skills)
 
 
-def school_roster(request, year="2016"):
-    # url: /brain/2016
+def school_roster(request, year="16-17"):
+    # url: /brain/16-17
     student_list = StudentRoster.objects.filter(
         current_class__year=year)  # .order_by('current_class__grade')#.order_by('current_class__teacher__last_name').order_by('current_class__studentroster__last_name')
     return render(request, 'brain/year_list.html', {'student_list': student_list, 'year': year,})
 
 
-def grade_list(request, year="2016", grade="2nd"):  # List of the full student roster
-    # url: /brain/2016/2nd/
+def grade_list(request, year="16-17", grade="2nd"):  # List of the full student roster
+    # url: /brain/16-17/2nd/
     student_list = StudentRoster.objects.filter(current_class__grade=grade).filter(current_class__year=year)
     return render(request, 'brain/grade_list.html', {'student_list': student_list, 'year': year, 'grade': grade,})
 
 
-def class_list(request, year="2016", grade="2nd", teacher="Trost"):
-    # url: /brain/2016/2nd/trost
+def class_list(request, year="16-17", grade="2nd", teacher="Trost"):
+    # url: /brain/16-17/2nd/trost
     teacher_object = Teacher.objects.get(last_name=teacher)
     student_list = StudentRoster.objects.filter(current_class__grade=grade) \
         .filter(current_class__year=year).filter(current_class__teacher__last_name=teacher)

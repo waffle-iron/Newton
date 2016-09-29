@@ -15,21 +15,21 @@ from brain.templatetags import brain_extras
 from amc.models import AMCTestResult
 
 
-def school_roster(request, year="2016"):
-    # url: /brain/2016
+def school_roster(request, year="16-17"):
+    # url: /brain/16-17
     student_list = StudentRoster.objects.filter(current_class__year=year)#.order_by('current_class__grade')#.order_by('current_class__teacher__last_name').order_by('current_class__studentroster__last_name')
     teacher_list = CurrentClass.objects.filter(year=year)
     return render(request, 'amc/index.html', {'student_list': student_list, 'year': year, 'teacher_list':teacher_list,})
 
 
-def grade_list(request, year="2016", grade="2nd"):  # List of the full student roster
-    # url: /brain/2016/2nd/
+def grade_list(request, year="16-17", grade="2nd"):  # List of the full student roster
+    # url: /brain/16-17/2nd/
     student_list = StudentRoster.objects.filter(current_class__grade=grade).filter(current_class__year=year)
     return render(request, 'brain/grade_list.html', {'student_list': student_list, 'year': year, 'grade': grade,})
 
 
-def class_list(request, year="2016", grade="2nd", teacher="Trost"):
-    # url: /brain/2016/2nd/trost
+def class_list(request, year="16-17", grade="2nd", teacher="Trost"):
+    # url: /brain/16-17/2nd/trost
     student_list = StudentRoster.objects.filter(current_class__grade=grade)\
         .filter(current_class__year=year).filter(current_class__teacher__last_name=teacher)
     amc_tests = AMCTestResult.objects.all()
@@ -44,7 +44,7 @@ def class_list(request, year="2016", grade="2nd", teacher="Trost"):
 
 
 @login_required
-def input_amc_scores(request, year="2016", grade="2nd", teacher="Trost"):
+def input_amc_scores(request, year="16-17", grade="2nd", teacher="Trost"):
     if request.method == 'POST':
         TestListFormSet = formset_factory(forms.InputAMCScores, extra=0)
         formset = TestListFormSet(request.POST)

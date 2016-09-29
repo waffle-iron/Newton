@@ -293,9 +293,9 @@ input[type="radio"] {
    * `font-size` values of the `input`, it causes the cursor style of the
    * decrement button to change from `default` to `text`.
    */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  height: auto; }
+/*input[type="number"]::-webkit-inner-spin-button,*/
+/*input[type="number"]::-webkit-outer-spin-button {*/
+  /*height: auto; }*/
 
 /**
    * 1. Address `appearance` set to `searchfield` in Safari and Chrome.

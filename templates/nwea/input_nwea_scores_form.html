@@ -18,17 +18,19 @@
 
             <div class="small-11 small-centered columns">
 
-                <table>
+                <table class="inputtable">
                     <tr>
                         <th width="100">Student</th>
-                        <th width="20">Date</th>
-                        <th width="10">1</th>
-                        <th width="10">2</th>
-                        <th width="10">3</th>
-                        <th width="10">4</th>
-                        <th width="10">5</th>
-                        <th width="10">6</th>
-                        <th width="10">7</th>
+                        <th width="30">Season</th>
+                        <th width="40">Year</th>
+                        <th width="8">1</th>
+                        <th width="8">2</th>
+                        <th width="8">3</th>
+                        <th width="8">4</th>
+                        <th width="8">5</th>
+                        <th width="8">6</th>
+                        <th width="8">7</th>
+                        <th width="8">8</th>
 
                     </tr>
 
@@ -77,7 +79,10 @@
                                 {{ form.subdomain7.errors }}
                                 {{ form.subdomain7 }}
                             </td>
-
+<td>
+                                {{ form.subdomain8.errors }}
+                                {{ form.subdomain8 }}
+                            </td>
                         </tr>
 
                     {% endfor %}

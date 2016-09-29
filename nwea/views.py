@@ -15,7 +15,7 @@ from .models import NWEAScore, RITBand
 
 
 @login_required
-def input_nwea_scores(request, year="2016", grade="2nd", teacher="Trost"):
+def input_nwea_scores(request, season="Fall", year="16-17", grade="2nd", teacher="Trost"):
     if request.method == 'POST':
         TestListFormSet = formset_factory(forms.InputNWEAScores, extra=0)
         formset = TestListFormSet(request.POST)

@@ -24,17 +24,32 @@ def level_detail(request, level):
     return render(request, 'ixl/level_detail.html', {'level':level, 'skill_list': skill_list})
 
 
-def class_list(request, year="2016", grade="2nd", teacher="Trost"):
-    # url: /brain/2016/2nd/trost
+def class_list(request, year="16-17", grade="2nd", teacher="Trost"):
+    # url: /brain/16-17/2nd/trost
     student_list = StudentRoster.objects.filter(current_class__grade=grade)\
         .filter(current_class__year=year).filter(current_class__teacher__last_name=teacher)
     return render(request, 'ixl/class_list.html', {'student_list': student_list, 'year': year, 'grade': grade,
                                                      'teacher': teacher})
 
 
+def generate_recommendation_list(request, year="16-17", grade="2nd", teacher="WHOLE"):
+    if teacher != "WHOLE":
+        return # Create a sheet for an individual class
+    else:
+
+
+    # Go through the class list and get first student
+    # Get recommendation files from that student, sorted by date.
+    # If recommendation has been created in last 5 days, use that one and don't create a new one.
+    # Otherwise, create a new one.
+
+
+
+
+
 '''
-def school_roster(request, year="2016"):
-    # url: /brain/2016
+def school_roster(request, year="16-17"):
+    # url: /brain/16-17
     student_list = StudentRoster.objects.filter(current_class__year=year)#.order_by('current_class__grade')#.order_by('current_class__teacher__last_name').order_by('current_class__studentroster__last_name')
     teacher_list = CurrentClass.objects.filter(year=year)
     return render(request, 'amc/index.html', {'student_list': student_list, 'year': year, 'teacher_list':teacher_list,})
@@ -42,13 +57,13 @@ def school_roster(request, year="2016"):
 
 
 
-def grade_list(request, year="2016", grade="2nd"):  # List of the full student roster
-    # url: /brain/2016/2nd/
+def grade_list(request, year="16-17", grade="2nd"):  # List of the full student roster
+    # url: /brain/16-17/2nd/
     student_list = StudentRoster.objects.filter(current_class__grade=grade).filter(current_class__year=year)
     return render(request, 'brain/grade_list.html', {'student_list': student_list, 'year': year, 'grade': grade,})
 
 
-def input_amc_scores(request, year="2016", grade="2nd", teacher="Trost"):
+def input_amc_scores(request, year="16-17", grade="2nd", teacher="Trost"):
     student_list = StudentRoster.objects.filter(current_class__grade=grade) \
         .filter(current_class__year=year).filter(current_class__teacher__last_name=teacher)
 

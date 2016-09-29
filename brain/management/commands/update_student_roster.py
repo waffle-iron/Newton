@@ -45,7 +45,7 @@ class Command(BaseCommand):
                 first_name = row[1]
                 last_name = row[2]
 
-                obj, created = StudentRoster.objects.get_or_create(
+                obj, created = Teacher.objects.get_or_create(
                     last_name=last_name,
                     first_name=first_name,
                     title=title,
@@ -56,7 +56,7 @@ class Command(BaseCommand):
                 year = row[0]
                 grade = row[1]
                 teacher = Teacher.objects.all().get(last_name=row[2])
-                obj, created = StudentRoster.objects.get_or_create(
+                obj, created = CurrentClass.objects.get_or_create(
                     year=year,
                     grade=grade,
                     teacher=teacher,

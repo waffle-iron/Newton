@@ -1,3 +1,3 @@
 {% for teacher in teachers %}
-    <li><a href="{% url 'amc:classlist' '2016' '2nd' teacher.last_name %}">{{ teacher.last_name }}</a></li>
+    <li><a href="{% url 'amc:classlist' '16-17' '2nd' teacher.last_name %}">{{ teacher.last_name }}</a></li>
 {% endfor %}
