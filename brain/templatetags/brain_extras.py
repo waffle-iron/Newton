@@ -32,7 +32,9 @@ def current_amc_test(value):
     return boys_and_girls
 
 
-
+@register.filter
+def index(List, i):
+    return List[int(i)]
 
 #=========================================================================================================
 #                                           AMC

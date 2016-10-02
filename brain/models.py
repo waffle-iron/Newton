@@ -102,25 +102,16 @@ class StudentRoster(models.Model):
         ordering = ['current_class', 'last_name']
 
 
+class AccountInfo(models.Model):
+    student = models.ForeignKey(StudentRoster, on_delete=models.CASCADE)
+    ixluser = models.CharField(max_length=200, blank=True, verbose_name='IXL Username')
+    ixlpass = models.CharField(max_length=200, blank=True, verbose_name='IXL Password')
+    kidsazteacher = models.CharField(max_length=200, blank=True, verbose_name='Kids A-Z Teacher')
+    kidsazuser = models.CharField(max_length=200, blank=True, verbose_name='Kids A-Z Username')
+    kidsazpass = models.CharField(max_length=200, blank=True, verbose_name='Kids A-Z Password')
+    myonuser = models.CharField(max_length=200, blank=True, verbose_name='myON Username')
+    myonpass = models.CharField(max_length=200, blank=True, verbose_name='myON Password')
 
-
-
-
-'''
-class AMCData(models.Model):
-    student_id = models.ForeignKey(StudentRoster, on_delete=models.CASCADE,)
-    # test_id = # The unique number of the challenge. (Addition A = 1, Fractions = 13 or something) Foreign Key?
-    date_taken = models.DateField()
-
-
-class CBADetails(models.Model):
-    # question ID, assessments (spring1, fall2, winter 2, spring2), Question # within each test,
-    # skill assessed by that question, IXL/CBA equivalents
-    pass
-
-
-class CBAData(models.Model):
-    # The Scores each student has gotten on the different CBA tests
-    pass
-
-'''
+    class Meta:
+        verbose_name = 'Account Information'
+        verbose_name_plural = 'Account Information'

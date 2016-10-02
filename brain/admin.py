@@ -1,7 +1,7 @@
 from django.contrib import admin
 #from django.contrib.admin import AdminSite
 
-from .models import Teacher, CurrentClass, StudentRoster
+from .models import Teacher, CurrentClass, StudentRoster, AccountInfo
 
 '''
 class BrainAdminSite(AdminSite):
@@ -32,9 +32,14 @@ class CurrentClassAdmin(admin.ModelAdmin):
     list_filter = ['grade', 'year',]
     inlines = [StudentInline]
 
+class AccountInfoAdmin(admin.ModelAdmin):
+    list_display = ('student', 'ixluser', 'ixlpass', 'kidsazuser','kidsazpass','myonuser','myonpass')
+    list_filter = ('kidsazteacher',)
+
 
 admin.site.register(StudentRoster, StudentRosterAdmin)
 admin.site.register(Teacher)
 admin.site.register(CurrentClass, CurrentClassAdmin)
+admin.site.register(AccountInfo, AccountInfoAdmin)
 
 

@@ -36,7 +36,7 @@ def generate_recommendation_list(request, year="16-17", grade="2nd", teacher="WH
     if teacher != "WHOLE":
         return # Create a sheet for an individual class
     else:
-
+        pass
 
     # Go through the class list and get first student
     # Get recommendation files from that student, sorted by date.

@@ -1,10 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "brain/portal_layout.html" %}
+{% load brain_extras %}
+{% block title %}{{ student.first_name }} | BTWA Portal {% endblock title %}
+{% block heading %}
+    <h1 style="margin-bottom: -0.5rem">{{ greeting }}, {{ student.first_name }}!</h1>
+<br>
+    <h5><a href="{% url 'brain:portalclass' grade teacher %}"><i class="fa fa-arrow-circle-left"></i>  I'm not {{ student.first_name }}</a></h5>
+{% endblock heading %}
+{% block content %}
+{#        <div class="callout success">#}
+{#         <h4 style="text-align: center">Click which site to work on.</h4>#}
+{#    </div>#}
+    <hr>
+    <div class="row small-up-1 medium-up-3 large-up-3">
+  <div class="column">
+      <a class="expanded button" style="background-color: #5cb860; " href="https://www.ixl.com/signin/btwa" target="_blank"><h3>
+         <img style="width: 15%; " src="/static/images/ixl.png">   IXL</h3></a>
+      {% if accountinfo %}
+    <div style="background-color: #c0f0c0; border: 2px solid #5cb860" class="callout secondary">
+      <p><strong>Username:</strong> {{ accountinfo.ixluser }}</p>
+    <p><strong>Password:</strong> {{ accountinfo.ixlpass }}</p>
+        </div>
+      {% endif %}
+  </div>
+    {% if accountinfo.myonuser %}
+      <div class="column">
+   <a class="expanded button" style="background-color: #3079AB" href="https://www.myon.com/login/index.html" target="_blank"><h3>
+    <img style="width: 15%;" src="/static/images/myon.png"> myON</h3></a>
+     {% if accountinfo  %}
+        <div style="background-color: #abd9f5;border: 2px solid #3079AB" class="callout secondary">
+    <p><strong>School Name:</strong> Booker T Washington</p>
+    <p><strong>Username:</strong> {{ accountinfo.myonuser }}</p>
+    <p><strong>Password:</strong> {{ accountinfo.myonpass }}</p>
+            </div>
+          {% endif %}
+  </div>
+    {% endif %}
+      <div class="column">
 
-</body>
-</html>
+
+      <a class="expanded button" style="background-color:#e15258 " href="https://www.kidsa-z.com/main/Login" target="_blank"><h3>
+         <img style="width: 15%;" src="/static/images/kidsaz.png">   Kids A-Z</h3></a>
+    {% if accountinfo %}
+
+
+          <div style="background-color: #faafb5; border: 2px solid #e15258" class="callout secondary">
+    <p><strong>Teacher Username:</strong> {{ accountinfo.kidsazteacher }}</p>
+    <p><strong>Username:</strong> {{ accountinfo.kidsazuser }}</p>
+    <p><strong>Password:</strong> <img style="width: 20%" src="/static/images/raz-{{ accountinfo.kidsazpass |lower}}.png"> </p>
+    </div>
+          {% endif %}
+  </div>
+</div>
+
+
+
+{#    MOOD METER USING MODAL#}
+{#    <p><a data-open="exampleModal1">Click me for a modal</a></p>#}
+{##}
+{#<div class="reveal" id="exampleModal1" data-reveal>#}
+{#  <h1>Awesome. I Have It.</h1>#}
+{#  <p class="lead">Your couch. It is mine.</p>#}
+{#  <p>I'm a cool paragraph that lives inside of an even cooler modal.</p>#}
+{#  <button class="close-button" data-close aria-label="Close reveal" type="button">#}
+{#    <span aria-hidden="true">&times;</span>#}
+{#  </button>#}
+{#</div>#}
+
+
+
+{% endblock content %}

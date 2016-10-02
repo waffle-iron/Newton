@@ -16,6 +16,13 @@ urlpatterns = [
     # /student/83   Student Detail
     url(r'^(?i)student/(?P<studentid>[0-9]+)/?$', views.student_detail, name='studentdetail'),
 
+
+# Portal URLS
+    url(r'^(?i)portal/?$', views.portal_school, name='portalschool'),
+    url(r'^(?i)portal/(?P<grade>[a-z0-9]+)/(?P<teacher>[a-z0-9]+)/?$', views.portal_class, name='portalclass'),
+    url(r'^(?i)portal/(?P<grade>[a-z0-9]+)/(?P<teacher>[a-z0-9]+)/(?P<studentid>[0-9]+)/?$', views.portal_student, name='portalstudent'),
+
+
     url(r'^$', views.index, name='index'),
 
 ]
