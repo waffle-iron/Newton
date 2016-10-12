@@ -1,0 +1,22 @@
+{% extends "brain/portal_layout.html" %}
+{% load brain_extras %}
+{% block title %}{{ teacher.title }} {{ teacher.last_name }} | BTWA Portal {% endblock title %}
+{% block heading %}
+<h1>{{ teacher.title }} {{ teacher.last_name }}'s Instagroups!</h1>
+{% endblock heading %}
+{% block content %}
+    <div class="row small-up-2 medium-up-2 large-up-2">
+    {% for partner in partner_list %}
+  <div class="column">
+    <a class="button" style="background-color: {{ color_list|index:forloop.counter0 }}">
+        <h5> {{ partner }} </h5>
+
+    </a>
+  </div>
+    {% endfor %}
+</div>
+
+
+
+
+{% endblock content %}

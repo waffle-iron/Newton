@@ -19,7 +19,7 @@ from brain.models import StudentRoster
 from ixl.models import IXLSkill, IXLSkillScores
 dataReader = csv.reader(open(csv_filepathname), delimiter=',', quotechar='"')
 
-def run():
+def import_ixl_scores(csv_filepathname):
     indexed = False
     if check_exercise_accuracy():
         print("All Exercises match.")

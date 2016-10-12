@@ -2,7 +2,7 @@
 
 # Full path and name to your csv file
 # csv_filepathname="/Users/alexandertrost/PycharmProjects/newton/brain/scripts/grade2students2016.csv"
-student_csv="brain/management/commands/grade2students2016.csv"
+student_csv="brain/management/commands/studentroster2016.csv"
 teacher_csv="brain/management/commands/teacherlist.csv"
 class_csv="brain/management/commands/classlist.csv"
 

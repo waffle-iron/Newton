@@ -10,7 +10,7 @@ urlpatterns = [
     # /level/D
     url(r'(?i)/level/(?P<level>\w)$', views.level_detail, name='leveldetail'),
     # /16-17/2nd/Trost
-    url(r'^(?i)/(?P<year>[0-9]{2}-[0-9]{2})/(?P<grade>[a-z0-9]+)/(?P<teacher>[a-z0-9]+)/?$', views.class_list, name='classlist'),
+    url(r'^(?i)/(?P<year>[0-9]{2}-[0-9]{2})/(?P<grade>[a-z0-9]+)/(?P<teacher>[a-z0-9\-]+)/?$', views.class_list, name='classlist'),
     # /16-17
     #url(r'^(?i)(?P<year>20[0-9]{2})/?$', views.skill_detail, name='skilldetail'),
 

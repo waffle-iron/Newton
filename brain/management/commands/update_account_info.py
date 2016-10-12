@@ -31,22 +31,28 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for row in accountReader:
             if row[0] != 'first':  # Ignore the header row, import everything else
-                student = StudentRoster.objects.get(first_name=row[0], last_name=row[1])
-                ixluser=row[2]
-                ixlpass = row[3]
-                kidsazteacher = row[4]
-                kidsazuser = row[5]
-                kidsazpass = row[6]
-                myonuser = row[7]
-                myonpass = row[8]
+                try:
+                    default_data = {}
+                    student = StudentRoster.objects.get(first_name=row[0], last_name=row[1])
+                    if row[2] != '':
+                        default_data['ixluser'] =row[2]
+                    if row[3] != '':
+                        default_data['ixlpass'] =row[3]
+                    if row[4] != '':
+                        default_data['kidsazteacher'] =row[4]
+                    if row[5] != '':
+                        default_data['kidsazuser'] =row[5]
+                    if row[6] != '':
+                        default_data['kidsazpass'] =row[6]
+                    if row[7] != '':
+                        default_data['myonuser'] =row[7]
+                    if row[8] != '':
+                        default_data['myonpass'] =row[8]
 
-                obj, created = AccountInfo.objects.get_or_create(
-                student=student,
-                ixluser = ixluser,
-                ixlpass = ixlpass,
-                kidsazteacher = kidsazteacher,
-                kidsazuser = kidsazuser,
-                kidsazpass = kidsazpass,
-                myonuser = myonuser,
-                myonpass = myonpass,
-                )
+
+                    obj, created = AccountInfo.objects.update_or_create(
+                    student=student,
+                    defaults=default_data
+                    )
+                except:
+                    pass
