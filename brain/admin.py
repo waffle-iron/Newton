@@ -3,7 +3,9 @@ from django.contrib.admin import AdminSite
 from django.forms import TextInput, Textarea
 from django.db import models
 
-from .models import Teacher, CurrentClass, StudentRoster, AccountInfo, ReadingStats
+from .models import Teacher, CurrentClass, StudentRoster, AccountInfo, \
+    ReadingStats, MorningMessage, MorningMessageSettings, Subject, Schedule
+
 
 '''
 class BrainAdminSite(AdminSite):
@@ -36,22 +38,51 @@ class CurrentClassAdmin(admin.ModelAdmin):
 
 class AccountInfoAdmin(admin.ModelAdmin):
     list_display = ('student', 'ixluser', 'ixlpass', 'kidsazteacher', 'kidsazuser','kidsazpass',
-                    'myonuser','myonpass')
-    list_filter = ('kidsazteacher',)
+                    'myonuser','myonpass', 'videos', 'readworkscode')
+    list_filter = ('student__current_class__teacher','student__current_class__grade',)
+    list_editable = ['ixlpass', 'kidsazpass', 'myonpass', 'myonuser', 'videos', 'readworkscode']
+    search_fields = ['ixluser', 'myonuser', 'kidsazteacher', 'student__first_name', 'student__last_name']
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size': '10'})},
+        models.IntegerField: {'widget': TextInput(attrs={'size': '10'})},
+    }
 
 
 class ReadingStatsAdmin(admin.ModelAdmin):
-    list_display = ('student', 'starting_lexile', 'current_lexile', 'goal_lexile', 'myon_tests_taken',
-                    'current_dra', 'goal_dra', 'myon_time_spent', 'myon_tests_taken', 'myon_books_finished',
+    list_display = ('student', 'starting_lexile', 'current_lexile', 'goal_lexile', 'lexile_progress', 'myon_tests_taken',
+                    'starting_dra','current_dra', 'goal_dra', 'myon_time_spent', 'myon_tests_taken', 'myon_books_finished',
                     'myon_books_opened')
-    list_editable = ['goal_lexile', 'current_dra', 'goal_dra', 'starting_lexile']
+    list_editable = ['goal_lexile', 'current_dra', 'goal_dra', 'starting_dra']
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size': '4'})},
         models.IntegerField: {'widget': TextInput(attrs={'size': '4'})},
     }
+    search_fields = ['student__first_name', 'student__last_name']
+    list_filter = ['student__current_class__teacher']
+
+class SpecialScheduleAdmin(admin.ModelAdmin):
+    list_display = ['teacher', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+    list_editable = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 
 
+class MorningMessageAdmin(admin.ModelAdmin):
+    list_display = ['teacher','date','message']
+    list_editable = ['date','message']
+    list_filter = ['teacher']
 
+# class MorningMessageSettingsAdmin(admin.ModelAdmin):
+#     list_display = ['teacher', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+#     list_editable = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+
+
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+
+
+class ScheduleAdmin(admin.ModelAdmin):
+    list_display = ('teacher', 'day', 'subject1', 'subject2', 'subject3', 'subject4', 'subject5', 'subject6','subject7',)
+    list_editable = ( 'day', 'subject1', 'subject2', 'subject3', 'subject4', 'subject5', 'subject6','subject7',)
+    list_filter = ('teacher', 'day', )
 
 
 admin.site.register(StudentRoster, StudentRosterAdmin)
@@ -59,5 +90,8 @@ admin.site.register(Teacher)
 admin.site.register(CurrentClass, CurrentClassAdmin)
 admin.site.register(AccountInfo, AccountInfoAdmin)
 admin.site.register(ReadingStats, ReadingStatsAdmin)
-
+admin.site.register(MorningMessage, MorningMessageAdmin)
+admin.site.register(MorningMessageSettings,)
+admin.site.register(Subject, SubjectAdmin)
+admin.site.register(Schedule, ScheduleAdmin)
 

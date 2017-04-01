@@ -1,0 +1,38 @@
+{% extends "brain/portal_layout.html" %}
+{% load brain_extras %}
+{% block title %}{{ teacher }}'s Morning Message{% endblock title %}
+{% block css %}
+    <link href="https://fonts.googleapis.com/css?family=Neucha" rel="stylesheet">
+
+{% endblock %}
+{% block heading %}
+{% endblock heading %}
+{% block content %}
+<div class="row">
+  <div class="large-8 columns">
+   <div class="callout success">
+       <p style="font-size: 2.2em;font-family: 'Neucha', 'sans-serif'; color: #082f4b">{{ all_morning_message_settings.greeting }}<br>
+  Today is {{ todays_date }}. {{ message.message }} {% if specials %}Our specials today are {{ specials }}.{% endif %} Let's have a fantastic day!</p>
+  <p style="text-align: right; font-size: 2.2em; font-family: 'Neucha', 'sans-serif';color: #082f4b">{{ all_morning_message_settings.signoffword }}<br>
+  {{all_morning_message_settings.signoffteacher}}</p></div>
+  </div>
+  <div class="large-4 columns">
+      {% if box1 %}
+          <div style="color: crimson" class="callout secondary">
+              <h3 style="text-align: center">{{ all_morning_message_settings.box1heading }}</h3>
+      <h5>{{ box1 }}</h5></div>
+      {% endif %}
+  {% if all_morning_message_settings.moodmeter %}
+  <div class="callout success"><h4 style="text-align: center;color: forestgreen">Plot Your Mood!</h4>
+      <img style="width: 125px; display: block;margin-left: auto;margin-right: auto" src="/static/images/moodmeter.jpeg"> </div>{% endif %}
+{% if all_morning_message_settings.weather %}
+{#    WEATHER WIDGET#}
+    <a href="http://www.accuweather.com/en/us/new-haven-ct/06511/weather-forecast/2460_pc" class="aw-widget-legal">
+</a><div id="awcc1477268842998" class="aw-widget-current"  data-locationkey="2460_PC" data-unit="f" data-language="en-us" data-useip="false" data-uid="awcc1477268842998"></div><script type="text/javascript" src="http://oap.accuweather.com/launch.js"></script>
+{#    END WEATHER WIDGET#}{% endif %}
+</div></div>
+<a href="http://newtonthinks.com/admin/brain/morningmessage/add/">Add Message</a>
+
+
+
+{% endblock content %}

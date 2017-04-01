@@ -50,3 +50,10 @@ class AMCTestResult(models.Model):
         unique_together = ("student", "test", "date_tested")
 
 
+class AMCStartingTest(models.Model):
+    student = models.ForeignKey(StudentRoster, blank=False, null=False)
+    starting_test = models.IntegerField(verbose_name='Starting Test')
+
+    class Meta:
+        verbose_name = "AMC Starting Test"
+        verbose_name_plural = "AMC Starting Tests"

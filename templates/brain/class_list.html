@@ -9,56 +9,223 @@
 {% endblock heading %}
 {% block content %}
     <div class="row">
-        <div class="large-4 columns">
+        <div class="large-12 columns">
+            <ul class="tabs" data-tabs id="class-tabs">
+                <li class="tabs-title is-active"><a style="font-size: 1em; font-weight: 700" href="#reading"
+                                                    aria-selected="true">Reading Stats</a></li>
+                <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#amc">AMC</a></li>
+                <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#ixl">IXL</a></li>
+                <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#cba">Math Report Card</a></li>
+                <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#computer">Computer
+                    Priority</a></li>
+                <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#other">Other Stuff</a></li>
+            </ul>
+            <div class="tabs-content" data-tabs-content="example-tabs">
+                <div class="tabs-panel is-active" id="reading">
                     <div class="callout">
-            {% if student_list.count > 0 %}
-                <h5>Student Roster</h5>
-                <table>
-                    <tr>
-                        <th width="100">{{ student_list.count }} Students: {{ student_list|boys_and_girls }}</th>
-                    </tr>
-                    {% for student in student_list %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'brain:studentdetail' student.student_id %}">{{ student.first_name }} {{ student.last_name }}</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
+                        <h4>Reading Stats</h4>
+                        <table>
+                            <tr>
+                                <th width="150">Student</th>
+                                <th width="50">Starting Lexile</th>
+                                <th width="50">Current Lexile</th>
+                                <th width="50">Progress</th>
+                                <th width="50">Goal Lexile</th>
+                                <th width="50">myON Minutes Spent</th>
+                                <th width="50">Starting DRA</th>
+                                <th width="50">Current DRA</th>
+                                <th width="50">Goal DRA</th>
+                            </tr>
+                            {% for item in reading_list %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'brain:studentdetail' item.student.student_id %}"> {{ item.student.first_name }} {{ item.student.last_name.0 }}.</a>
+                                    </td>
+                                    <td>{{ item.starting_lexile }}</td>
+                                    <td>{{ item.current_lexile }}</td>
+                                    <td>{{ item.lexile_progress }}</td>
+                                    <td>{{ item.goal_lexile }}</td>
+                                    <td>{{ item.myon_time_spent }}</td>
+                                    <td>{{ item.starting_dra }}</td>
+                                    <td>{{ item.current_dra }}</td>
+                                    <td>{{ item.goal_dra }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td><h6>AVERAGE</h6></td>
+                                <td>{{ reading_averages.0 }}</td>
+                                <td>{{ reading_averages.1 }}</td>
+                                <td>{{ reading_averages.2 }}</td>
+                                <td>{{ reading_averages.3 }}</td>
+                                <td>{{ reading_averages.4 }}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
                     </div>
-        </div>
-        <div class="large-4 columns">
+                </div>
+                <div class="tabs-panel" id="amc">
+                    <div class="callout">
+                        <a class="button" style="float:right;font-weight: bold "
+                           href="{% url 'amc:inputamcscores' year grade teacher %}">Input Scores</a>
+                        <a class="button" style="float:right;font-weight: bold; background-color: #da3116"
+                           href="{% url 'amc:testsheetsclass' year grade teacher %}">Print Tests</a>
+                        <a class="button" style="float:right; background-color: #37b32d;font-weight: bold "
+                           href="{% url 'amc:challengesheetsclass' year grade teacher %}">Print Challenges</a>
+                        <h4>American Math Challenge</h4>
+                        <p>Class Badges Earned: <span style="font-size: 1em"
+                                                      class="success badge">{{ student_list|amc_teacher_badges_earned }}</span>
+                        </p>
+                        <p>Average Grade Equivalent: {{ student_list|amc_average_grade_equivalent }}</p>
+                        <table>
+                            <tr>
+                                <th width="150">Student</th>
+                                <th width="150">Current Test</th>
+                                <th width="50">Times Taken</th>
+                                <th width="150">Grade Equivalent</th>
+                                <th width="50">Badges Earned</th>
+                            </tr>
+                            {% for student in student_list %}{% with student|current_amc_test as curtest %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'brain:studentdetail' student.student_id %}">{{ student.first_name }} {{ student.last_name.0 }}.</a>
+                                    </td>
+                                    <td>{{ student|current_amc_test|amc_number_to_text }}</td>
+                                    <td>{{ student|amc_number_of_test_attempts:curtest }}</td>
+                                    <td>{{ student|current_amc_test|amc_grade_equivalent }}</td>
+                                    <td>{{ student|amc_badges_earned }}</td>
+                                </tr>         {% endwith %}
 
-            <div class="callout">
-                <h5>American Math Challenge</h5>
-                <p>Class Badges Earned: <span style="font-size: 1em"
-                                              class="success badge">{{ student_list|amc_teacher_badges_earned }}</span>
-                </p>
-                <p>Average Grade Equivalent: {{ student_list|amc_average_grade_equivalent }}</p>
-                <a href="{% url 'amc:classlist' year grade teacher %}" class="expanded button">Class AMC Details</a>
-                <a href="{% url 'amc:inputamcscores' year grade teacher %}" class="expanded button">Input AMC Scores</a>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <div class="tabs-panel" id="ixl">
+                    <div class="callout">
+                        <h4>IXL Challenges</h4>
+                        <table>
+                            <tr>
+                                <th width="150">Student</th>
+                                <th width="50">Date Assigned</th>
+                                <th width="50">Progress</th>
+                            </tr>
+                            {% for challenge,completed in challenge_list %}
+                                <tr>
+                                      {% if completed == "0/5" %}
+                                    <td style="color: #FF0033; font-weight: bold;">{{ challenge.student_id.first_name }} {{ challenge.student_id.last_name.0 }}.</td>
+                                    {% elif completed == "1/5" %}
+                                    <td style="color: #D61F29; font-weight: bold;">{{ challenge.student_id.first_name }} {{ challenge.student_id.last_name.0 }}.</td>
 
-            </div>
+                                    {% elif completed == "2/5" %}
+                                    <td style="color: #AD3D1F; font-weight: bold;">{{ challenge.student_id.first_name }} {{ challenge.student_id.last_name.0 }}.</td>
 
-        </div>
-        <div class="large-4 columns">
-            <div class="callout">
-                <h5>Guided Groups</h5>
-                {% for skill, count in recommendation_list %}
-                    <ul>
-                    <li><strong>{{ count }} Students</strong>
-                    <ul>
-                        {% for x in skill %}
-                            <li>{{ x }}</li>
-                        {% endfor %}
-                    </ul>
-                </li>
+                                    {% elif completed == "3/5" %}
+                                    <td style="color: #bf9500; font-weight: bold;">{{ challenge.student_id.first_name }} {{ challenge.student_id.last_name.0 }}.</td>
 
-                </ul>
-                                                {% endfor %}
+                                    {% elif completed == '4/5' %}
+                                    <td style="color: #5C7A0A; font-weight: bold;">{{ challenge.student_id.first_name }} {{ challenge.student_id.last_name.0 }}.</td>
 
+                                    {% elif completed == 'COMPLETE' %}
+                                    <td style="color: #339900; font-weight: bold;">{{ challenge.student_id.first_name }} {{ challenge.student_id.last_name.0 }}.</td>
+
+                                    {% endif %}
+                                    <td>{{ challenge.date_assigned }}</td>
+                                    {% if completed == "0/5" %}
+                                    <td style="color: #FF0033; font-weight: bold;">{{ completed }}</td>
+                                    {% elif completed == "1/5" %}
+                                    <td style="color: #D61F29; font-weight: bold;">{{ completed }}</td>
+                                    {% elif completed == "2/5" %}
+                                    <td style="color: #AD3D1F; font-weight: bold;">{{ completed }}</td>
+                                    {% elif completed == "3/5" %}
+                                    <td style="color: #bf9500; font-weight: bold;">{{ completed }}</td>
+                                    {% elif completed == '4/5' %}
+                                    <td style="color: #5C7A0A; font-weight: bold;">{{ completed }}</td>
+                                    {% elif completed == 'COMPLETE' %}
+                                    <td style="color: #339900; font-weight: bold;">{{ completed }}</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+
+            <div class="tabs-panel" id="cba">
+                    <div class="callout">
+                        <h4>Math Report Card</h4>
+                        <table width="700px" border="1" style="border-color: #1a1a1a">
+                            <tr>
+                                <th  style="font-size: 10pt">Student</th>
+                                {% for item in report_card_description %}
+                                <th style="font-size: 8pt; padding:2px;text-align: center;border-color: #1a1a1a">{{ item }}</th>
+                              {% endfor %}
+                            </tr>
+                            {% for row in spring_cba_student_grid %}
+                                <tr>
+                                {% for item in row %}
+                                    {% if item >= 80 %}
+                                    <td style="font-size: 10pt; padding: 2px; text-align: center;border-color: #1a1a1a; background-color: #84eb68">{{ item }}</td>
+                                    {% elif item > 50 %}
+                                    <td style="font-size: 10pt; padding: 2px; text-align: center;border-color: #1a1a1a; background-color: #edec59">{{ item }}</td>
+                                    {% elif item <= 50 %}
+                                    <td style="font-size: 10pt; padding: 2px; text-align: center;border-color: #1a1a1a; background-color: #e27f6a">{{ item }}</td>
+                                   {% else %}
+                                   <td style="font-size: 10pt; padding: 2px; text-align: center;border-color: #1a1a1a;  background-color: white">{{ item }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="tabs-panel" id="computer">
+                    <div class="callout large-6 columns">
+                        <h4>myON</h4>
+                        <table>
+                            <tr>
+                                <th width="150">Student</th>
+                                <th width="150">Time Spent (All Year)</th>
+                            </tr>
+                            {% for student in myon_priority %}
+                                <tr>
+                                    <td>{{ student.student.first_name }} {{ student.student.last_name.0 }}.</td>
+                                    <td>{{ student.myon_time_spent }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="callout large-6 columns">
+                        <h4>IXL</h4>
+                        <table>
+                            <tr>
+                                <th width="150">Student</th>
+                                <th width="150">Time Spent (Last Month)</th>
+                            </tr>
+                            {% for student in ixl_priority %}
+                                <tr>
+                                    <td>{{ student.student.first_name }} {{ student.student.last_name.0 }}.</td>
+                                    <td>{{ student.time_spent }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <div class="tabs-panel" id="other">
+                    <div class="callout">
+                        <h4>Other Stuff</h4>
+                        <ul class="vertical menu">
+                            <li><a href="/portal/{{ grade }}/{{ teacher }}/">Class Portal</a></li>
+                            <li><a href="http://newtonthinks.com/scoreit/gradeview/">Today's Score It</a></li>
+                            <li><a href="http://newtonthinks.com/scoreit/gradeview/yesterday">Yesterday's Score It</a>
+                            </li>
+                            <li><a href="/portal/{{ grade }}/{{ teacher }}/random">Random Student Picker</a></li>
+                            <li><a href="/portal/{{ grade }}/{{ teacher }}/groups">Random Partner Maker</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 {% endblock content %}

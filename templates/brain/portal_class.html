@@ -7,23 +7,52 @@
 
 {% endblock heading %}
 {% block content %}
-        <div class="callout success">
-         <h5 style="text-align: center">Click on your name</h5>
-    </div>
+{#        <div class="callout success">#}
+{#         <h5 style="text-align: center">Click on your name</h5>#}
+{#    </div>#}
+    <br>
     <div class="row small-up-1 medium-up-2 large-up-4">
     {% for student in student_list %}
   <div class="column">
-    <a class="expanded button" style="background-color: {{ color_list|index:forloop.counter0 }}" href="{% url 'brain:portalstudent' grade teacher.last_name student.student_id %}">
+    <a class="expanded button" style="background-color: {{ color_list|index:forloop.counter0 }}"
+       {% if student.current_class.grade == '2nd' %}
+       href="{% url 'brain:password' grade teacher.last_name student.student_id %}
+        {% else %}
+               href="{% url 'brain:portalstudent' grade teacher.last_name student.student_id %}
+
+        {% endif %}
+">
+    {% if student.current_class.grade == '2nd' %}
 {% if student.first_name|length >= 9 %}
+<img style="height: 55px; float: left;" src="http://newtonthinks.com/{{ avatar_list|index:forloop.counter0 }}">
+
+ <h5 style="position: relative;left: -5px;">{{ student.first_name }} {{ student.last_name |slice:":1" }}.</h5>
+{% elif student.first_name|length < 9 %}
+
+<img style="height: 55px; float: left;" src="http://newtonthinks.com/{{ avatar_list|index:forloop.counter0 }}">
+ <h4 style="position: relative;left: -5px;">{{ student.first_name }} {{ student.last_name |slice:":1" }}.</h4>
+    {% elif student.first_name|length < 6 %}
+<img style="height: 55px; float: left;" src="http://newtonthinks.com/{{ avatar_list|index:forloop.counter0 }}">
+
+ <h3 style="position: relative;left: -5px;">{{ student.first_name }} {{ student.last_name |slice:":1" }}.</h3>
+        {% endif %}
+
+
+
+
+  {% else %}
+  {% if student.first_name|length >= 9 %}
         <h5><i class="fa {{ icon_list|index:forloop.counter0 }}"></i>
  {{ student.first_name }} {{ student.last_name |slice:":1" }}.</h5>
 {% elif student.first_name|length < 9 %}
         <h4><i class="fa {{ icon_list|index:forloop.counter0 }}"></i>
  {{ student.first_name }} {{ student.last_name |slice:":1" }}.</h4>
     {% elif student.first_name|length < 6 %}
-            <h3><i class="fa {{ icon_list|index:forloop.counter0 }}"></i>
+
+    <h3><i class="fa {{ icon_list|index:forloop.counter0 }}"></i>
  {{ student.first_name }} {{ student.last_name |slice:":1" }}.</h3>
         {% endif %}
+  {% endif %}
     </a>
   </div>
     {% endfor %}
@@ -41,20 +70,24 @@
     {% endfor %}
     </div></div>
     <div class=" large-4 columns">
+    {% if myon_leaderboard_display %}
     <div class="callout warning">
     <h4 style="text-align: center; color: #51b72f"><i class="fa fa-clock-o"></i> myON Time Spent <i class="fa fa-clock-o"></i></h4>
     {% for student in class_myon_time_spent %}
     <h5 style="color: {{ color_list|index:forloop.counter0 }}">{{ forloop.counter }}. {{ student.student.first_name }}: {{ student.myon_time_spent }} mins</h5>
     {% endfor %}
     </div>
+        {% endif %}
         </div>
     <div class=" large-4 columns">
+    {% if myon_leaderboard_display %}
         <div class="callout warning">
-    <h4 style="text-align: center; color: #2556a1"><i style="font-size: 1.5rem" class="fa fa-book"></i> myON Books Read <i style="font-size: 1.5rem" class="fa fa-book"></i></h4>
-    {% for student in class_myon_books_read %}
-    <h5 style="color: {{ color_list|index:forloop.counter0 }}">{{ forloop.counter }}. {{ student.student.first_name }}: {{ student.myon_books_finished }} books</h5>
+       <h4 style="text-align: center; color: #2556a1"><i class="fa fa-arrow-circle-up"></i> Lexile Growth <i class="fa fa-arrow-circle-up"></i></h4>
+    {% for student in class_myon_lexile_progress %}
+    <h5 style="color: {{ color_list|index:forloop.counter0 }}">{{ forloop.counter }}. {{ student.student.first_name }} {{ student.student.last_name.0 }}.</h5>
     {% endfor %}
     </div>
+        {% endif %}
     </div>
 
 

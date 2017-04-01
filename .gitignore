@@ -101,3 +101,7 @@ nwea/migrations/__pycache__/
 static/fonts/
 static/newton/favicon.ico
 test_report_lab.pdf
+/brain/scripts/csvdownloads/
+/brain/scripts/webscrape.py
+/brain/management/commands/ixlpasswords.csv
+/brain/management/commands/

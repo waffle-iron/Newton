@@ -89,10 +89,11 @@ def nwea_recommended_skills_list(student, arg):
             sub5 = recent_nwea_scores.subdomain5
             sub6 = recent_nwea_scores.subdomain6
             sub7 = recent_nwea_scores.subdomain7
-            subdomain_scores = [sub1, sub2, sub3, sub4, sub5, sub6, sub7]
+            sub8 = recent_nwea_scores.subdomain8
+            subdomain_scores = [sub1, sub2, sub3, sub4, sub5, sub6, sub7, sub8]
 
         else:  # Otherwise, assume student is at RIT 141 and build from there with IXL.
-            subdomain_scores = [141, 141, 141, 141, 141, 141, 141]
+            subdomain_scores = [151, 151, 151, 151, 151, 151, 151, 151]
     except:
         raise IndexError
 
@@ -105,7 +106,7 @@ def nwea_recommended_skills_list(student, arg):
     recommended_skill_list = [] # Create blank list of recommended skills for this student
     estimated_nwea_scores = []
     subdomain_percentage_complete =[]
-    for x in range(0, 7):  # Iterate through the 7 subdomains, 1 at a time.
+    for x in range(0, 8):  # Iterate through the 8 subdomains, 1 at a time.
         loop = True
         additional_rit_score = 0
         while loop:
@@ -125,7 +126,15 @@ def nwea_recommended_skills_list(student, arg):
                     if ixl_score >= 80:
                         count_of_passed_skills_in_band += 1
                     else:
-                        recommended_skill_list.append((skill.ixl_match, skill.skill, current_rit_band))
+                        dupe = False
+                        if len(recommended_skill_list) > 0: # Check if the list has anything at all
+                            for j in recommended_skill_list: # Pull out a tuple of 3 things
+                                for i in j:
+                                    if skill.ixl_match == i:
+                                        dupe = True
+                        if dupe == False:
+                            subdomain = x
+                            recommended_skill_list.append((skill.ixl_match, skill.skill, current_rit_band, subdomain))
             insufficient_skills_passed = count_of_passed_skills_in_band < number_of_skills_from_current_rit_band
             if number_of_skills_from_current_rit_band == 0 or insufficient_skills_passed:
                 break

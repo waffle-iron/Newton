@@ -21,21 +21,29 @@
             <section class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu role="menubar">
                     <li class="menu-text"><a href="{% url 'brain:index' %}">Newton</a></li>
-                    <li class="has-submenu">
-                        <a href="{% url 'brain:schoolroster' '16-17' %}">Classes</a>
-                        <ul class="submenu menu vertical" data-submenu role="menu">
-                            {% nav_teachers_list %}
-                            <li><a href="{% url 'brain:schoolroster' '16-17' %}">See all &rarr;</a></li>
-                        </ul>
+{#                    <li class="has-submenu">#}
+{#                        <a href="{% url 'brain:schoolroster' '16-17' %}">Classes</a>#}
+{#                        <ul class="submenu menu vertical" data-submenu role="menu">#}
+{#                            {% nav_teachers_list %}#}
+{#                            <li><a href="{% url 'brain:schoolroster' '16-17' %}">See all &rarr;</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
+                        <li>
+                        <a href="/classes/16-17/2nd/Cyphers">Cyphers</a>
                     </li>
-
-                    <li class="has-submenu">
-                        <a href="{% url 'amc:schoolroster' '16-17' %}">AMC</a>
-                        <ul class="submenu menu vertical" data-submenu role="menu">
-                            {% nav_amc_teachers_list %}
-                            <li><a href="{% url 'amc:schoolroster' '16-17' %}">See all &rarr;</a></li>
-                        </ul>
+                    <li>
+                        <a href="/classes/16-17/2nd/Mackinnon">Mackinnon</a>
                     </li>
+                        <li>
+                        <a href="/classes/16-17/2nd/Trost">Trost</a>
+                    </li>
+{#                    <li class="has-submenu">#}
+{#                        <a href="{% url 'amc:schoolroster' '16-17' %}">AMC</a>#}
+{#                        <ul class="submenu menu vertical" data-submenu role="menu">#}
+{#                            {% nav_amc_teachers_list %}#}
+{#                            <li><a href="{% url 'amc:schoolroster' '16-17' %}">See all &rarr;</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
 {#                    <li class="has-submenu">#}
 {#                        <a href="{% url 'brain:schoolroster' '16-17' %}">NWEA</a>#}
 {#                        <ul class="submenu menu vertical" data-submenu role="menu">#}
@@ -57,13 +65,13 @@
 {#                            <li><a href="{% url 'brain:schoolroster' '16-17' %}">See all &rarr;</a></li>#}
 {#                        </ul>#}
 {#                    </li>#}
-                    <li class="has-submenu">
-                        <a href="{% url 'brain:schoolroster' '16-17' %}">IXL</a>
-                        <ul class="submenu menu vertical" data-submenu role="menu">
-                            {% nav_ixl_list %}
-                            <li><a href="{% url 'brain:schoolroster' '16-17' %}">See all &rarr;</a></li>
-                        </ul>
-                    </li>
+{#                    <li class="has-submenu">#}
+{#                        <a href="{% url 'brain:schoolroster' '16-17' %}">IXL</a>#}
+{#                        <ul class="submenu menu vertical" data-submenu role="menu">#}
+{#                            {% nav_ixl_list %}#}
+{#                            <li><a href="{% url 'brain:schoolroster' '16-17' %}">See all &rarr;</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
                     <li>
                         <a href="/admin">Admin</a>
                     </li>

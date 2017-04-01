@@ -10,11 +10,16 @@ urlpatterns = [
     url(r'^(?i)amc/', include('amc.urls')),
     url(r'^(?i)nwea/', include('nwea.urls')),
     url(r'^(?i)classes/', include('brain.urls'), ),
-    url(r'^(?i)ixl', include('ixl.urls')),
+    url(r'^(?i)ixl/', include('ixl.urls')),
+    url(r'^(?i)cgi/', include('mathcgi.urls')),
+    url(r'^(?i)scoreit/', include('scoreit.urls')),
+    url(r'^(?i)parentletter/', include('parentletter.urls')),
+    url(r'^(?i)stickers/', include('badges.urls')),
     # url(r'^(?i)eni/', include('eni.urls')),
     # url(r'^(?i)cba/', include('cba.urls')),
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon/favicon.ico')),
     url(r'^', include('brain.urls'), ),
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()

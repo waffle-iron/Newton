@@ -1,11 +1,12 @@
-from django import template
-
-from brain.models import StudentRoster, CurrentClass, Teacher
-from amc.models import AMCTestResult, AMCTest
-from ixl.models import IXLSkill, IXLSkillScores
+from django import template, forms
+import datetime
+from brain.models import StudentRoster, CurrentClass, Teacher, Schedule
+from amc.models import AMCTestResult, AMCTest, AMCStartingTest
+from ixl.models import IXLSkill, IXLSkillScores, ChallengeAssignment
 from nwea.models import NWEASkill, NWEAScore, RITBand
-
+from django.utils.timezone import now
 from libs.functions import nwea_recommended_skills_list as nwea_skills
+from scoreit.models import Score, TeacherApproval
 
 register = template.Library()
 
@@ -19,7 +20,7 @@ register = template.Library()
 #                                           GENERAL
 #=========================================================================================================
 @register.filter(name='boys_and_girls')
-def current_amc_test(value):
+def gender(value):
     """Gets the current AMC test for a student"""
     boys, girls = 0,0
     for student in value:
@@ -40,10 +41,10 @@ def index(List, i):
 #                                           AMC
 #=========================================================================================================
 @register.filter(name='current_amc_test')
-def current_amc_test(value):
+def current_amc_test(student):
     """Gets the current AMC test for a student"""
-    if AMCTestResult.objects.all().filter(student_id=value):
-        last_test_taken = AMCTestResult.objects.all().filter(student_id=value).order_by('-date_tested')[0]
+    if AMCTestResult.objects.all().filter(student_id=student):
+        last_test_taken = AMCTestResult.objects.all().filter(student_id=student).order_by('-date_tested')[0]
         if last_test_taken.passing_score():
             amc_test = last_test_taken.test.test_number + 1
         elif not last_test_taken.passing_score():
@@ -53,7 +54,11 @@ def current_amc_test(value):
 
         return amc_test
     else:
-        return 1
+        if AMCStartingTest.objects.all().filter(student_id=student):
+            start = AMCStartingTest.objects.get(student_id=student).starting_test
+            return start
+        else:
+            return 1
 
 
 @register.filter(name='amc_number_to_text')
@@ -134,6 +139,16 @@ def get_ixl_url(value):
     return url
 
 
+@register.filter(name='challenges_completed')
+def challenges_completed(student):
+    completed_challenges = 0
+    ixl_challenges = ChallengeAssignment.objects.filter(student_id=student)
+    for challenge in ixl_challenges:
+        complete = challenge.completed()
+        # print("Challenge {} is {}".format(challenge,complete))
+        if complete == "COMPLETE":
+            completed_challenges += 1
+    return completed_challenges
 
 
 #=========================================================================================================
@@ -166,15 +181,86 @@ def class_recommendation_list(student_list):
 
 @register.inclusion_tag('brain/classes_nav.html')
 def nav_teachers_list():
-    teachers = Teacher.objects.all()
+    teachers = Teacher.objects.all().filter(currentclass__grade='2nd')
     return {'teachers': teachers}
 
 
 @register.inclusion_tag('amc/classes_nav.html')
 def nav_amc_teachers_list():
-    teachers = Teacher.objects.all()
+    teachers = Teacher.objects.all().filter(currentclass__grade='2nd')
     return {'teachers': teachers}
 
 @register.inclusion_tag('ixl/ixl_nav.html')
 def nav_ixl_list():
     return
+
+
+
+
+
+#=========================================================================================================
+#                                           SCORE IT
+#=========================================================================================================
+
+@register.simple_tag(name='add_subject_score')
+def add_subject_score(student, date, subject):
+    #Get the score object
+    if isinstance(date, str):
+        dateobj = datetime.datetime.strptime(date, '%Y, %-m, %-d').date()
+        day = dateobj.strftime('%A')
+    else:
+        day = date.strftime('%A')
+
+    try:
+        obj = Score.objects.get(student__student_id=student, date=date, subject__title=subject)
+        x = 0
+
+        if obj.hand:
+            x += 1
+        if obj.slant:
+            x += 2
+        if obj.transition:
+            x+=2
+        if obj.please:
+            x += 1
+        if obj.instruction:
+            x += 2
+        if obj.material:
+            x += 1
+        if obj.peer:
+            x += 1
+    except:
+        x=None
+    # If each part is True: Assign the right number of points. Add to X
+    return x
+
+
+@register.simple_tag(name='add_total_score')
+def add_total_score(student, date):
+    total=0
+    # Get student obj
+    student = StudentRoster.objects.get(student_id=student)
+    # Given the date, find the day of the week of that date
+    # get teacher
+    teacher = student.current_class.teacher
+    # Get Teacher's schedule
+    if isinstance(date, str):
+        dateobj = datetime.datetime.strptime(date, '%Y, %-m, %-d').date()
+        day = dateobj.strftime('%A')
+    else:
+        day = date.strftime('%A')
+    try:
+        schedule = Schedule.objects.get(teacher=teacher, day=day.upper())
+    except:
+        schedule = Schedule.objects.get(teacher=teacher, day="MONDAY")
+    # Get list of all classes on this day in order
+    classes = [schedule.subject1, schedule.subject2, schedule.subject3, schedule.subject4, schedule.subject5,
+                  schedule.subject6, schedule.subject7]
+    for subject in classes:
+        answer = add_subject_score(student.student_id, date, subject)
+        if answer:
+            total += answer
+    return total
+
+
+

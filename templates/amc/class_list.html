@@ -6,22 +6,26 @@
 {% block heading %}
 <h1>{{ teacher }} AMC Student List</h1>
 {% endblock heading %}
+
 {% block content %}
 {% if student_list.count > 0 %}
-        <div class="row">
-            <div class="small-11 small-centered columns">
+        <div style="margin-top: -20px" class="row">
 
-  <div class="large-8 columns"> <span style="font-size: 2.0rem; padding-top:.5em; font-family: 'Roboto', sans-serif;">Class Badges Earned:&nbsp</span>
+  <div class="large-6 columns"> <span style="font-size: 2.0rem;  font-family: 'Roboto', sans-serif;">Class Badges Earned:&nbsp</span>
       <span style="font-size: 2.0rem; font-family: 'Roboto', sans-serif;" class="success badge">{{ student_list|amc_teacher_badges_earned }}</span></div>
 
-        <div class="large-4 columns">
-    <p><a class="large button" style="float:right;" href="{% url 'amc:inputamcscores' year grade teacher %}">Input AMC Scores</a>
+        <div class="large-6 columns">
+         <a class="button" style="float:right; background-color: #37b32d;font-weight: bold " href="{% url 'amc:challengesheetsclass' year grade teacher %}">Print Challenges</a>
+        <a class="button" style="float:right;font-weight: bold; background-color: #da3116" href="{% url 'amc:testsheetsclass' year grade teacher %}">Print Tests</a>
+        <a class="button" style="float:right;font-weight: bold " href="{% url 'amc:inputamcscores' year grade teacher %}">Input Scores</a>
+
         </div>
 
 
+</div>
 
-   </p>
                 <div class="column row">
+
     {{ student_list.count }} student{{ student_list.count|pluralize }}
 
     <table>

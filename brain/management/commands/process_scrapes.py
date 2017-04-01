@@ -1,6 +1,4 @@
 # scripts/import_students.py
-
-
 student_csv="brain/management/commands/studentroster2016.csv"
 
 # Full path to your django project directory
@@ -20,6 +18,7 @@ from brain.models import StudentRoster, CurrentClass, Teacher
 from brain.scripts.webscrape import run_all_teachers
 from ixl.models import IXLSkill, IXLStats, IXLSkillScores
 from brain.models import ReadingStats
+from badges.management.commands import checkbadges
 
 import csv
 
@@ -41,11 +40,11 @@ class Command(BaseCommand):
         for x in range(len(csv_list)):  # Starts to sort all the data into 1 csv for each data type
             current_file = csv_list[x]
             # Figure out which file we're working with (lexile, Score-Grid, or ixlstats)
-            if 'lexile' in current_file:
+            if 'LexileScoresReport' in current_file:
                 lexile_files.append(current_file)
-            elif 'booksReadByStudent' in current_file:
+            elif 'BooksFinishedReport' in current_file:
                 myon_book_files.append(current_file)
-            elif 'timeSpentByStudent' in current_file:
+            elif 'TimeSpentReading' in current_file:
                 myon_time_files.append(current_file)
             elif 'Score-Grid' in current_file:
                 score_grid_files.append(current_file)
@@ -77,20 +76,23 @@ class Command(BaseCommand):
             self.import_ixl_scores(file)
             os.remove('brain/scripts/csvdownloads/' + file)
 
+        print("Updating Stickers")
+        checkbadges.checkbadges("2nd")
+
 
     def import_ixl_scores(self, file_name):
         indexed = False
-        print("Starting Import of IXL Grid")
+        print("Starting Import of IXL Grid - {}".format(file_name))
         dataReader = csv.reader(open('brain/scripts/csvdownloads/' + file_name), delimiter=',', quotechar='"')
         if self.check_exercise_accuracy(dataReader):
-            # print("All Exercises match.")
+            #print("All Exercises match.")
             dataReader = csv.reader(open('brain/scripts/csvdownloads/' + file_name), delimiter=',', quotechar='"')
             for row in dataReader:
                 if row[0] == 'Category':  # Go through and replace student names with their Newton IDs.
                     if not indexed:
                         count = 3
                         for column in row:
-                            #print(column)
+                            # print(column)
                             if column in ['Category', 'Skill code', 'Skill name', ]:
                                 continue
                             elif column not in ['Category', 'Skill code', 'Skill name', ]:
@@ -99,12 +101,14 @@ class Command(BaseCommand):
 
                                 first_name=mo.group(1)
                                 last_name=mo.group(2)
+                                # print ("Trying {} {}".format(first_name, last_name))
+
                                 student_id = StudentRoster.objects.get(first_name__icontains=first_name,
                                                                 last_name__icontains = last_name)
                                 row[count] = student_id.student_id
                             count += 1
                         names_list = row
-                        print(names_list)
+                        #print(names_list)
                         indexed = True
 
                 # For the rest of the rows:
@@ -112,23 +116,27 @@ class Command(BaseCommand):
                     current_skill_id = row[1]
                     count = 0
                     for column in row:
-                        print("{} is the column. The skill ID is {}".format(column, current_skill_id))
+                        # print("{} is the column. The skill ID is {}".format(column, current_skill_id))
                         if self.is_number(column):
                             score = int(column)
-                            student_id = StudentRoster.objects.get(student_id=names_list[count])
+                            try:
+                                student_id = StudentRoster.objects.get(student_id=names_list[count])
+                            except:
+                                pass
+                                # print("There is no student {} Found in the database".format(names_list[count]))
                             try:
                                 skill_id = IXLSkill.objects.get(skill_id=current_skill_id)
-                                print("Found a number. The number is {}".format(column))
+                                #print("Found a number. The number is {}".format(column))
                                 # ixl_skill_id = skill_id.pk
                                 #todays_date = datetime.date.today()
                                 #print("Today's Date:{}".format(todays_date))
-                                print("Score: {}  Student: {}  IXL: {}".format(score, student_id, skill_id))
+                                # print("Score: {}  Student: {}  IXL: {}".format(score, student_id, skill_id))
                                 defaults = {'score': score,}
                                 obj, created = IXLSkillScores.objects.update_or_create(
                                     student_id=student_id,
                                     ixl_skill_id=skill_id,
                                     defaults=defaults)
-                                print("Saved)")
+                                # print("Saved)")
                             except:
                                 pass
                         else:
@@ -136,6 +144,7 @@ class Command(BaseCommand):
                             pass
                         count += 1
         else:
+            pass
             print("Exercises have changed!")
 
     def is_number(self, s):
@@ -162,15 +171,14 @@ class Command(BaseCommand):
                 pass
             else:
                 try:
-                    skill = IXLSkill.objects.get(category=row[0], skill_id=row[1])
+                    category = row[0].rstrip()
+                    print("Trying Category: {} Skill ID: {}".format(category, row[1]))
+                    skill = IXLSkill.objects.get(category=category, skill_id=row[1])
                 except:
                     output = False
-                    print("There was no IXL Skill found with Category {}, ID {}, and Description {}".format(row[0],
-                                                                                                            row[1],
-                                                                                                            row[2]))
-                    # Raise the alarm.
-                    # Start fixing what has been changed.
-                    # fix_changed_skills()
+                    return output
+
+
         return output
 
     def import_ixl_stats(self, file):
@@ -178,7 +186,11 @@ class Command(BaseCommand):
         dataReader = csv.reader(open('brain/scripts/csvdownloads/' + file), delimiter=',', quotechar='"')
         for row in dataReader:
             full_name = row[0]
-            first_name, last_name = full_name.split(" ")
+            try:
+                first_name, last_name = full_name.split(" ")
+            except:
+                first_name, last_name1, last_name2 = full_name.split(" ")
+                last_name = last_name1 + last_name2
             practiced_string = row[1]
             if 'days ago' in practiced_string:
                 number, delete1, delete2 = practiced_string.split(" ")
@@ -216,32 +228,30 @@ class Command(BaseCommand):
             except:
                 pass
 
-
-
-
     def import_lexile_stats(self,file):
         print("Importing Lexile Stats")
         dataReader = csv.reader(open('brain/scripts/csvdownloads/' + file), delimiter=',', quotechar='"')
         for row in dataReader:
-            if row[0] == 'student_user_id':
+            if row[0] == "Last Name":
                 continue
-            elif row[0] != 'student_user_id':
-                last_name = str(row[2])
-                first_name = str(row[3])
-                starting_lexile = row[6]
+            elif row[0] != "Last Name":
+                last_name = str(row[0])
+                first_name = str(row[1])
+                starting_lexile = row[7]
+                lexile_progress = row[11]
                 try:
                     starting_lexile = int(starting_lexile)
                     if starting_lexile < 0:
                         starting_lexile = 0
                 except:
                     starting_lexile = 0
-                test_count = row[12]
-                lexile_score = row[8]
+                #test_count = row[12]
+                lexile_score = row[9]
                 try:
                     student = StudentRoster.objects.get(first_name__icontains=first_name,
                                                         last_name__icontains=last_name)
-                    defaults = {'current_lexile': lexile_score, 'myon_tests_taken': test_count,
-                                'starting_lexile':starting_lexile}
+                    defaults = {'current_lexile': lexile_score, #'myon_tests_taken': test_count,
+                                'starting_lexile':starting_lexile, 'lexile_progress':lexile_progress}
                     obj, created = ReadingStats.objects.update_or_create(
                         student=student,
                         defaults=defaults)
@@ -253,13 +263,13 @@ class Command(BaseCommand):
         print("Importing Myon Time Stats")
         dataReader = csv.reader(open('brain/scripts/csvdownloads/' + file), delimiter=',', quotechar='"')
         for row in dataReader:
-            if row[0] == 'student_user_id':
+            if row[0] == "Last Name":
                 continue
-            elif row[0] != 'student_user_id':
-                last_name = str(row[2])
-                first_name = str(row[3])
+            elif row[0] != "Last Name":
+                last_name = str(row[0])
+                first_name = str(row[1])
                 try:
-                    myon_time_spent = round(float(row[6]) * 60)
+                    myon_time_spent = round(float(row[4]) * 60)
                 except:
                     myon_time_spent = 0
                 try:
@@ -276,13 +286,13 @@ class Command(BaseCommand):
         print("Importing myon book Stats")
         dataReader = csv.reader(open('brain/scripts/csvdownloads/' + file), delimiter=',', quotechar='"')
         for row in dataReader:
-            if row[0] == 'student_user_id':
+            if row[0] == "Last Name":
                 continue
-            elif row[0] != 'student_user_id':
-                last_name = str(row[2])
-                first_name = str(row[3])
-                myon_books_finished = row[6]
-                myon_books_opened = row[8]
+            elif row[0] != "Last Name":
+                last_name = str(row[0])
+                first_name = str(row[1])
+                myon_books_finished = row[4]
+                myon_books_opened = row[5]
                 try:
                     student = StudentRoster.objects.get(first_name__icontains=first_name,
                                                         last_name__icontains=last_name)
@@ -292,7 +302,3 @@ class Command(BaseCommand):
                         defaults=defaults)
                 except:
                     pass
-
-
-
-                    #       myon_time_spent

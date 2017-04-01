@@ -47,24 +47,8 @@ class IXLSkillScores(models.Model): # Intersection of IXLSkill and Student Roste
 
 
 class Challenge(models.Model): # The saved recommendation sheet to check for completion
-    #student_id = models.ForeignKey(StudentRoster, on_delete=models.CASCADE,)
-    title = models.CharField(max_length=250, default="Challenge", verbose_name="Challenge Title")
+    title = models.CharField(max_length=250, default="Challenge", verbose_name="Challenge Title", unique=True)
     date = models.DateField(default=datetime.date.today, verbose_name='Date Created')
-    exercise1 = models.ForeignKey(IXLSkill,blank=True, null=True,   related_name="exercise_1")
-    exercise2 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_2")
-    exercise3 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_3")
-    exercise4 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_4")
-    exercise5 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_5")
-    exercise6 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_6")
-    exercise7 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_7")
-    exercise8 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_8")
-    exercise9 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_9")
-    exercise10 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_10")
-    exercise11 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_11")
-    exercise12 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_12")
-    exercise13 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_13")
-    exercise14 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_14")
-    exercise15 = models.ForeignKey(IXLSkill,blank=True, null=True,  related_name="exercise_15")
 
     def __str__(self):
         return '%s' % (self.title,)
@@ -72,22 +56,67 @@ class Challenge(models.Model): # The saved recommendation sheet to check for com
     class Meta:
         verbose_name = 'IXL Challenge'
         verbose_name_plural = 'IXL Challenges'
-        ordering = ['date', 'title']
+        ordering = ['-date', 'title']
 
-class ChallengeAssignment(models.Model):
+
+class ChallengeExercise(models.Model):
+    challenge = models.ForeignKey(Challenge)
+    exercise_id = models.CharField(max_length=10)
+    required_score = models.IntegerField(default=80, blank=False, null=False)
+    def __str__(self):
+        return '%s - %s' % (self.challenge, self.exercise_id)
+
+    class Meta:
+        unique_together = (("challenge", "exercise_id"),)
+
+
+class ChallengeAssignment(models.Model): # Assigns a challenge to a specific student(s)
     student_id = models.ForeignKey(StudentRoster, on_delete=models.CASCADE, )
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     date_assigned = models.DateField(default=datetime.date.today, verbose_name='Date Assigned')
-    current_challenge = models.BooleanField(default=True)
-    complete = models.BooleanField(default=False)
+    #current_challenge = models.BooleanField(default=True)
+    #complete = models.BooleanField(default=False)
+
+    def current(self):
+        assignment = ChallengeAssignment.objects.filter(student_id=self.student_id).latest('date_assigned')
+        if assignment.pk == self.pk:
+            return True
+        else:
+            return False
+    current.boolean = True
+
+    def completed(self):
+        exercises = ChallengeExercise.objects.filter(challenge=self.challenge)
+        total_complete, total_questions = 0, 0
+        for exercise in exercises:
+            try:
+                total_questions += 1
+                ixl_skill_id = IXLSkill.objects.get(skill_id=exercise.exercise_id)
+                score = IXLSkillScores.objects.get(student_id=self.student_id, ixl_skill_id=ixl_skill_id)
+                required_score = exercise.required_score
+
+                if score.score >= required_score:
+                    total_complete += 1
+                else:
+                    pass
+            except:
+                pass
+        if total_complete == total_questions:
+            return "COMPLETE"
+        else:
+            return '{}/{}'.format(total_complete, total_questions)
+
+
+
+
 
     def __str__(self):
         return '%s : %s' % (self.challenge, self.student_id)
 
     class Meta:
         verbose_name = 'IXL Challenge Assignment'
-        verbose_name_plural = 'IXL Challenge Assignmentss'
-        ordering = ['date_assigned', 'challenge', 'student_id']
+        verbose_name_plural = 'IXL Challenge Assignments'
+        ordering = ['-date_assigned', 'challenge', 'student_id']
 
 
 

@@ -135,7 +135,77 @@ class NWEAScore(models.Model):
         return '{} {}: {} {} - {}'.format(self.student.first_name, self.student.last_name, self.season, self.year, scores)
 
     class Meta:
-        verbose_name = 'NWEA Score'
-        verbose_name_plural = 'NWEA Scores'
+        verbose_name = 'NWEA Math Breakdown'
+        verbose_name_plural = 'NWEA Math Breakdowns'
         unique_together = ("student", "year", "season")
 
+class NWEAAverage(models.Model):
+    FALL = 1
+    WINTER = 2
+    SPRING = 3
+
+    FOURTEEN = '14-15'
+    FIFTEEN = '15-16'
+    SIXTEEN = '16-17'
+    SEVENTEEN = '17-18'
+    EIGHTEEN = '18-19'
+    NINETEEN = '19-20'
+    TWENTY = '20-21'
+    TWENTYONE = '21-22'
+
+    SESSION_CHOICES = (
+        (FALL, 'Fall'),
+        (WINTER, 'Winter'),
+        (SPRING, 'Spring'),
+    )
+
+    YEAR_CHOICES = (
+        (FOURTEEN, '14-15'),
+        (FIFTEEN, '15-16'),
+        (SIXTEEN, '16-17'),
+        (SEVENTEEN, '17-18'),
+        (EIGHTEEN, '18-19'),
+        (NINETEEN, '19-20'),
+        (TWENTY, '20-21'),
+        (TWENTYONE, '21-22'),
+    )
+
+    student = models.ForeignKey(StudentRoster, on_delete=models.CASCADE)
+    year = models.CharField(max_length=50, choices=YEAR_CHOICES, default=SIXTEEN)
+    math_fall = models.IntegerField(blank=True, null=True)
+    reading_fall = models.IntegerField(blank=True, null=True)
+    lexile_fall = models.IntegerField(blank=True, null=True)
+    math_winter = models.IntegerField(blank=True, null=True)
+    reading_winter = models.IntegerField(blank=True, null=True)
+    lexile_winter = models.IntegerField(blank=True, null=True)
+    math_spring = models.IntegerField(blank=True, null=True)
+    reading_spring = models.IntegerField(blank=True, null=True)
+    lexile_spring = models.IntegerField(blank=True, null=True)
+
+class NWEAGoal(models.Model):
+    FOURTEEN = '14-15'
+    FIFTEEN = '15-16'
+    SIXTEEN = '16-17'
+    SEVENTEEN = '17-18'
+    EIGHTEEN = '18-19'
+    NINETEEN = '19-20'
+    TWENTY = '20-21'
+    TWENTYONE = '21-22'
+
+    YEAR_CHOICES = (
+        (FOURTEEN, '14-15'),
+        (FIFTEEN, '15-16'),
+        (SIXTEEN, '16-17'),
+        (SEVENTEEN, '17-18'),
+        (EIGHTEEN, '18-19'),
+        (NINETEEN, '19-20'),
+        (TWENTY, '20-21'),
+        (TWENTYONE, '21-22'),
+    )
+
+    student = models.ForeignKey(StudentRoster, on_delete=models.CASCADE)
+    year = models.CharField(max_length=50, choices=YEAR_CHOICES, default=SIXTEEN)
+    math_winter = models.IntegerField(blank=True, null=True)
+    math_spring = models.IntegerField(blank=True, null=True)
+    reading_winter = models.IntegerField(blank=True, null=True)
+    reading_spring = models.IntegerField(blank=True, null=True)

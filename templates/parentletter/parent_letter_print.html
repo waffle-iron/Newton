@@ -1,0 +1,95 @@
+{% extends "amc/print_layout.html" %}
+{% load brain_extras %}
+{% load mathfilters %}
+{% block title %}Parent Letters{% endblock title %}
+<style>
+    p{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif}
+</style>
+{% block content %}
+{% for student, ixl_challenge, amc_combinations, amc_test_type, amc_test_name in export_list %}
+{#    {% for student, ixl_challenge, amc_combinations, amc_test_type, amc_test_name in item %}#}
+        <div class="row" style="width: 780px;">
+            <div>
+                <h3 style="position: relative; line-height: 1.1">{{ student.first_name }} {{ student.last_name.0 }}'s Math Work for the Week of {{ today|date:"n/j" }}</h3>
+                <div><h6>Here's what {{ student.first_name }} {{ last_name.0 }} is working on this week!</h6></div>
+            </div>
+        <h4>American Math Challenge</h4>
+        <div class="row">
+
+
+        {% if student.gender == "M" %}
+            <a>This week {{ student.first_name }} is working on this list of math facts. On Friday he'll have to do 20 of these problems in 2 minutes. Practice these facts with him until he knows the answers by heart!</a>
+            {% elif student.gender == "F" %}
+                        <a>This week {{ student.first_name }} is working on this list of math facts. On Friday she'll have to do 20 of these problems in 2 minutes. Practice these facts with her until she knows the answers by heart!</a>
+
+        {% endif %}
+
+        </div>
+        {% if amc_test_type != "IMAGE" %}
+            {% for combo in amc_combinations %}
+                <div style=" text-align: center;padding:2px; width: 18%; float: left;padding-top: 10px;padding-bottom:10px;font-size: 1em; border-style: solid; border-width: 1px;">
+                    {% if amc_test_type == "ADD" %}
+                        {% if combo.0 == combo.1 %}
+                            {{ combo.0 }} + {{ combo.1 }} =
+                            {{ combo.0 |add:combo.1 }}
+                        {% else %}
+                            {{ combo.0 }} + {{ combo.1 }} =
+                            {{ combo.0 |add:combo.1 }}
+                            </div>
+                <div style=" text-align: center;padding:2px; width: 18%; float: left;padding-top: 10px;padding-bottom:10px;font-size: 1em; border-style: solid; border-width: 1px;">
+
+                            {{ combo.1 }} + {{ combo.0 }} =
+                            {{ combo.1 |add:combo.0 }}
+                        {% endif %}
+                    {% elif amc_test_type == "SUB" %}
+                        {{ combo.0 }} - {{ combo.1 }} =
+                        {{ combo.0 |sub:combo.1 }}
+
+                    {% elif list_type == "IMAGE" %}
+                    {% endif %}
+                    </div>
+            {% endfor %}
+        {% endif %}
+
+        <div style="clear: both; float: left; display: block; position: relative;">
+
+ <h4>IXL Challenge</h4>
+
+        {% if student.gender == "M" %}
+            <p>{{ student.first_name }} has these exercises to do on the website IXL.com. These are skills that we've identified as being a good fit for him. If {{ student.first_name }} scores 80 or more in all 5 exercises by the end of the week, he'll get a prize!
+            </p>
+            {% elif student.gender == "F" %}
+<p>{{ student.first_name }} has these exercises to do on the website IXL.com. These are skills that we've identified as being a good fit for her. If {{ student.first_name }} scores 80 or more in all 5 exercises by the end of the week, she'll get a prize!
+            </p>
+        {% endif %}
+        </div>
+        <table class="challenge" style="width:500px">
+                            <tr>
+                                <th style="font-size: 1.5em;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif">Level</th>
+                                <th style="font-size: 1.5em;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif">ID</th>
+                                <th style="font-size: 1.5em;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif">Category</th>
+                            </tr>
+                            {% for exercise in ixl_challenge %}
+                                {% with exercise.0 as exercise_id %}
+                                    {% with exercise.1 as exercise_description %}
+                                            <tr>
+                                                <td style="font-size: 1.2em; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif">{{ exercise_id.0 }}</td>
+                                                <td style="font-size: 1.2em; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif"><strong
+                                                        style="font-size: 1.1em;">{{ exercise_id |slice:"2:" }}</strong>
+                                                </td>
+                                                <td style="font-size: 1.2em; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif">{{ exercise_description.category }}</td>
+                                            </tr>
+                                        {% endwith %}
+                                {% endwith %}
+
+
+                            {% endfor %}
+                        </table>
+
+        </div>
+        <table class="page"></table>
+        <table style="page-break-after: always;"></table>
+{#        {% endfor %}#}
+{% endfor %}
+    {#    <body onload="window.print()">#}
+{% endblock content %}
