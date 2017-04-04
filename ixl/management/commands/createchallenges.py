@@ -21,7 +21,7 @@ from libs.functions import nwea_recommended_skills_list as nwea_skills
 
 
 assigned_teachers = ['Cyphers', 'Trost', 'Mackinnon']
-teachers_addition = 'D-A.4'
+teachers_addition = ['D-M.6', 'D-M.7', 'D-R.4',]
 
 class Command(BaseCommand):
     help = 'Assigns a custom challenge to everyone in the classes listed.'
@@ -59,17 +59,20 @@ class Command(BaseCommand):
 
                 exercise_count = 0
                 if teachers_addition != "None":
-                    try:
-                        skill_score = IXLSkillScores.objects.get(student_id=student, ixl_skill_id__skill_id=teachers_addition)
-                        if skill_score.score < 96:
-                            exercise_count = 1
-                            challenge_exercise = ChallengeExercise.objects.create(challenge=current_challenge, exercise_id=teachers_addition,
-                                                                                  required_score=100,)
-                    except:
-                        exercise_count = 1
-                        challenge_exercise = ChallengeExercise.objects.create(challenge=current_challenge,
-                                                                              exercise_id=teachers_addition,
-                                                                              required_score = 100)
+                    for addition in teachers_addition:
+                        try:
+                            skill_score = IXLSkillScores.objects.get(student_id=student, ixl_skill_id__skill_id=addition)
+                            if skill_score.score < 96:
+                                exercise_count += 1
+                                challenge_exercise = ChallengeExercise.objects.create(challenge=current_challenge, exercise_id=addition,
+                                                                                      required_score=100,)
+                        except:
+                            exercise_count += 1
+                            challenge_exercise = ChallengeExercise.objects.create(challenge=current_challenge,
+                                                                                  exercise_id=addition,
+                                                                                  required_score = 100)
+                        if exercise_count == 1:
+                            break
 
                 for skill in skill_list:
                     if skill[3] in domain_list or exercise_count >= 5:

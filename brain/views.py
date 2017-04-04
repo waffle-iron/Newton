@@ -227,10 +227,6 @@ def class_list(request, year="16-17", grade="2nd", teacher="Trost"):
 
 
 
-
-
-
-
     return render(request, 'brain/class_list.html', {'student_list': student_list, 'year': year, 'grade': grade,
                                                      'teacher': teacher, 'teacher_object': teacher_object,
                                                      'reading_list': reading_list,
@@ -617,10 +613,21 @@ def morning_message(request, grade, teacher):
         specials = None
         box1 = None
 
+    student_list = StudentRoster.objects.filter(current_class__grade=grade) \
+        .filter(current_class__teacher__last_name=teacher)
+
+    challenge_list = []
+    for student in student_list:
+        challenge = ChallengeAssignment.objects.filter(student_id=student).latest('date_assigned')
+        progress = challenge.completed()
+        challenge_list.append((challenge, progress))
+
+
     return render(request, 'brain/morning_message.html', {'teacher': teacher, 'grade': grade,
                                                           'todays_date': todays_date, 'message': message,
                                                           'specials': specials, 'box1': box1,
-                                                          'all_morning_message_settings': all_morning_message_settings, })
+                                                          'all_morning_message_settings': all_morning_message_settings,
+                                                          'challenge_list':challenge_list,})
 
 
 def password(request, grade, teacher, studentid):

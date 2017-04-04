@@ -215,3 +215,10 @@ class Schedule(models.Model):
 
     def __str__(self):
         return "{}'s {} Schedule".format(self.teacher, self.day)
+
+
+class DataUpdate(models.Model):
+    dateandtime = models.DateTimeField(default=now)
+
+    class Meta:
+        ordering = ['-dateandtime']

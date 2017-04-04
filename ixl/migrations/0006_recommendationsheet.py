@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('brain', '0023_accountinfo'),
-        ('ixl', '0005_auto_20160817_1458'),
+        ('ixl', '0004_auto_20160812_1506'),  # This did rely on migration 0005, but that migration is gone
     ]
 
     operations = [
