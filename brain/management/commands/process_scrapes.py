@@ -8,6 +8,7 @@ import datetime
 import sys,os
 from os import listdir
 import re
+from brain.models import DataUpdate
 sys.path.append(your_djangoproject_home)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "newton.settings")
 
@@ -76,8 +77,11 @@ class Command(BaseCommand):
             self.import_ixl_scores(file)
             os.remove('brain/scripts/csvdownloads/' + file)
 
+        print("Setting Updated Date")
+        DataUpdate.objects.create()
         print("Updating Stickers")
         checkbadges.checkbadges("2nd")
+
 
 
     def import_ixl_scores(self, file_name):

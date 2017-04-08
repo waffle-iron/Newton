@@ -4,7 +4,7 @@ from django.forms import TextInput, Textarea
 from django.db import models
 
 from .models import Teacher, CurrentClass, StudentRoster, AccountInfo, \
-    ReadingStats, MorningMessage, MorningMessageSettings, Subject, Schedule
+    ReadingStats, MorningMessage, MorningMessageSettings, Subject, Schedule, DataUpdate
 
 
 '''
@@ -14,6 +14,8 @@ class BrainAdminSite(AdminSite):
 admin.site.site_title = 'Newton Administration'
 admin.site.site_header = 'Newton Administration'
 
+class DataUpdateAdmin(admin.ModelAdmin):
+    list_display = ('dateandtime',)
 
 class StudentRosterAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -94,4 +96,5 @@ admin.site.register(MorningMessage, MorningMessageAdmin)
 admin.site.register(MorningMessageSettings,)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
+admin.site.register(DataUpdate, DataUpdateAdmin)
 

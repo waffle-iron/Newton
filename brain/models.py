@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import date
-from django.utils.timezone import now
+from django.utils.timezone import now, timedelta
 # Create your models here.
 
 
@@ -212,13 +212,25 @@ class Schedule(models.Model):
     subject6 = models.ForeignKey(Subject,verbose_name='Sixth Class',related_name='subject6')
     subject7 = models.ForeignKey(Subject, verbose_name='Seventh Class', related_name='subject7')
 
-
     def __str__(self):
         return "{}'s {} Schedule".format(self.teacher, self.day)
 
 
 class DataUpdate(models.Model):
-    dateandtime = models.DateTimeField(default=now)
+    current_time = now() - timedelta(hours=4)
+    dateandtime = models.DateTimeField(default=current_time)
 
     class Meta:
         ordering = ['-dateandtime']
+
+    def __str__(self):
+        return "{}".format(self.dateandtime.strftime("%A, %B %d, %I:%M %p"),)
+
+
+
+
+
+
+
+
+

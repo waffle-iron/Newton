@@ -17,6 +17,7 @@ from videos.models import Video
 from badges.models import Sticker, StickerAssignment, Avatar
 from brain.forms import MorningMessageForm
 from brain.templatetags.brain_extras import challenges_completed
+from .models import DataUpdate
 
 GREETINGS = ['Hola', 'Hey there', 'Welcome back', 'Great to see you', "Let's do it", 'Bonjour',
              'You rock', "You've got this", "Work Hard, Get Smart", "Rock it", "Get ready to learn", "Power up",
@@ -35,35 +36,16 @@ ICONS = ['fa-bolt', 'fa-bicycle', 'fa-graduation-cap', 'fa-paint-brush', 'fa-gif
          'fa-space-shuttle', 'fa-cog', 'fa-flag', 'fa-check-square', ]
 
 STYLEDICT = {
-    'Spanish': ['globe', "#F092B0"
-                ],
-    'Art': ['paint-brush', "#F9845B"
-            ],
-
-    'Gym': ['dribbble', "#3079AB"
-            ],
-
-    'Dance': ['music', "#c38cd4"
-              ],
-
-    'Science': ['flask', "#2C9676"
-                ],
-
-    'Reading': ['book', "#39ADD1"
-                ],
-
-    'Math': ['plus', "#E15258"
-             ],
-
-    'Writing': ['pencil', "#E0AB18"
-                ],
-
-    'Core Knowledge': ['university', "#51B46D"
-                       ],
-
-    'Reading Mastery': ['comments', "#eb7728"
-                        ],
-
+    'Spanish': ['globe', "#F092B0"],
+    'Art': ['paint-brush', "#F9845B"],
+    'Gym': ['dribbble', "#3079AB"],
+    'Dance': ['music', "#c38cd4"],
+    'Science': ['flask', "#2C9676"],
+    'Reading': ['book', "#39ADD1"],
+    'Math': ['plus', "#E15258"],
+    'Writing': ['pencil', "#E0AB18"],
+    'Core Knowledge': ['university', "#51B46D"],
+    'Reading Mastery': ['comments', "#eb7728"],
 }
 
 
@@ -164,23 +146,23 @@ def class_list(request, year="16-17", grade="2nd", teacher="Trost"):
                             ]
 
     report_card_description = [
-    "Uses addition and subtraction within 100 to solve word problems",
-    "Adds and subtracts fluently within 20",
-    "Determines whether a group of objects has an odd or even number of members",
-    "Uses addition to find the total number of objects arranged in rectangular arrays",
-    "Measures the length of an object",
-    "Tells and writes time to the nearest 5 minutes",
-     "Reads a Bar Graph",
-     "Draws a Bar Graph",
-     "Reads a Picture Graph",
-     "Creates a Picture Graph",
-     "Counts within 1000; skip counts by 5’s, 10’s and 100’s",
-     "Reads and writes numbers to 1000 (words to digits)",
-     "Reads and writes numbers to 1000 (digits to words)",
-     "Compares two three-digits numbers",
-     "Fluently adds and subtracts within 100",
-     "Mentally adds 10 o 100 to/from a given number 100-900",
-     "Recognizes and draws shapes with specified attributes",
+        "Uses addition and subtraction within 100 to solve word problems",
+        "Adds and subtracts fluently within 20",
+        "Determines whether a group of objects has an odd or even number of members",
+        "Uses addition to find the total number of objects arranged in rectangular arrays",
+        "Measures the length of an object",
+        "Tells and writes time to the nearest 5 minutes",
+        "Reads a Bar Graph",
+        "Draws a Bar Graph",
+        "Reads a Picture Graph",
+        "Creates a Picture Graph",
+        "Counts within 1000; skip counts by 5’s, 10’s and 100’s",
+        "Reads and writes numbers to 1000 (words to digits)",
+        "Reads and writes numbers to 1000 (digits to words)",
+        "Compares two three-digits numbers",
+        "Fluently adds and subtracts within 100",
+        "Mentally adds 10 o 100 to/from a given number 100-900",
+        "Recognizes and draws shapes with specified attributes",
     ]
     report_card_ixl_match = [
         'D-L.10',
@@ -202,30 +184,28 @@ def class_list(request, year="16-17", grade="2nd", teacher="Trost"):
         'D-T.3',
     ]
 
-
-
     spring_cba_student_grid = []
     for student in student_list:
         studentname = "{} {}.".format(student.first_name, student.last_name[0])
         ixl_score_list = [studentname, ]
-        for i in range(17): # Go through each exercise and get the score
+        for i in range(17):  # Go through each exercise and get the score
             if report_card_ixl_match[i] != None:
                 try:
-                    score = IXLSkillScores.objects.get(student_id=student, ixl_skill_id__skill_id=report_card_ixl_match[i])
+                    score = IXLSkillScores.objects.get(student_id=student,
+                                                       ixl_skill_id__skill_id=report_card_ixl_match[i])
                     score = score.score
                 except:
                     score = 0
             else:
                 score = None
-            ixl_score_list.append(score)# Append the score on the score list
-        spring_cba_student_grid.append(ixl_score_list) #when all done, append the score list and go to next student
+            ixl_score_list.append(score)  # Append the score on the score list
+        spring_cba_student_grid.append(ixl_score_list)  # when all done, append the score list and go to next student
         # report_card_ixl_match.insert(0, "IXL:")
-    #spring_cba_student_grid.append(report_card_ixl_match)
+        # spring_cba_student_grid.append(report_card_ixl_match)
 
-##-------------------------END CBA GRID-----------------------##
+    ##-------------------------END CBA GRID-----------------------##
 
-
-
+    last_updated = DataUpdate.objects.first()
 
     return render(request, 'brain/class_list.html', {'student_list': student_list, 'year': year, 'grade': grade,
                                                      'teacher': teacher, 'teacher_object': teacher_object,
@@ -236,6 +216,7 @@ def class_list(request, year="16-17", grade="2nd", teacher="Trost"):
                                                      'spring_cba_student_grid': spring_cba_student_grid,
                                                      'report_card_description': report_card_description,
                                                      'report_card_ixl_match': report_card_ixl_match,
+                                                     'last_updated':last_updated
 
                                                      })
 
@@ -422,12 +403,15 @@ def portal_student(request, teacher, grade,
 
     ####---------------------END GET VIDEOS-------------------------------####
     ####---------------------START LEXILE COUNTDOWN-------------------------------####
-    lexile_challenge_dates = ['2017/01/26', '2017/02/09', '2017/02/23', '2017/03/09', '2017/03/23', '2017/01/26',
-                              '2017/04/06', '2017/04/20', '2017/05/04', '2017/05/18', '2017/06/01', '2017/06/15', ]
+    lexile_challenge_dates = [
+        # '2017/01/26', '2017/02/09', '2017/02/23', '2017/03/09', '2017/03/23', '2017/01/26',
+                              '2017/04/06',
+                              '2017/04/27',
+                              '2017/05/11', '2017/05/25', '2017/06/08',  ]
     lexile_countdown = False
+    todays_date = datetime.today().day
     for x in lexile_challenge_dates:
         scheduled_date = datetime.strptime(x, "%Y/%m/%d").day
-        todays_date = datetime.today().day
         if todays_date > scheduled_date:
             continue
         else:
@@ -588,6 +572,7 @@ def morning_message(request, grade, teacher):
     todays_date = date_object.strftime("%A, %B %e, %Y")  # Format the date
     try:  # Get the Morning Message settings for that teacher
         all_morning_message_settings = MorningMessageSettings.objects.get(teacher__last_name=teacher)
+        ending_comment = all_morning_message_settings.endingcomment
         if date_object.strftime("%A") == "Monday":
             specials = all_morning_message_settings.specialsmonday
             box1 = all_morning_message_settings.box1monday
@@ -627,7 +612,7 @@ def morning_message(request, grade, teacher):
                                                           'todays_date': todays_date, 'message': message,
                                                           'specials': specials, 'box1': box1,
                                                           'all_morning_message_settings': all_morning_message_settings,
-                                                          'challenge_list':challenge_list,})
+                                                          'challenge_list': challenge_list,'ending_comment':ending_comment })
 
 
 def password(request, grade, teacher, studentid):
