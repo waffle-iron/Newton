@@ -4,7 +4,8 @@ from django.forms import TextInput, Textarea
 from django.db import models
 
 from .models import Teacher, CurrentClass, StudentRoster, AccountInfo, \
-    ReadingStats, MorningMessage, MorningMessageSettings, Subject, Schedule, DataUpdate
+    ReadingStats, MorningMessage, MorningMessageSettings, Subject, Schedule, DataUpdate, SchoolDay, SubjectUnit, \
+    WeeklyWord, BehaviorReport
 
 
 '''
@@ -17,15 +18,20 @@ admin.site.site_header = 'Newton Administration'
 class DataUpdateAdmin(admin.ModelAdmin):
     list_display = ('dateandtime',)
 
+class TeacherAdmin(admin.ModelAdmin):
+    list_display = ('title','first_name','last_name', 'email', 'remindURL', 'workphone')
+    list_editable = ('email', 'remindURL', 'workphone')
+
 class StudentRosterAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['first_name', 'last_name', 'current_class']}),
-        ('Extra Details', {'fields': ['date_of_birth', 'gender', 'email']}),
+        ('Name and Class', {'fields': ['first_name', 'last_name', 'current_class']}),
+        ('Extra Details', {'fields': ['date_of_birth', 'gender', 'email', 'email2']}),
     ]
     list_display = ('first_name', 'last_name', 'current_class', 'gender', 'date_of_birth', )
     list_filter = ['current_class', 'gender', ]
     radio_fields = {'gender': admin.HORIZONTAL}
-    search_fields = ['first_name', 'last_name',]
+    search_fields = ['first_name', 'last_name', 'current_class__teacher__last_name',]
+    list_editable = ['current_class']
 
 
 class StudentInline(admin.TabularInline):
@@ -87,8 +93,26 @@ class ScheduleAdmin(admin.ModelAdmin):
     list_filter = ('teacher', 'day', )
 
 
+class SchoolDayAdmin(admin.ModelAdmin):
+    list_display = ('day', 'halfday', 'noschool')
+    list_editable = ('halfday', 'noschool')
+    list_filter = ('day', 'halfday', 'noschool')
+
+class SubjectUnitAdmin(admin.ModelAdmin):
+    list_display = ['grade', 'subject', 'number', 'title', 'datestarted',]
+
+class WeeklyWordAdmin(admin.ModelAdmin):
+    list_display = ['word', 'date_taught', 'keytosuccess', 'quadrant']
+
+class BehaviorReportAdmin(admin.ModelAdmin):
+    list_display = ['student', 'school_day', 'data']
+    list_filter = [ 'data']
+    list_editable = ['data',]
+
+
+
 admin.site.register(StudentRoster, StudentRosterAdmin)
-admin.site.register(Teacher)
+admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(CurrentClass, CurrentClassAdmin)
 admin.site.register(AccountInfo, AccountInfoAdmin)
 admin.site.register(ReadingStats, ReadingStatsAdmin)
@@ -97,4 +121,7 @@ admin.site.register(MorningMessageSettings,)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(DataUpdate, DataUpdateAdmin)
-
+admin.site.register(SchoolDay, SchoolDayAdmin)
+admin.site.register(SubjectUnit, SubjectUnitAdmin)
+admin.site.register(WeeklyWord, WeeklyWordAdmin)
+admin.site.register(BehaviorReport, BehaviorReportAdmin)

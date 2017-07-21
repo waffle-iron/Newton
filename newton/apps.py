@@ -4,10 +4,13 @@ from suit.menu import ParentItem, ChildItem
 
 class SuitConfig(DjangoSuitConfig):
     menu = (
-        ParentItem('Score It!', children=[
-            ChildItem('Scores', 'scoreit.scores'),
-            ChildItem('Teacher Approval', 'scoreit.teacherapproval'),
-        ], icon='fa fa-leaf'),
+        # ParentItem('Score It!', children=[
+        #     ChildItem('Scores', 'scoreit.scores'),
+        #     ChildItem('Teacher Approval', 'scoreit.teacherapproval'),
+        # ], icon='fa fa-leaf'),
+
+        ParentItem('Grade Book', children=[
+            ChildItem('CCSS', 'gradebook.commoncorestatestandard'), ], icon='fa fa-leaf'),
 
         ParentItem('Morning Message', children=[
             ChildItem('Messages', 'brain.morningmessage'),
@@ -24,7 +27,6 @@ class SuitConfig(DjangoSuitConfig):
         ParentItem('Reading', children=[
             ChildItem('Student Stats', 'brain.readingstats'),
         ], icon='fa fa-leaf'),
-
 
         ParentItem('AMC', children=[
             ChildItem('Scores', 'amc.amctestresult'),
@@ -58,17 +60,7 @@ class SuitConfig(DjangoSuitConfig):
             ChildItem('Login Accounts','auth.user'),
             ChildItem('Grade Groups', 'auth.group'),
         ], icon='fa fa-users'),
-
-
-
-        # ParentItem('Right Side Menu', children=[
-        #     ChildItem('Password change', url='admin:password_change'),
-        #     ChildItem('Open Google', url='http://google.com', target_blank=True),
-        #
-        # ], align_right=True, icon='fa fa-cog'),
     )
-
-    #layout = 'vertical'
 
     def ready(self):
         super(SuitConfig, self).ready()
@@ -83,7 +75,6 @@ SUIT_CONFIG = {
         {'app': 'mathcgi', 'label': 'Math | CGI', 'icon': 'icon-ok'},
         {'app': 'ixl', 'label': 'Math | IXL', 'icon': 'icon-star'},
         {'app': 'nwea', 'label': 'Math | NWEA', 'icon': 'icon-road'},
-
         {'app': 'videos', 'label': 'Videos', 'icon': 'icon-facetime-video'},
         {'app': 'auth', 'label': 'Authorization', 'icon': 'icon-lock'},
     ),

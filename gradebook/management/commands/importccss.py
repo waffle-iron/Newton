@@ -20,6 +20,8 @@ class Command(BaseCommand):
         for row in self.dataReader:
             if row[0] != 'grade':  # Ignore the header row, import everything else
                 grade = row[0]
+                if grade == '2':
+                    grade = '2nd'
                 domain = row[1]
                 subdomain = row[2]
                 topic = row[3]

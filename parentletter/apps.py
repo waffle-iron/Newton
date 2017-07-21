@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class ParentletterConfig(AppConfig):
     name = 'parentletter'
-    verbose_name = 'Parent Letter'
+    verbose_name = 'Parent Letters'

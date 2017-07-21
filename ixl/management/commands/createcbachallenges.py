@@ -18,6 +18,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from brain.models import StudentRoster, CurrentClass, Teacher
 from ixl.models import ChallengeAssignment, Challenge, ChallengeExercise, IXLSkillScores
+from variables import cbaExercises
 from libs.functions import nwea_recommended_skills_list as nwea_skills
 
 assigned_teachers = ['Cyphers', 'Trost', 'Mackinnon']
@@ -91,7 +92,7 @@ class Command(BaseCommand):
                 # skill_list = nwea_skills(student,"recommended_skill_list")
                 # teachers_addition = 'None'
                 exercise_count = 0
-                for cba_skill in report_card_exercises:
+                for cba_skill in cbaExercises:
                     if exercise_count >= 5:
                         pass
                     else:

@@ -8,8 +8,10 @@
 
 {% block title %}{{ student.first_name }} | BTWA Portal {% endblock title %}
 {% block heading %}
-    <div class="row">
-        <div class="small-9 columns">
+          <div class="grid-container">
+
+    <div class="grid-x grid-margin-x">
+        <div class="small-9 cell">
             {% if teacher in second_teachers and current_avatar %}
                 <img style="margin-top:10px;width:90px;float:left"
                      src="http://newtonthinks.com/{{ current_avatar.sticker.image }}">
@@ -18,11 +20,11 @@
             <h5><a href="{% url 'brain:portalclass' grade teacher %}"><i class="fa fa-arrow-circle-left"></i> I'm
                 not {{ student.first_name }}</a></h5>
         </div>
-        <div class="small-3 columns" id="ScoreItButton">
+        <div class="small-3 cell" id="ScoreItButton">
             <br>
             {% if teacher in second_teachers %}
-                <a href="{% url 'scoreit:classlist' student.student_id %}" class="expanded button">
-                    <h6 style="margin: 0; font-size: 1.9em;"><i class="fa fa-check-square-o"></i> Score It!</h6></a>
+{#                <a href="{% url 'scoreit:classlist' student.student_id %}" class="expanded button">#}
+{#                    <h6 style="margin: 0; font-size: 1.9em;"><i class="fa fa-check-square-o"></i> Score It!</h6></a>#}
                 {% if new_avatar_choice %}
                     <a href="{% url 'badges:chooseavatar' student.student_id %}" class="expanded button"
                        style=" background-color:orangered;">
@@ -32,10 +34,12 @@
             {% endif %}
         </div>
     </div>
-
+          </div>
 
 {% endblock heading %}
 {% block content %}
+          <div class="grid-container">
+
     {% if teacher in second_teachers %}
 
         <ul class="tabs" data-tabs id="subject-tabs">
@@ -61,54 +65,54 @@
 
         <div class="tabs-panel is-active" id="math-panel">
             {% if False == True %}
-                <div class="row">
-                    <div class="large-6 columns">
+                <div class="grid-x grid-margin-x">
+                    <div class="large-6 cell">
                         <div style="background-color: #c0f0c0; border: 2px solid #5cb860" class="callout secondary">
                             <h5 style="text-align: center;line-height:1.5rem;">My NWEA Math Goal</h5>
                             <div class="row">
-                                <div class="small-1 columns">
+                                <div class="small-1 cell">
                                     <br>
                                 </div>
 
-                                <div style="text-align: center" class="small-2 columns">
+                                <div style="text-align: center" class="small-2 cell">
 
                                     <span class="success badge start">173</span><br>
                                     <a class="goalcaption">START</a>
 
                                 </div>
-                                <div class="small-2 columns goal-gap-arrows-math">
+                                <div class="small-2 cell goal-gap-arrows-math">
                                     <i class="fa fa-arrow-circle-right"></i>
 
                                 </div>
 
-                                <div style="text-align: center" class="small-2 columns">
+                                <div style="text-align: center" class="small-2 cell">
 
                                     <span class="success badge now">186</span>
                                     <br>
                                     <a class="goalcaption">NOW</a>
                                 </div>
-                                <div class="small-2 columns goal-gap-arrows-math">
+                                <div class="small-2 cell goal-gap-arrows-math">
                                     <i class="fa fa-arrow-circle-right"></i>
 
                                 </div>
 
-                                <div style="text-align: center" class="small-2 columns">
+                                <div style="text-align: center" class="small-2 cell">
                                     <span class="success badge goal">195</span><br>
                                     <a class="goalcaption">GOAL</a>
                                 </div>
-                                <div class="small-1 columns"><br></div>
+                                <div class="small-1 cell"><br></div>
 
                             </div>
 
 
                         </div>
                     </div>
-                    <div class="large-6 columns"><!-- ... --></div>
+                    <div class="large-6 cell"><!-- ... --></div>
                 </div>
             {% endif %}
 
-            <div class="row">
-                <div class="small-12 medium-6 large-4 columns">
+            <div class="grid-x grid-margin-x">
+                <div class="small-12 medium-6 large-4 cell">
 
                     <div style="background-color: #c0f0c0; border: 2px solid #5cb860" class="callout secondary">
 
@@ -124,7 +128,7 @@
 
 
                 </div>
-                <div class="small-12 medium-6 large-8 columns">
+                <div class="small-12 medium-6 large-8 cell">
                     {% if current_ixl_challenge %}
 
 
@@ -238,45 +242,45 @@
 
         </div>
         <div class="tabs-panel" id="reading-panel">
-            <div class="row">
-                <div class="large-6 columns">
+            <div class="grid-x grid-margin-x">
+                <div class="large-6 cell">
 
                     {% if readingstats.goal_lexile %}
                         <div class="callout reading-callout">
                             <h5 style="text-align: center;line-height:1.5rem;">My Lexile Goal</h5>
-                            <div class="row">
-                                <div class="small-1 columns">
+                            <div class="grid-x grid-margin-x">
+                                <div class="small-1 cell">
                                     <br>
                                 </div>
-                                <div style="text-align: center" class="small-2 columns">
+                                <div style="text-align: center" class="small-2 cell">
 
                                     <span class="success badge start">{{ readingstats.starting_lexile }}</span><br>
                                     <a class="goalcaption">START</a>
 
                                 </div>
-                                <div class="small-2 columns goal-gap-arrows-reading">
+                                <div class="small-2 cell goal-gap-arrows-reading">
                                     <i class="fa fa-arrow-right"></i>
 
                                 </div>
 
 
-                                <div style="text-align: center" class="small-2 columns">
+                                <div style="text-align: center" class="small-2 cell">
 
                                     <span class="success badge now">{{ readingstats.current_lexile }}</span>
                                     <br>
                                     <a class="goalcaption">NOW</a>
                                 </div>
 
-                                <div class="small-2 columns goal-gap-arrows-reading">
+                                <div class="small-2 cell goal-gap-arrows-reading">
                                     <i class="fa fa-arrow-right"></i>
 
                                 </div>
 
-                                <div style="text-align: center" class="small-2 columns">
+                                <div style="text-align: center" class="small-2 cell">
                                     <span class="success badge goal">{{ readingstats.goal_lexile }}</span><br>
                                     <a class="goalcaption">GOAL</a>
                                 </div>
-                                <div class="small-1 columns">
+                                <div class="small-1 cell">
                                     <br>
                                 </div>
                             </div>
@@ -284,42 +288,42 @@
                     {% endif %}
                 </div>
                 {% if readingstats.goal_dra and readingstats.starting_dra and readingstats.current_dra %}
-                    <div class="large-6 columns">
+                    <div class="large-6 cell">
                         <div class="callout reading-callout">
                             <h5 style="text-align: center;line-height:1.5rem;">My DRA Goal</h5>
-                            <div class="row">
-                                <div class="small-1 columns">
+                            <div class="grid-x grid-margin-x">
+                                <div class="small-1 cell">
                                     <br>
                                 </div>
-                                <div style="text-align: center" class="small-2 columns">
+                                <div style="text-align: center" class="small-2 cell">
 
                                     <span class="success badge start">{{ readingstats.starting_dra }}</span><br>
                                     <a class="goalcaption">START</a>
 
                                 </div>
-                                <div class="small-2 columns goal-gap-arrows-reading">
+                                <div class="small-2 cell goal-gap-arrows-reading">
                                     <i class="fa fa-arrow-right"></i>
 
                                 </div>
 
-                                <div style="text-align: center" class="small-2 columns">
+                                <div style="text-align: center" class="small-2 cell">
 
                                     <span class="success badge now">{{ readingstats.current_dra }}</span>
                                     <br>
                                     <a class="goalcaption">NOW</a>
                                 </div>
 
-                                <div class="small-2 columns goal-gap-arrows-reading">
+                                <div class="small-2 cell goal-gap-arrows-reading">
                                     <i class="fa fa-arrow-right"></i>
 
                                 </div>
 
 
-                                <div style="text-align: center" class="small-2 columns">
+                                <div style="text-align: center" class="small-2 cell">
                                     <span class="success badge goal">{{ readingstats.goal_dra }}</span><br>
                                     <a class="goalcaption">GOAL</a>
                                 </div>
-                                <div class="small-1 columns">
+                                <div class="small-1 cell">
                                     <br>
                                 </div>
                             </div>
@@ -329,8 +333,8 @@
             </div>
 
 
-            <div class="row">
-                <div class="small-12 medium-6 large-4 columns">
+            <div class="grid-x grid-margin-x">
+                <div class="small-12 medium-6 large-4 cell">
                     <div class="callout reading-callout">
                         {% if lexile_countdown > 0 %}
                             <h6>Lexile Challenge in {{ lexile_countdown }} Day{{ lexile_countdown|pluralize }}! Read to
@@ -390,7 +394,7 @@
                     </div>
 
                 </div>
-                <div class="small-12 medium-6 large-4 columns">
+                <div class="small-12 medium-6 large-4 cell">
                     {% if readingstats %}
                         <div class="callout reading-callout">
 
@@ -417,27 +421,28 @@
 
 
                 </div>
-                <div class="small-12 medium-6 large-4 columns">
+                <div class="small-12 medium-6 large-4 cell">
 
 
                 </div>
             </div>
         </div>
 
-        {#+++++++++++++++++++++++++++++++++++++BADGES TAB++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
+        {#+++++++++++++++++++++++++++++++++++++BADGES TAB++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
 
         <div class="tabs-panel" id="badge-panel">
             <h3 style="color: orange;">Your Stickers</h3>
             <p>Unlocked {{ earned_sticker_list|length }} out of 75 possible stickers</p>
-            <div class="row">
+            <div class="grid-x">
                 {% for sticker in sticker_list %}
                     {% if sticker.0 == 'title' %}
                         </div>
-                        <div class="row">
+                        <div class="grid-x">
                         <hr>
-                        <h4>&nbsp&nbsp{{ sticker.1 }}</h4>
+                        <div class="cell">
+                        <h4>&nbsp&nbsp{{ sticker.1 }}</h4></div>
                     {% else %}
-                        <div class="small-6 medium-2 large-2 columns badge-display end">
+                        <div class="small-2 cell badge-display">
                             <h6 class="badge-title">{{ sticker.0 }}</h6>
                             <img style="width: 65%; " alt="{{ sticker.4 }}"
                                  src="http://newtonthinks.com/{{ sticker.3 }}">
@@ -448,15 +453,15 @@
                 </div>
             <hr>
 
-            <div style="width:100%;">
-                <img style="margin-left: auto; display: block;margin-right: auto"
-                     src="/static/images/youramcbadges.png"></div>
-            <img style="margin-left: auto; display: block;
-    margin-right: auto" src="/static/images/amc{{ student|amc_badges_earned }}.png">
+{#            <div style="width:100%;">#}
+{#                <img style="margin-left: auto; display: block;margin-right: auto"#}
+{#                     src="/static/images/youramcbadges.png"></div>#}
+{#            <img style="margin-left: auto; display: block;#}
+{#    margin-right: auto" src="/static/images/amc{{ student|amc_badges_earned }}.png">#}
         </div>
 
 
-        {#+++++++++++++++++++++++++++++++++++++SCORE IT TAB++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
+        {#+++++++++++++++++++++++++++++++++++++SCORE IT TAB++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
 
 
 
@@ -525,11 +530,11 @@
 
         {#====================================REST OF SCHOOL'S PAGE ==========================================================#}
         <hr>
-        <div class="row small-up-1 medium-up-3 large-up-3">
+        <div class="grid-x grid-margin-x ">
 
             {#    START OF IXL BOX#}
 
-            <div class="column">
+            <div class="cell small-up-1 medium-up-3 large-up-3">
                 <a class="expanded button" style="background-color: #5cb860; "
                    href="https://www.ixl.com/signin/btwa?username={{ accountinfo.ixluser }}" target="_blank"><h3>
                     <img style="width: 15%; " src="/static/images/ixl.png"> IXL</h3></a>
@@ -599,7 +604,7 @@
             </div>
             {#    START OF MYON BOX#}
             {% if accountinfo.myonuser or myon_display %}
-                <div class="column">
+                <div class="cell">
                     <a class="expanded button" style="background-color: #3079AB"
                        href="https://www.myon.com/login/index.html?username={{ accountinfo.myonuser }}" target="_blank">
                         <h3>
@@ -649,7 +654,7 @@
             {% endif %}
 
             {#    START OF KIDS A-Z BOX#}
-            <div class="column">
+            <div class="cell">
                 <a class="expanded button" style="background-color:#e15258 " href="https://www.kidsa-z.com/main/Login"
                    target="_blank"><h3>
                     <img style="width: 15%;" src="/static/images/kidsaz.png"> Kids A-Z</h3></a>
@@ -687,5 +692,5 @@
         {#  </button>#}
         {#</div>#}
     {% endif %}
-
+              </div>
 {% endblock content %}

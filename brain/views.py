@@ -18,35 +18,7 @@ from badges.models import Sticker, StickerAssignment, Avatar
 from brain.forms import MorningMessageForm
 from brain.templatetags.brain_extras import challenges_completed
 from .models import DataUpdate
-
-GREETINGS = ['Hola', 'Hey there', 'Welcome back', 'Great to see you', "Let's do it", 'Bonjour',
-             'You rock', "You've got this", "Work Hard, Get Smart", "Rock it", "Get ready to learn", "Power up",
-             "Train your brain", "Push yourself today", "Learn something new", "Keep moving forward"]
-
-COLORS = ["#51B46D", "#F9845B", "#9e4d83", "#3079AB", "#eb7728", "#E0AB18", "#c38cd4", "#20898c",
-          "#39ADD1", "#53BBB4", "#2C9676", "#C25975", "#7D669E", "#F092B0", "#E15258", "#838CC7",
-          "#51B46D", "#F9845B", "#9e4d83", "#3079AB", "#eb7728", "#E0AB18", "#c38cd4", "#20898c",
-          "#39ADD1", "#53BBB4", "#2C9676", "#C25975", "#7D669E", "#F092B0", "#E15258", "#838CC7",
-          ]
-ICONS = ['fa-bolt', 'fa-bicycle', 'fa-graduation-cap', 'fa-paint-brush', 'fa-gift', 'fa-money',
-         'fa-lightbulb-o', 'fa-globe', 'fa-paper-plane', 'fa-sun-o', 'fa-pencil', 'fa-paw', 'fa-moon-o',
-         'fa-futbol-o', 'fa-gamepad', 'fa-dribbble', 'fa-diamond', 'fa-truck', 'fa-tree', 'fa-heart', 'fa-trophy',
-         'fa-star', 'fa-car', 'fa-smile-o', 'fa-rocket', 'fa-motorcycle', 'fa-scissors', 'fa-heart',
-         'fa-key', 'fa-shopping-cart', 'fa-magic', 'fa-leaf',
-         'fa-space-shuttle', 'fa-cog', 'fa-flag', 'fa-check-square', ]
-
-STYLEDICT = {
-    'Spanish': ['globe', "#F092B0"],
-    'Art': ['paint-brush', "#F9845B"],
-    'Gym': ['dribbble', "#3079AB"],
-    'Dance': ['music', "#c38cd4"],
-    'Science': ['flask', "#2C9676"],
-    'Reading': ['book', "#39ADD1"],
-    'Math': ['plus', "#E15258"],
-    'Writing': ['pencil', "#E0AB18"],
-    'Core Knowledge': ['university', "#51B46D"],
-    'Reading Mastery': ['comments', "#eb7728"],
-}
+from variables import *
 
 
 def school_roster(request, year="16-17"):
@@ -102,97 +74,17 @@ def class_list(request, year="16-17", grade="2nd", teacher="Trost"):
     ## End IXL Challenge ##
 
     ##-------------------------START CBA GRID-----------------------##
-    spring_cba_descriptions = ['Add/Sub 10,20,30',
-                               'Expanded Notation',
-                               'Fractions',
-                               'Half of a Group',
-                               'Round to Tens',
-                               'Read Tables',
-                               'Write Story Prob.',
-                               '2-Digit minus 1-Digit',
-                               '2-Digit Addition',
-                               '2-Digit Subtraction',
-                               'Word Prob.',
-                               'Word Prob./ Get to 100',
-                               'Estimate Sums',
-                               'Estimate Sums Word Prob.',
-                               'Clocks: 45 minutes',
-                               'Coins',
-                               'Draw 3 inch line',
-                               'Read Bar Graph',
-                               'Create Pictograph',
-                               'Sort Shapes',
-                               ]
-    spring_cba_ixl_match = ['D-G.5',
-                            'D-M.6',
-                            'D-W.2',
-                            None,
-                            'D-N.2',
-                            'D-B.6',
-                            None,
-                            'D-H.4',
-                            'D-G.6',
-                            'D-H.6',
-                            'D-L.10',
-                            'D-L.9',
-                            'D-N.5',
-                            'D-N.5',
-                            'D-Q.5',
-                            'D-P.4',
-                            'D-S.2',
-                            'D-R.2',
-                            'D-R.8',
-                            'D-R.12',
-                            ]
 
-    report_card_description = [
-        "Uses addition and subtraction within 100 to solve word problems",
-        "Adds and subtracts fluently within 20",
-        "Determines whether a group of objects has an odd or even number of members",
-        "Uses addition to find the total number of objects arranged in rectangular arrays",
-        "Measures the length of an object",
-        "Tells and writes time to the nearest 5 minutes",
-        "Reads a Bar Graph",
-        "Draws a Bar Graph",
-        "Reads a Picture Graph",
-        "Creates a Picture Graph",
-        "Counts within 1000; skip counts by 5’s, 10’s and 100’s",
-        "Reads and writes numbers to 1000 (words to digits)",
-        "Reads and writes numbers to 1000 (digits to words)",
-        "Compares two three-digits numbers",
-        "Fluently adds and subtracts within 100",
-        "Mentally adds 10 o 100 to/from a given number 100-900",
-        "Recognizes and draws shapes with specified attributes",
-    ]
-    report_card_ixl_match = [
-        'D-L.10',
-        None,
-        'D-A.9',
-        'D-E.23',
-        None,
-        'D-Q.5',
-        'D-R.2',
-        'D-R.4',
-        'D-R.7',
-        'D-R.8',
-        "D-A.4",
-        'D-C.4',
-        'D-C.5',
-        'D-B.2',
-        None,
-        'D-I.2',
-        'D-T.3',
-    ]
 
     spring_cba_student_grid = []
     for student in student_list:
         studentname = "{} {}.".format(student.first_name, student.last_name[0])
         ixl_score_list = [studentname, ]
-        for i in range(17):  # Go through each exercise and get the score
-            if report_card_ixl_match[i] != None:
+        for i in range(20):  # Go through each exercise and get the score
+            if spring_cba_ixl_match[i] != None:
                 try:
                     score = IXLSkillScores.objects.get(student_id=student,
-                                                       ixl_skill_id__skill_id=report_card_ixl_match[i])
+                                                       ixl_skill_id__skill_id=spring_cba_ixl_match[i])
                     score = score.score
                 except:
                     score = 0
@@ -200,8 +92,13 @@ def class_list(request, year="16-17", grade="2nd", teacher="Trost"):
                 score = None
             ixl_score_list.append(score)  # Append the score on the score list
         spring_cba_student_grid.append(ixl_score_list)  # when all done, append the score list and go to next student
-        # report_card_ixl_match.insert(0, "IXL:")
-        # spring_cba_student_grid.append(report_card_ixl_match)
+    last_cba_row = ["IXL:"]
+    for i in spring_cba_ixl_match:
+        last_cba_row.append(i)
+
+    #last_cba_row = [("IXL:",), spring_cba_ixl_match]
+    #last_cba_row.insert(0, "IXL:")
+    spring_cba_student_grid.append(last_cba_row)
 
     ##-------------------------END CBA GRID-----------------------##
 
@@ -214,8 +111,8 @@ def class_list(request, year="16-17", grade="2nd", teacher="Trost"):
                                                      'reading_averages': reading_averages, 'ixl_priority': ixl_priority,
                                                      'myon_priority': myon_priority,
                                                      'spring_cba_student_grid': spring_cba_student_grid,
-                                                     'report_card_description': report_card_description,
-                                                     'report_card_ixl_match': report_card_ixl_match,
+                                                     'spring_cba_descriptions': spring_cba_descriptions,
+                                                     'spring_cba_ixl_match': spring_cba_ixl_match,
                                                      'last_updated':last_updated
 
                                                      })
@@ -403,11 +300,7 @@ def portal_student(request, teacher, grade,
 
     ####---------------------END GET VIDEOS-------------------------------####
     ####---------------------START LEXILE COUNTDOWN-------------------------------####
-    lexile_challenge_dates = [
-        # '2017/01/26', '2017/02/09', '2017/02/23', '2017/03/09', '2017/03/23', '2017/01/26',
-                              '2017/04/06',
-                              '2017/04/27',
-                              '2017/05/11', '2017/05/25', '2017/06/08',  ]
+    lexile_challenge_dates = [ '2017/05/4', '2017/05/18', '2017/06/01', '2017/06/15' ]
     lexile_countdown = False
     todays_date = datetime.today().day
     for x in lexile_challenge_dates:
@@ -468,8 +361,7 @@ def portal_student(request, teacher, grade,
 
     ####---------------------END STICKERS-------------------------------####
 
-    second_teachers = ['Trost', 'Mackinnon', 'Cyphers', 'DaSilva']
-    second_and_third_teachers = ['Berrie', 'Stein', 'DaSilva', 'Cyphers', 'Trost', 'Mackinnon']
+
     if teacher in second_and_third_teachers:
         myon_display = True
     else:

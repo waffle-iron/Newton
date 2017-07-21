@@ -15,7 +15,7 @@
                                                     aria-selected="true">Reading Stats</a></li>
                 <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#amc">AMC</a></li>
                 <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#ixl">IXL</a></li>
-                <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#cba">Math Report Card</a></li>
+                <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#cba">CBA Grid</a></li>
                 <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#computer">Computer
                     Priority</a></li>
                 <li class="tabs-title"><a style="font-size: 1em; font-weight: 700" href="#other">Other Stuff</a></li>
@@ -72,6 +72,8 @@
                            href="{% url 'amc:testsheetsclass' year grade teacher %}">Print Tests</a>
                         <a class="button" style="float:right; background-color: #37b32d;font-weight: bold "
                            href="{% url 'amc:challengesheetsclass' year grade teacher %}">Print Challenges</a>
+                        <a class="button" style="float:right; background-color: #b33dad;font-weight: bold "
+                           href="{% url 'parentletter:printclass' teacher %}">Parent Letters</a>
                         <h4>American Math Challenge</h4>
                         <p>Class Badges Earned: <span style="font-size: 1em"
                                                       class="success badge">{{ student_list|amc_teacher_badges_earned }}</span>
@@ -151,11 +153,15 @@
 
             <div class="tabs-panel" id="cba">
                     <div class="callout">
-                        <h4>Math Report Card</h4>
+                    <a class="button" style="float:right;font-weight: bold "
+                           href="{% url 'amc:cbasheetsclass' year grade teacher 'add' %}">Add. Test</a>
+                        <a class="button" style="float:right;font-weight: bold; background-color: #da3116"
+                           href="{% url 'amc:cbasheetsclass' year grade teacher 'sub' %}">Sub. Test</a>
+                        <h4>CBA Grid</h4>
                         <table width="700px" border="1" style="border-color: #1a1a1a">
                             <tr>
                                 <th  style="font-size: 10pt">Student</th>
-                                {% for item in report_card_description %}
+                                {% for item in spring_cba_descriptions %}
                                 <th style="font-size: 8pt; padding:2px;text-align: center;border-color: #1a1a1a">{{ item }}</th>
                               {% endfor %}
                             </tr>

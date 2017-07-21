@@ -2,21 +2,69 @@ from django.db import models
 from datetime import date
 from django.utils.timezone import now, timedelta
 # Create your models here.
+FOURTEEN = '14-15'
+FIFTEEN = '15-16'
+SIXTEEN = '16-17'
+SEVENTEEN = '17-18'
+EIGHTEEN = '18-19'
+NINETEEN = '19-20'
+TWENTY = '20-21'
+TWENTYONE = '21-22'
+
+KINDER = 'K'
+FIRST = '1st'
+SECOND = '2nd'
+THIRD = '3rd'
+FOURTH = '4th'
+FIFTH = '5th'
+SIXTH = '6th'
+SEVENTH = '7th'
+EIGHTH = '8th'
+
+GRADE_CHOICES = (
+    (KINDER, 'Kindergarten'), (FIRST, '1st Grade'), (SECOND, '2nd Grade'),
+    (THIRD, '3rd Grade'), (FOURTH, '4th Grade'), (FIFTH, '5th Grade'),
+    (SIXTH, '6th Grade'), (SEVENTH, '7th Grade'), (EIGHTH, '8th Grade'),
+)
+YEAR_CHOICES = (
+    (FOURTEEN, '14-15'),
+    (FIFTEEN, '15-16'),
+    (SIXTEEN, '16-17'),
+    (SEVENTEEN, '17-18'),
+    (EIGHTEEN, '18-19'),
+    (NINETEEN, '19-20'),
+    (TWENTY, '20-21'),
+    (TWENTYONE, '21-22'),
+)
+
+MS = 'Ms.'
+MRS = 'Mrs.'
+MR = 'Mr.'
+DR = 'Dr.'
+TITLE_CHOICES = (
+    (MS, 'Ms.'), (MRS, 'Mrs.'), (MR, 'Mr.'),
+    (DR, 'Dr.'),
+)
+
+MALE = 'M'
+FEMALE = 'F'
+GENDER_CHOICES = (
+    (MALE, 'Male'),
+    (FEMALE, 'Female'),)
+
+DAY_CHOICES = (("MONDAY", 'Monday'), ("TUESDAY", 'Tuesday'), ("WEDNESDAY", 'Wednesday'), ("THURSDAY", 'Thursday'),
+               ("FRIDAY", 'Friday'),)
 
 
 class Teacher(models.Model):
-    MS = 'Ms.'
-    MRS = 'Mrs.'
-    MR = 'Mr.'
-    DR = 'Dr.'
-    TITLE_CHOICES = (
-        (MS, 'Ms.'), (MRS, 'Mrs.'), (MR, 'Mr.'),
-        (DR, 'Dr.'),
-    )
+
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50, choices=TITLE_CHOICES, default=MS)
-    first_name =models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    first_name =models.CharField(max_length=50, verbose_name="First Name")
+    last_name = models.CharField(max_length=50, verbose_name="Last Name")
+    email = models.EmailField(max_length=100, blank=True, verbose_name="BTWA Email", help_text="FirstLastBTWA@gmail.com")
+    remindURL = models.CharField(max_length=50,blank=True, verbose_name="Remind.com Signup name", help_text="remind.com/join/______")
+    workphone = models.CharField(max_length=50,blank=True, verbose_name="Work Phone")
 
 
     def __str__(self):
@@ -29,40 +77,7 @@ class Teacher(models.Model):
 
 
 class CurrentClass(models.Model):
-    FOURTEEN = '14-15'
-    FIFTEEN = '15-16'
-    SIXTEEN = '16-17'
-    SEVENTEEN = '17-18'
-    EIGHTEEN = '18-19'
-    NINETEEN = '19-20'
-    TWENTY = '20-21'
-    TWENTYONE = '21-22'
 
-    KINDER = 'K'
-    FIRST = '1st'
-    SECOND = '2nd'
-    THIRD = '3rd'
-    FOURTH = '4th'
-    FIFTH = '5th'
-    SIXTH = '6th'
-    SEVENTH = '7th'
-    EIGHTH = '8th'
-
-    GRADE_CHOICES = (
-        (KINDER, 'Kindergarten'), (FIRST, '1st Grade'), (SECOND, '2nd Grade'),
-        (THIRD, '3rd Grade'), (FOURTH, '4th Grade'), (FIFTH, '5th Grade'),
-        (SIXTH, '6th Grade'), (SEVENTH, '7th Grade'), (EIGHTH, '8th Grade'),
-    )
-    YEAR_CHOICES = (
-        (FOURTEEN, '14-15'),
-        (FIFTEEN, '15-16'),
-        (SIXTEEN, '16-17'),
-        (SEVENTEEN, '17-18'),
-        (EIGHTEEN, '18-19'),
-        (NINETEEN, '19-20'),
-        (TWENTY, '20-21'),
-        (TWENTYONE, '21-22'),
-    )
 
     id = models.AutoField(primary_key=True)
     year = models.CharField(max_length=100, choices=YEAR_CHOICES)
@@ -79,11 +94,7 @@ class CurrentClass(models.Model):
 
 
 class StudentRoster(models.Model):
-    MALE = 'M'
-    FEMALE = 'F'
-    GENDER_CHOICES = (
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),)
+
 
     student_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=30)
@@ -92,6 +103,7 @@ class StudentRoster(models.Model):
     date_of_birth = models.DateField(blank=True,)
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, default=MALE,)
     email = models.EmailField(blank=True, verbose_name='Parent Email')
+    email2 = models.EmailField(blank=True, verbose_name='Second Parent Email')
     # detail = models.
 
     def __str__(self):
@@ -153,16 +165,7 @@ class MorningMessage(models.Model):
 
     def __str__(self):
         return "{} {}".format(self.teacher, self.date)
-    # Good Morning, Scholars!
-    # Today is Tuesday, October 12th, 2016
-    # We are going to learn about shapes and writing our small moments...(Message)
-    # Our specials today are Art and Spanish. (Specials)
-    # Let's have 'an amazing' day!
-    # Love,
-    # Mr. Trost and Ms. West
-    # Weather
-    # Upcoming Birthdays
-    # Student of the Week
+
 
 
 class MorningMessageSettings(models.Model):
@@ -200,8 +203,7 @@ class Subject(models.Model):
 
 
 class Schedule(models.Model):
-    DAY_CHOICES = (("MONDAY", 'Monday'),("TUESDAY", 'Tuesday'),("WEDNESDAY", 'Wednesday'),("THURSDAY", 'Thursday'),
-                   ("FRIDAY", 'Friday'),)
+
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     day = models.CharField(choices=DAY_CHOICES, max_length=200,)
     subject1 = models.ForeignKey(Subject,verbose_name='First Class',related_name='subject1')
@@ -216,7 +218,7 @@ class Schedule(models.Model):
         return "{}'s {} Schedule".format(self.teacher, self.day)
 
 
-class DataUpdate(models.Model):
+class DataUpdate(models.Model): # Keeps date and time for when scrapes were processed last
     current_time = now() - timedelta(hours=4)
     dateandtime = models.DateTimeField(default=current_time)
 
@@ -227,10 +229,68 @@ class DataUpdate(models.Model):
         return "{}".format(self.dateandtime.strftime("%A, %B %d, %I:%M %p"),)
 
 
+class SchoolDay(models.Model): #Keeps all days of school for purposes of behavior reports, absences, etc.
+    #What does a school day need? Just a date, right?
+    day = models.DateField()
+    halfday = models.BooleanField(default=False, verbose_name="Half Day")
+    noschool = models.BooleanField(default=False, verbose_name="No School")
+
+    class Meta:
+        ordering = ['day']
+
+    def __str__(self):
+        return "{}".format(self.day.strftime("%-m/%d/%Y"),)
 
 
 
 
+class SubjectUnit(models.Model): # Contains information about specific units for different subjects
+    grade = models.CharField(max_length=50, choices=GRADE_CHOICES, default=SECOND)
+    subject = models.ForeignKey(Subject,verbose_name="Subject")
+    number = models.SmallIntegerField(verbose_name="Unit Number")
+    title = models.CharField(max_length=400, verbose_name="Unit Title")
+    datestarted = models.DateField()
+    message = models.TextField(blank=True, verbose_name="Message for Parents About Unit")
+
+    class Meta:
+        ordering = ['grade', 'subject', 'number']
+        verbose_name="Subject Unit"
+        verbose_name_plural = "Subject Units"
+
+    def __str__(self):
+        return "{} : {} Unit {}: {}".format(self.grade, self.subject, self.number, self.title)
 
 
+class WeeklyWord(models.Model): # Contains the RULER and Keys to Success words of the week. Not all weeks have these.
+    MOOD_METER_COLORS = (("Green", "Green"), ("Yellow", "Yellow"),("Blue", "Blue"),("Red", "Red"),)
+
+    word = models.CharField(max_length=50, unique=True,)
+    keytosuccess = models.BooleanField(default=False, verbose_name="Key To Success", help_text="Is this a Key to Success? If RULER word, leave unchecked.")
+    quadrant = models.CharField(max_length=50, choices=MOOD_METER_COLORS, blank=True,verbose_name="Mood Meter Quadrant")
+    date_taught = models.DateField(verbose_name="Date Taught")
+
+    class Meta:
+        ordering = ['date_taught']
+        verbose_name = 'Weekly Word'
+        verbose_name_plural = 'Weekly Words'
+
+    def __str__(self):
+        return "{}".format(self.word)
+
+
+
+class BehaviorReport(models.Model): # Keeps data on the student's behavior in terms of # of sticks
+    BEHAVIOR_CHOICES = (("1", "1"), ("2", "2"),("3", "3"),("4", "4"),("Absent", "Absent"))
+
+    student = models.ForeignKey(StudentRoster, on_delete=models.CASCADE, verbose_name="Student")
+    school_day = models.ForeignKey(SchoolDay, on_delete=models.CASCADE, verbose_name="Date")
+    data = models.CharField(choices=BEHAVIOR_CHOICES, max_length=50, default="3", verbose_name="Number of Sticks")
+
+    class Meta:
+        ordering = ['school_day']
+        verbose_name = 'Behavior Report'
+        verbose_name_plural = 'Behavior Reports'
+
+    def __str__(self):
+        return "{}'s Behavior on {} was {}".format(self.student, self.school_day, self.data)
 

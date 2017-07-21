@@ -4,89 +4,43 @@
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock %} | Newton</title>
         <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+            <link rel="stylesheet" href="{% static 'css/app.css' %}">
+
         <link rel="stylesheet" href="{% static 'css/newton.css' %}">
+{#        <link rel="stylesheet" href="{% static 'css/newton.scss' %}">#}
         <link href="https://fonts.googleapis.com/css?family=Roboto:700" rel="stylesheet">
     <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}">
 
         {% block css %}{% endblock %}
-        <script src="{% static 'js/vendor/modernizr.js' %}"></script>
-        <meta class="foundation-mq">
+{#        <script src="{% static 'js/vendor/modernizr.js' %}"></script>#}
+{#        <meta class="foundation-mq">#}
     </head>
     <body>
     {% if user.is_authenticated %}
+
         <nav class="top-bar" role="navigation">
-            <section class="top-bar-left">
-                <ul class="dropdown menu" data-dropdown-menu role="menubar">
-                    <li class="menu-text"><a href="{% url 'brain:index' %}">Newton</a></li>
-{#                    <li class="has-submenu">#}
-{#                        <a href="{% url 'brain:schoolroster' '16-17' %}">Classes</a>#}
-{#                        <ul class="submenu menu vertical" data-submenu role="menu">#}
-{#                            {% nav_teachers_list %}#}
-{#                            <li><a href="{% url 'brain:schoolroster' '16-17' %}">See all &rarr;</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-                        <li>
-                        <a href="/classes/16-17/2nd/Cyphers">Cyphers</a>
-                    </li>
-                    <li>
-                        <a href="/classes/16-17/2nd/Mackinnon">Mackinnon</a>
-                    </li>
-                        <li>
-                        <a href="/classes/16-17/2nd/Trost">Trost</a>
-                    </li>
-{#                    <li class="has-submenu">#}
-{#                        <a href="{% url 'amc:schoolroster' '16-17' %}">AMC</a>#}
-{#                        <ul class="submenu menu vertical" data-submenu role="menu">#}
-{#                            {% nav_amc_teachers_list %}#}
-{#                            <li><a href="{% url 'amc:schoolroster' '16-17' %}">See all &rarr;</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-{#                    <li class="has-submenu">#}
-{#                        <a href="{% url 'brain:schoolroster' '16-17' %}">NWEA</a>#}
-{#                        <ul class="submenu menu vertical" data-submenu role="menu">#}
-{#                            {% nav_teachers_list %}#}
-{#                            <li><a href="{% url 'brain:schoolroster' '16-17' %}">See all &rarr;</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-{#                    <li class="has-submenu">#}
-{#                        <a href="{% url 'brain:schoolroster' '16-17' %}">CBA</a>#}
-{#                        <ul class="submenu menu vertical" data-submenu role="menu">#}
-{#                            {% nav_teachers_list %}#}
-{#                            <li><a href="{% url 'brain:schoolroster' '16-17' %}">See all &rarr;</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-{#                    <li class="has-submenu">#}
-{#                        <a href="{% url 'brain:schoolroster' '16-17' %}">ENI</a>#}
-{#                        <ul class="submenu menu vertical" data-submenu role="menu">#}
-{#                            {% nav_teachers_list %}#}
-{#                            <li><a href="{% url 'brain:schoolroster' '16-17' %}">See all &rarr;</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-{#                    <li class="has-submenu">#}
-{#                        <a href="{% url 'brain:schoolroster' '16-17' %}">IXL</a>#}
-{#                        <ul class="submenu menu vertical" data-submenu role="menu">#}
-{#                            {% nav_ixl_list %}#}
-{#                            <li><a href="{% url 'brain:schoolroster' '16-17' %}">See all &rarr;</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-                    <li>
-                        <a href="/admin">Admin</a>
-                    </li>
-                </ul>
-            </section>
-{#            <section class="top-bar-right">#}
-{#                <ul class="menu">#}
-{#                    <li><input type="search"></li>#}
-{#                    <li><button type="button" class="button">Search</button></li>#}
-{#                </ul>#}
-{#            </section>#}
+        <div class="grid-container-padded">
+        <ul class="menu menu-hover-lines">
+                <li><a href="{% url 'brain:index' %}">
+                        <img style="width: 80%;" src="{% static 'images/newtonlogoblue.png' %}">
+                        </a></li>
+  <li class="active"><a href="{% url 'brain:index' %}">Home</a></li>
+  <li><a href="/classes/17-18/2nd/McPherson">McPherson</a></li>
+  <li><a href="/classes/17-18/2nd/Palermo">Palermo</a></li>
+  <li><a href="/classes/17-18/2nd/Ryan">Ryan</a></li>
+  <li><a href="/classes/17-18/2nd/Trost">Trost</a></li>
+  <li><a href="/admin">Admin</a></li>
+</ul>
+</div>
+
         </nav>
         {% if messages %}
-            <div class="row columns">
-                <div class="small-6 small-centered columns">
+            <div class="grid-x grid-padding-x">
+                <div class="small-6 small-centered cell">
                     {% for message in messages %}
                         <div data-alert class="alert-box {{ message.tags }} radius">
                             {{ message }}
@@ -96,8 +50,8 @@
                 </div>
             </div>
         {% endif %}
-        <div class="row">
-        <div class="large-12 columns">
+        <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
         {% block breadcrumbs %}{% endblock %}
             {% block heading %}{% endblock %}
             <hr><br>
@@ -107,9 +61,9 @@
 
 
             <footer class="footer">
-  <div class="row">
-    <div class="small-12 columns">
-      <p class="slogan">Newton</p>
+  <div class="grid-x grid-padding-x">
+    <div class="small-12 cell">
+{#      <p class="slogan">Newton</p>#}
 {#      <p class="links">#}
 {#        <a href="#">Home</a>#}
 {#        <a href="#">Classes</a>#}
@@ -133,9 +87,10 @@
     <h1 style="text-align: center; ">Please <a href="/admin">login</a>, and we'll get started!</h1>
     {% endif %}
 
-        <script src="{% static 'js/vendor/jquery.js' %}"></script>
-        <script src="{% static 'js/vendor/what-input.min.js' %}"></script>
-        <script src="{% static 'js/foundation.js' %}"></script>
+     <script src={% static 'js/vendor/jquery.js' %}></script>
+    <script src={% static 'js/vendor/what-input.js' %}></script>
+    <script src={% static 'js/vendor/foundation.js' %}></script>
+    <script src={% static 'js/app.js' %}></script>
         {% block javascript %}{% endblock %}
         <script>
     $(document).foundation();

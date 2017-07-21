@@ -73,6 +73,7 @@ def checkbadges(grade):
     # Get student_list
     student_list = StudentRoster.objects.filter(current_class__grade=grade)
     for student in student_list:
+        print("{} {}".format(student.first_name, student.last_name))
         reading_stats = ReadingStats.objects.get(student=student)
         ixl_stats = IXLStats.objects.get(student=student)
         cgiresults = CGIResult.objects.filter(student=student)

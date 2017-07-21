@@ -63,6 +63,8 @@ class ChallengeExercise(models.Model):
     challenge = models.ForeignKey(Challenge)
     exercise_id = models.CharField(max_length=10)
     required_score = models.IntegerField(default=80, blank=False, null=False)
+    bonus = models.BooleanField(default=False, )
+
     def __str__(self):
         return '%s - %s' % (self.challenge, self.exercise_id)
 
@@ -105,10 +107,6 @@ class ChallengeAssignment(models.Model): # Assigns a challenge to a specific stu
             return "COMPLETE"
         else:
             return '{}/{}'.format(total_complete, total_questions)
-
-
-
-
 
     def __str__(self):
         return '%s : %s' % (self.challenge, self.student_id)

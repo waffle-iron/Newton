@@ -1,25 +1,13 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from variables import GRADE_CHOICES, SECOND
+from brain.models import StudentRoster, SchoolDay
+
 
 # Create your models here.
 
 class CommonCoreStateStandard(models.Model):
 
-    KINDER = 'K'
-    FIRST = '1st'
-    SECOND = '2nd'
-    THIRD = '3rd'
-    FOURTH = '4th'
-    FIFTH = '5th'
-    SIXTH = '6th'
-    SEVENTH = '7th'
-    EIGHTH = '8th'
-
-    GRADE_CHOICES = (
-        (KINDER, 'Kindergarten'), (FIRST, '1st Grade'), (SECOND, '2nd Grade'),
-        (THIRD, '3rd Grade'), (FOURTH, '4th Grade'), (FIFTH, '5th Grade'),
-        (SIXTH, '6th Grade'), (SEVENTH, '7th Grade'), (EIGHTH, '8th Grade'),
-    )
     ccss_format = RegexValidator(r'^CCSS\.(.*)$', 'Pattern must match IXL format: D-A.12')
     grade = models.CharField(max_length=50, choices=GRADE_CHOICES, default=SECOND)
     domain = models.CharField(max_length=50, null=False, blank=False, default="Reading")
@@ -35,3 +23,19 @@ class CommonCoreStateStandard(models.Model):
 
     def __str__(self):
         return "{} {} - {}: {}".format(self.domain, self.subdomain, self.topic, self.code)
+
+
+
+class HomeworkCompletion(models.Model): # Keeps data on whether or not a student handed in homework
+    STATUS_CHOICES = (("COMPLETE", "Complete"),("INCOMPLETE","Incomplete"), ("NOT RECEIVED","Not Received"), ("LATE","Late"))
+    student = models.ForeignKey(StudentRoster, on_delete=models.CASCADE, verbose_name="Student")
+    school_day = models.ForeignKey(SchoolDay, on_delete=models.CASCADE, verbose_name="Date")
+    status = models.CharField(choices=STATUS_CHOICES, max_length=50, default="NOT RECEIVED", verbose_name="Status")
+
+    class Meta:
+        ordering = ['school_day']
+        verbose_name = 'Homework Status'
+        verbose_name_plural = 'Homework Statuses'
+
+    def __str__(self):
+        return "{}'s Homework on {} is {}".format(self.student, self.school_day, self.status)

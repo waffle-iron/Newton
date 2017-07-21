@@ -11,9 +11,13 @@ class AMCTestAdmin(admin.ModelAdmin):
 class AMCTestResultAdmin(admin.ModelAdmin):
     list_display = ('student', 'test', 'score', 'date_tested', 'passing_score')
     list_editable = ['score', 'test', 'date_tested']
+    search_fields = ['student__first_name', 'student__last_name',]
+
 
 class AMCStartingTestAdmin(admin.ModelAdmin):
     list_display = ('student','starting_test',)
+    search_fields = ['student__first_name', 'student__last_name',]
+
     #list_editable = ('starting_test',)
 
 

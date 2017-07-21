@@ -1,7 +1,7 @@
 .idea
 .idea/*
 
-newton/settings.py
+#newton/settings.py
 *.py[cod]
 
 .DS_Store
@@ -45,7 +45,6 @@ __pycache__
 amc/scripts/amc_challenge_lists.py
 amc/scripts/flashcards/
 newton.log
-
 static/fonts/
 static/newton/favicon.ico
 test_report_lab.pdf
@@ -53,3 +52,4 @@ test_report_lab.pdf
 /brain/scripts/csvdownloads/
 /brain/scripts/webscrape.py
 /brain/management/commands/
+variables.py
