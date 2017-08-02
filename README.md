@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/a-trost/Newton.png?label=ready&title=Ready)](https://waffle.io/a-trost/Newton?utm_source=badge)
 # Newton
 Newton is an app that keeps track of many tasks that teachers need to do on a daily basis.
 Most importantly, it uses several assessment tools that we use in class to determine the math skills students know, and which skills they are ready to tackle next.
